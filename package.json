@@ -1,0 +1,7 @@
+{
+  "name": "gamevui-profile-kid",
+  "private": true,
+  "scripts": { "test": "node --test tests/profile.test.cjs", "preview": "node scripts/preview.cjs" },
+  "devDependencies": { "playwright": "1.62.1" }
+}
+
