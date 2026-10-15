@@ -1,0 +1,1376 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#EE1250">
+    <title>Hồ sơ cá nhân - GameVui</title>
+    <style>
+        :root {
+            /* Brand palette sampled from logo.png */
+            --primary: #EE1250;
+            --primary-hover: #D40E46;
+            --primary-ink: #C80A3E;
+            --primary-light: #FFF0F3;
+            --primary-soft: rgba(238, 18, 80, 0.10);
+            --primary-border: rgba(238, 18, 80, 0.22);
+            --gradient-brand: linear-gradient(135deg, #F09A6E 0%, #EF4D5E 50%, #EE1250 100%);
+            --gradient-button: linear-gradient(135deg, #F4577B 0%, #EE1250 100%);
+            --gradient-button-hover: linear-gradient(135deg, #EE3F68 0%, #D40E46 100%);
+            --bg-body: #FFF8F5;
+            --bg-card: #ffffff;
+            --bg-muted: #FBF4F1;
+            --bg-disabled: #F6EFEB;
+            --text-main: #1B1B14;
+            --text-muted: #6E6560;
+            --text-subtle: #A59B95;
+            --border: #F0E6E1;
+            --border-strong: #E3D6CF;
+            --border-focus: #F4768F;
+            --success: #047857;
+            --success-bg: #ECFDF5;
+            --success-border: rgba(4, 120, 87, 0.22);
+            --radius-lg: 20px;
+            --radius-md: 12px;
+            --radius-sm: 8px;
+            --shadow-sm: 0 1px 3px rgba(27, 27, 20, 0.05);
+            --shadow-md: 0 10px 25px -5px rgba(27, 27, 20, 0.06), 0 8px 10px -6px rgba(27, 27, 20, 0.04);
+            --shadow-lg: 0 20px 35px -10px rgba(238, 18, 80, 0.14);
+            --transition: background-color 0.25s ease, border-color 0.25s ease, color 0.25s ease,
+                          box-shadow 0.25s ease, transform 0.25s ease, opacity 0.25s ease;
+            --card-pad: 28px;
+            --touch-min: 44px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            padding: 32px 16px;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .profile-wrapper {
+            width: 100%;
+            max-width: 920px;
+            display: flex;
+            flex-direction: column;
+            gap: 22px;
+        }
+
+        /* ---------- Header card ---------- */
+        .profile-header-card {
+            background: var(--bg-card);
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow-md);
+            overflow: hidden;
+            position: relative;
+        }
+
+        .cover-photo {
+            height: 140px;
+            background: var(--gradient-brand);
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Decorative rings echoing the "G" shape of the logo (pure CSS) */
+        .cover-photo::before,
+        .cover-photo::after {
+            content: "";
+            position: absolute;
+            border-radius: 50%;
+            pointer-events: none;
+        }
+
+        .cover-photo::before {
+            width: 260px;
+            height: 260px;
+            right: -50px;
+            top: -110px;
+            border: 38px solid rgba(255, 255, 255, 0.14);
+        }
+
+        .cover-photo::after {
+            width: 150px;
+            height: 150px;
+            right: 190px;
+            bottom: -80px;
+            background: radial-gradient(circle at 35% 35%, rgba(255, 255, 255, 0.35) 0%, rgba(255, 255, 255, 0) 70%);
+        }
+
+        .header-content {
+            padding: 0 var(--card-pad) 22px var(--card-pad);
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+            margin-top: -55px;
+            position: relative;
+            z-index: 2;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+
+        .user-hero {
+            display: flex;
+            align-items: flex-end;
+            gap: 20px;
+            min-width: 0;
+        }
+
+        .avatar-container {
+            position: relative;
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: #ffffff;
+            padding: 4px;
+            box-shadow: 0 8px 24px rgba(27, 27, 20, 0.12);
+            flex-shrink: 0;
+        }
+
+        .avatar-img-wrapper {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            overflow: hidden;
+            position: relative;
+            background: var(--primary-light);
+        }
+
+        .avatar-img-wrapper img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            transition: var(--transition);
+        }
+
+        .avatar-overlay {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+            background: rgba(27, 27, 20, 0.6);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: var(--transition);
+            cursor: pointer;
+            color: #ffffff;
+            font-size: 0.75rem;
+            font-weight: 600;
+            gap: 4px;
+        }
+
+        .avatar-container:hover .avatar-overlay,
+        .avatar-overlay:focus-visible {
+            opacity: 1;
+        }
+
+        .avatar-container:hover img {
+            transform: scale(1.08);
+        }
+
+        .avatar-overlay svg {
+            width: 20px;
+            height: 20px;
+            fill: #ffffff;
+        }
+
+        /* Always-visible camera badge so touch users can find the upload action */
+        .avatar-edit-btn {
+            position: absolute;
+            right: 2px;
+            bottom: 2px;
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            border: 3px solid #ffffff;
+            background: var(--gradient-button);
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(238, 18, 80, 0.35);
+            transition: var(--transition);
+            z-index: 2;
+        }
+
+        .avatar-edit-btn:hover {
+            background: var(--gradient-button-hover);
+            transform: scale(1.08);
+        }
+
+        .avatar-edit-btn svg {
+            width: 15px;
+            height: 15px;
+            fill: currentColor;
+        }
+
+        .user-details {
+            padding-bottom: 4px;
+            min-width: 0;
+        }
+
+        .user-name-row {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 8px 12px;
+        }
+
+        .user-name {
+            font-size: 1.7rem;
+            font-weight: 800;
+            letter-spacing: -0.025em;
+            color: var(--text-main);
+            overflow-wrap: anywhere;
+        }
+
+        .user-badge {
+            background: var(--primary-light);
+            color: var(--primary-ink);
+            padding: 3px 10px;
+            border-radius: 20px;
+            font-size: 0.78rem;
+            font-weight: 700;
+            letter-spacing: 0.02em;
+            border: 1px solid var(--primary-border);
+            white-space: nowrap;
+        }
+
+        /* ---------- Layout ---------- */
+        .main-grid {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr);
+            gap: 20px;
+        }
+
+        .card {
+            background: var(--bg-card);
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow-md);
+            padding: var(--card-pad);
+            transition: var(--transition);
+            min-width: 0;
+        }
+
+        .card:hover {
+            box-shadow: var(--shadow-lg);
+            border-color: var(--primary-border);
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 18px;
+            padding-bottom: 14px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .card-title-group {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .card-icon {
+            width: 38px;
+            height: 38px;
+            border-radius: var(--radius-md);
+            background: var(--primary-light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary-ink);
+            flex-shrink: 0;
+        }
+
+        .card-icon svg {
+            width: 20px;
+            height: 20px;
+            fill: currentColor;
+        }
+
+        .card-title {
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: var(--text-main);
+            letter-spacing: -0.01em;
+        }
+
+        .card-desc {
+            font-size: 0.82rem;
+            color: var(--text-muted);
+            margin-top: 2px;
+        }
+
+        /* ---------- Form ---------- */
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 18px;
+        }
+
+        .form-group-full {
+            grid-column: span 2;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            min-width: 0;
+        }
+
+        label, .field-label {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--text-main);
+        }
+
+        .field-hint {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            font-weight: 400;
+        }
+
+        input[type="text"], select {
+            width: 100%;
+            padding: 11px 14px;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            font-size: 0.93rem;
+            color: var(--text-main);
+            background-color: #ffffff;
+            transition: var(--transition);
+            outline: none;
+            appearance: none;
+        }
+
+        select {
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%236E6560'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 12px center;
+            background-size: 16px;
+            padding-right: 36px;
+        }
+
+        input[type="text"]:hover, select:hover {
+            border-color: var(--border-strong);
+        }
+
+        input[type="text"]:focus, select:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px var(--primary-soft);
+        }
+
+        /* Disabled state for inputs, selects and buttons */
+        select:disabled, input:disabled {
+            background-color: var(--bg-disabled) !important;
+            color: var(--text-subtle) !important;
+            border-color: var(--border) !important;
+            cursor: not-allowed !important;
+            opacity: 0.75;
+        }
+
+        .btn:disabled {
+            background: #E9DDD7 !important;
+            color: var(--text-subtle) !important;
+            box-shadow: none !important;
+            cursor: not-allowed !important;
+            transform: none !important;
+            opacity: 0.7;
+        }
+
+        .btn.btn-secondary:disabled {
+            background: var(--bg-muted) !important;
+            border: 1px solid var(--border);
+        }
+
+        .dob-grid {
+            display: grid;
+            grid-template-columns: 1fr 1.4fr 1.1fr;
+            gap: 10px;
+        }
+
+        .gender-group {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 12px;
+            margin-top: 2px;
+        }
+
+        .radio-card {
+            position: relative;
+            display: block;
+        }
+
+        .radio-card input[type="radio"] {
+            position: absolute;
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .radio-label-box {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            gap: 8px;
+            min-height: 42px;
+            padding: 8px 10px;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            font-size: 0.88rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: var(--transition);
+            background: #ffffff;
+            user-select: none;
+        }
+
+        .radio-card input[type="radio"]:checked + .radio-label-box {
+            border-color: var(--primary);
+            background-color: var(--primary-light);
+            color: var(--primary-ink);
+            box-shadow: 0 0 0 1px var(--primary);
+        }
+
+        .radio-card input[type="radio"]:focus-visible + .radio-label-box {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px var(--primary-soft);
+        }
+
+        .expandable-section {
+            display: none;
+            margin-top: 16px;
+            padding-top: 18px;
+            border-top: 1px dashed var(--border);
+            animation: fadeIn 0.3s ease;
+        }
+
+        .expandable-section.active {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 18px;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-6px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .toggle-more-btn {
+            background: none;
+            border: none;
+            color: var(--primary-ink);
+            font-size: 0.88rem;
+            font-weight: 700;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 4px;
+            margin: 10px 0 0 -4px;
+            border-radius: var(--radius-sm);
+            transition: var(--transition);
+        }
+
+        .toggle-more-btn:hover {
+            opacity: 0.8;
+            text-decoration: underline;
+        }
+
+        .form-actions {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 12px;
+            margin-top: 20px;
+            padding-top: 16px;
+            border-top: 1px solid var(--border);
+        }
+
+        .btn {
+            padding: 11px 22px;
+            border-radius: var(--radius-md);
+            font-size: 0.88rem;
+            font-weight: 600;
+            cursor: pointer;
+            border: none;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background: var(--gradient-button);
+            color: #ffffff;
+            box-shadow: 0 4px 14px rgba(238, 18, 80, 0.3);
+        }
+
+        .btn-primary:hover {
+            background: var(--gradient-button-hover);
+            transform: translateY(-1px);
+            box-shadow: 0 6px 20px rgba(238, 18, 80, 0.4);
+        }
+
+        .btn-secondary {
+            background-color: var(--bg-muted);
+            color: var(--text-main);
+            border: 1px solid var(--border);
+        }
+
+        .btn-secondary:hover {
+            background-color: #F3E8E3;
+        }
+
+        /* Keyboard focus ring (visible only for keyboard users) */
+        .btn:focus-visible,
+        .toggle-more-btn:focus-visible,
+        .btn-link-action:focus-visible,
+        .btn-social-connect:focus-visible,
+        .avatar-edit-btn:focus-visible,
+        .avatar-overlay:focus-visible {
+            outline: 2px solid var(--primary);
+            outline-offset: 2px;
+        }
+
+        .avatar-overlay:focus-visible {
+            outline-offset: -4px;
+            border-radius: 50%;
+        }
+
+        /* ---------- Security ---------- */
+        .security-rows {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .security-row-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 10px 12px;
+            padding: 14px 16px;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            background: #ffffff;
+            transition: var(--transition);
+        }
+
+        .security-row-item:hover {
+            border-color: var(--primary-border);
+            background: var(--bg-body);
+        }
+
+        .security-info-group {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            flex: 1 1 140px;
+            min-width: 0;
+        }
+
+        .security-title {
+            font-size: 0.83rem;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        .security-value {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 700;
+            color: var(--text-main);
+            font-size: 0.95rem;
+            letter-spacing: 0.01em;
+            overflow-wrap: anywhere;
+        }
+
+        .security-value svg {
+            width: 16px;
+            height: 16px;
+            fill: var(--primary-ink);
+            flex-shrink: 0;
+        }
+
+        .btn-link-action {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 36px;
+            color: var(--primary-ink);
+            background: var(--primary-light);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.83rem;
+            padding: 7px 14px;
+            border-radius: var(--radius-sm);
+            transition: var(--transition);
+            border: 1px solid var(--primary-border);
+            white-space: nowrap;
+            flex: 0 0 auto;
+        }
+
+        .btn-link-action:hover {
+            background: var(--primary);
+            color: #ffffff;
+        }
+
+        /* ---------- Social ---------- */
+        .social-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .social-card {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 10px 12px;
+            padding: 12px 14px;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            background: #ffffff;
+            transition: var(--transition);
+        }
+
+        .social-card:hover {
+            border-color: var(--primary-border);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .social-header-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex: 1 1 120px;
+            min-width: 0;
+        }
+
+        .social-brand-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #ffffff;
+            font-size: 1.05rem;
+            font-weight: bold;
+            box-shadow: 0 4px 10px rgba(27, 27, 20, 0.08);
+            flex-shrink: 0;
+        }
+
+        .icon-facebook { background: linear-gradient(135deg, #1877f2 0%, #0d5ab9 100%); }
+        .icon-google { background: linear-gradient(135deg, #ea4335 0%, #c5221f 100%); }
+        .icon-zalo { background: linear-gradient(135deg, #0068ff 0%, #0042a5 100%); }
+
+        .social-name {
+            font-weight: 700;
+            font-size: 0.92rem;
+            color: var(--text-main);
+        }
+
+        .social-status {
+            font-size: 0.78rem;
+            color: var(--text-muted);
+        }
+
+        .social-status-linked {
+            color: var(--success);
+            font-weight: 600;
+        }
+
+        .btn-social-connect {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 36px;
+            text-align: center;
+            padding: 7px 14px;
+            border-radius: var(--radius-sm);
+            font-size: 0.83rem;
+            font-weight: 600;
+            text-decoration: none;
+            transition: var(--transition);
+            white-space: nowrap;
+            flex: 0 0 auto;
+        }
+
+        .status-unlinked {
+            background: var(--primary-light);
+            color: var(--primary-ink);
+            border: 1px solid var(--primary-border);
+        }
+
+        .status-unlinked:hover {
+            background: var(--primary);
+            color: #ffffff;
+        }
+
+        .status-linked {
+            background: var(--success-bg);
+            color: var(--success);
+            border: 1px solid var(--success-border);
+            cursor: default;
+        }
+
+        /* ---------- Toast ---------- */
+        #toast {
+            position: fixed;
+            bottom: 32px;
+            right: 32px;
+            max-width: min(380px, calc(100vw - 24px));
+            background: #1B1B14;
+            color: #ffffff;
+            padding: 14px 20px;
+            border-radius: var(--radius-md);
+            font-weight: 600;
+            font-size: 0.88rem;
+            box-shadow: 0 20px 30px -10px rgba(0, 0, 0, 0.25);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            z-index: 1000;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.3s ease, transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            pointer-events: none;
+            border-left: 4px solid #10b981;
+        }
+
+        #toast[data-type="error"] {
+            border-left-color: #F4577B;
+        }
+
+        #toast.active {
+            opacity: 1;
+            transform: translateY(0);
+            pointer-events: auto;
+        }
+
+        #toast-icon {
+            display: flex;
+            flex-shrink: 0;
+        }
+
+        /* ---------- Responsive ---------- */
+        @media (min-width: 869px) {
+            .main-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+            .card-wide {
+                grid-column: 1 / -1;
+            }
+        }
+
+        @media (max-width: 640px) {
+            :root {
+                --card-pad: 18px;
+            }
+            body {
+                padding: 16px 12px;
+            }
+            .profile-wrapper {
+                gap: 16px;
+            }
+            .main-grid {
+                gap: 16px;
+            }
+            .cover-photo {
+                height: 110px;
+            }
+            .header-content {
+                margin-top: -46px;
+                padding-bottom: 18px;
+            }
+            .user-hero {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+            .avatar-container {
+                width: 96px;
+                height: 96px;
+            }
+            .avatar-edit-btn {
+                width: 32px;
+                height: 32px;
+            }
+            .user-name {
+                font-size: 1.45rem;
+            }
+            .card-header {
+                margin-bottom: 14px;
+                padding-bottom: 12px;
+            }
+            .form-grid, .expandable-section.active {
+                grid-template-columns: 1fr;
+                gap: 16px;
+            }
+            .form-group-full {
+                grid-column: span 1;
+            }
+            /* 16px prevents iOS Safari from zooming on focus */
+            input[type="text"], select {
+                font-size: 1rem;
+                min-height: var(--touch-min);
+            }
+            .dob-grid {
+                gap: 8px;
+            }
+            .gender-group {
+                gap: 8px;
+            }
+            .radio-label-box {
+                min-height: var(--touch-min);
+                padding: 8px 6px;
+                font-size: 0.84rem;
+            }
+            .btn {
+                min-height: var(--touch-min);
+            }
+            .btn-link-action,
+            .btn-social-connect {
+                min-height: var(--touch-min);
+            }
+            .toggle-more-btn {
+                min-height: var(--touch-min);
+            }
+            .form-actions {
+                margin-top: 16px;
+                padding-top: 14px;
+            }
+            .form-actions .btn {
+                flex: 1;
+            }
+            .security-row-item,
+            .social-card {
+                padding: 12px;
+            }
+            #toast {
+                left: 12px;
+                right: 12px;
+                bottom: 16px;
+                max-width: none;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="profile-wrapper">
+
+        <div class="profile-header-card">
+            <div class="cover-photo"></div>
+            <div class="header-content">
+                <div class="user-hero">
+                    <!-- Avatar with upload actions (hover overlay + always-visible badge) -->
+                    <div class="avatar-container">
+                        <div class="avatar-img-wrapper">
+                            <img id="avatar-preview" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 150 150'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='0' y2='1'%3E%3Cstop offset='0' stop-color='%23F09A6E'/%3E%3Cstop offset='0.5' stop-color='%23EF4D5E'/%3E%3Cstop offset='1' stop-color='%23EE1250'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='150' height='150' fill='url(%23g)'/%3E%3Ctext x='75' y='75' fill='%23ffffff' font-family='Arial,Helvetica,sans-serif' font-size='56' font-weight='700' text-anchor='middle' dominant-baseline='central'%3EGV%3C/text%3E%3C/svg%3E" alt="Avatar người dùng">
+                            <button type="button" class="avatar-overlay" id="btn-change-avatar" aria-label="Đổi ảnh đại diện">
+                                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 15.2a3.2 3.2 0 1 0 0-6.4 3.2 3.2 0 0 0 0 6.4zM9 2 7.17 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2h-3.17L15 2H9zm3 15c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5z"/></svg>
+                                <span>Tải ảnh</span>
+                            </button>
+                        </div>
+                        <button type="button" class="avatar-edit-btn" id="btn-edit-avatar-badge" aria-label="Đổi ảnh đại diện">
+                            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 15.2a3.2 3.2 0 1 0 0-6.4 3.2 3.2 0 0 0 0 6.4zM9 2 7.17 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2h-3.17L15 2H9zm3 15c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5z"/></svg>
+                        </button>
+                    </div>
+                    <input type="file" id="file-input" accept="image/jpeg,image/png,image/webp,image/gif" hidden>
+
+                    <div class="user-details">
+                        <div class="user-name-row">
+                            <h1 class="user-name" id="main-display-name">GameVui</h1>
+                            <span class="user-badge">id: 455873</span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="main-grid">
+
+            <div class="card card-wide">
+                <div class="card-header">
+                    <div class="card-title-group">
+                        <div class="card-icon">
+                            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+                        </div>
+                        <div>
+                            <h2 class="card-title">Thông tin cá nhân</h2>
+                            <p class="card-desc">Cập nhật hồ sơ và giấy tờ tùy thân định danh tài khoản</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-grid">
+                    <!-- Tên hiển thị -->
+                    <div class="form-group">
+                        <label for="fullname">Tên hiển thị</label>
+                        <input type="text" id="fullname" value="GameVui" placeholder="Nhập tên hiển thị..." autocomplete="nickname">
+                    </div>
+
+                    <!-- Xưng danh -->
+                    <div class="form-group">
+                        <label for="salutation">Xưng danh</label>
+                        <select id="salutation">
+                            <option value="Bạn">Bạn</option>
+                            <option value="Anh">Anh</option>
+                            <option value="Chị">Chị</option>
+                            <option value="Ông">Ông</option>
+                            <option value="Bà">Bà</option>
+                        </select>
+                    </div>
+
+                    <!-- Ngày sinh (Khóa không cho chỉnh sửa) -->
+                    <div class="form-group form-group-full">
+                        <span class="field-label" id="dob-label">Ngày sinh <span class="field-hint">(Cố định)</span></span>
+                        <div class="dob-grid" role="group" aria-labelledby="dob-label">
+                            <select id="dob-day" aria-label="Ngày" disabled title="Ngày sinh không thể chỉnh sửa"></select>
+                            <select id="dob-month" aria-label="Tháng" disabled title="Ngày sinh không thể chỉnh sửa"></select>
+                            <select id="dob-year" aria-label="Năm" disabled title="Ngày sinh không thể chỉnh sửa"></select>
+                        </div>
+                    </div>
+
+                    <!-- Giới tính -->
+                    <div class="form-group form-group-full">
+                        <span class="field-label" id="gender-label">Giới tính</span>
+                        <div class="gender-group" role="radiogroup" aria-labelledby="gender-label">
+                            <label class="radio-card">
+                                <input type="radio" name="gender" value="male" checked>
+                                <span class="radio-label-box">Nam</span>
+                            </label>
+                            <label class="radio-card">
+                                <input type="radio" name="gender" value="female">
+                                <span class="radio-label-box">Nữ</span>
+                            </label>
+                            <label class="radio-card">
+                                <input type="radio" name="gender" value="other">
+                                <span class="radio-label-box">Không tiết lộ</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Địa chỉ -->
+                    <div class="form-group form-group-full">
+                        <label for="address">Địa chỉ</label>
+                        <input type="text" id="address" value="Miếu Đầm, phố Mễ Trì, quận Nam Từ Liêm" placeholder="Nhập địa chỉ hiện tại..." autocomplete="street-address">
+                    </div>
+                </div>
+
+                <!-- Toggle More Information (CMT/CCCD) -->
+                <div>
+                    <button type="button" class="toggle-more-btn" id="btn-toggle-extra" aria-expanded="false" aria-controls="extra-identity-section">
+                        <span id="toggle-icon" aria-hidden="true">+</span>
+                        <span id="toggle-text">Thông tin thêm...</span>
+                    </button>
+                </div>
+
+                <!-- Expandable Section for ID Card info -->
+                <div class="expandable-section" id="extra-identity-section">
+                    <div class="form-group">
+                        <label for="id-number">Số CMTND/Căn cước</label>
+                        <input type="text" id="id-number" inputmode="numeric" autocomplete="off" placeholder="Nhập số CMTND hoặc số Căn cước">
+                    </div>
+                    <div class="form-group">
+                        <label for="id-place">Nơi cấp</label>
+                        <input type="text" id="id-place" autocomplete="off" placeholder="Nhập nơi cấp">
+                    </div>
+                    <div class="form-group form-group-full">
+                        <span class="field-label" id="id-date-label">Ngày cấp</span>
+                        <div class="dob-grid" role="group" aria-labelledby="id-date-label">
+                            <select id="id-day" aria-label="Ngày"></select>
+                            <select id="id-month" aria-label="Tháng"></select>
+                            <select id="id-year" aria-label="Năm"></select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary" id="btn-reset" disabled>Hủy bỏ</button>
+                    <button type="button" class="btn btn-primary" id="btn-save" disabled>Lưu thông tin</button>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title-group">
+                        <div class="card-icon">
+                            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg>
+                        </div>
+                        <div>
+                            <h2 class="card-title">Đăng nhập</h2>
+                            <p class="card-desc">Quản lý phương thức đăng nhập và bảo mật tài khoản</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="security-rows">
+                    <div class="security-row-item">
+                        <div class="security-info-group">
+                            <span class="security-title">Email đăng nhập</span>
+                            <span class="security-value">ngochung@meta.vn</span>
+                        </div>
+                        <a href="#" class="btn-link-action" id="link-change-email">Thay đổi Email</a>
+                    </div>
+                    <div class="security-row-item">
+                        <div class="security-info-group">
+                            <span class="security-title">Mật khẩu</span>
+                            <span class="security-value">
+                                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12.65 10C11.83 7.67 9.61 6 7 6c-3.31 0-6 2.69-6 6s2.69 6 6 6c2.61 0 4.83-1.67 5.65-4H17v4h4v-4h2v-4H12.65zM7 14c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2z"/></svg>
+                                Đổi mật khẩu
+                            </span>
+                        </div>
+                        <a href="#" class="btn-link-action" id="link-change-pwd">Cập nhật</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title-group">
+                        <div class="card-icon">
+                            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76 0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71 0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71 0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76 0 5-2.24 5-5s-2.24-5-5-5z"/></svg>
+                        </div>
+                        <div>
+                            <h2 class="card-title">Mạng xã hội</h2>
+                            <p class="card-desc">Liên kết các nền tảng mạng xã hội để đăng nhập nhanh</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="social-grid">
+                    <div class="social-card">
+                        <div class="social-header-info">
+                            <div class="social-brand-icon icon-facebook" aria-hidden="true">f</div>
+                            <div>
+                                <div class="social-name">Facebook</div>
+                                <div class="social-status">Chưa kết nối</div>
+                            </div>
+                        </div>
+                        <a href="#" class="btn-social-connect status-unlinked" id="social-fb-action">Kết nối với Facebook</a>
+                    </div>
+
+                    <div class="social-card">
+                        <div class="social-header-info">
+                            <div class="social-brand-icon icon-google" aria-hidden="true">G</div>
+                            <div>
+                                <div class="social-name">Google</div>
+                                <div class="social-status social-status-linked">Đã kết nối</div>
+                            </div>
+                        </div>
+                        <span class="btn-social-connect status-linked" id="social-gg-action">Đã kết nối Google</span>
+                    </div>
+
+                    <div class="social-card">
+                        <div class="social-header-info">
+                            <div class="social-brand-icon icon-zalo" aria-hidden="true">Z</div>
+                            <div>
+                                <div class="social-name">Zalo</div>
+                                <div class="social-status">Chưa kết nối</div>
+                            </div>
+                        </div>
+                        <a href="#" class="btn-social-connect status-unlinked" id="social-zalo-action">Đăng nhập qua Zalo</a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Toast Notification Component -->
+    <div id="toast" role="status" aria-live="polite" data-type="success">
+        <span id="toast-icon" aria-hidden="true"></span>
+        <span id="toast-message">Cập nhật thông tin thành công!</span>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const btnSave = document.getElementById('btn-save');
+            const btnReset = document.getElementById('btn-reset');
+            const fullnameInput = document.getElementById('fullname');
+            const mainDisplayName = document.getElementById('main-display-name');
+            const toast = document.getElementById('toast');
+            const toastIcon = document.getElementById('toast-icon');
+            const toastMessage = document.getElementById('toast-message');
+
+            // Avatar upload handling
+            const btnChangeAvatar = document.getElementById('btn-change-avatar');
+            const btnEditAvatarBadge = document.getElementById('btn-edit-avatar-badge');
+            const fileInput = document.getElementById('file-input');
+            const avatarPreview = document.getElementById('avatar-preview');
+
+            const AVATAR_SIZE = 256;
+            const AVATAR_MAX_BYTES = 5 * 1024 * 1024;
+            const AVATAR_TYPES = ['image/jpeg', 'image/png', 'image/webp', 'image/gif'];
+
+            // Expandable extra info handling
+            const btnToggleExtra = document.getElementById('btn-toggle-extra');
+            const extraIdentitySection = document.getElementById('extra-identity-section');
+            const toggleIcon = document.getElementById('toggle-icon');
+            const toggleText = document.getElementById('toggle-text');
+
+            let isExtraOpen = false;
+
+            // Form element references for change tracking
+            const salutationSelect = document.getElementById('salutation');
+            const addressInput = document.getElementById('address');
+            const genderRadios = document.querySelectorAll('input[name="gender"]');
+            const idNumberInput = document.getElementById('id-number');
+            const idPlaceInput = document.getElementById('id-place');
+            const idDaySelect = document.getElementById('id-day');
+            const idMonthSelect = document.getElementById('id-month');
+            const idYearSelect = document.getElementById('id-year');
+
+            // ---------- Date options ----------
+            const currentYear = new Date().getFullYear();
+
+            function fillOptions(select, items, placeholder) {
+                select.textContent = '';
+                if (placeholder) {
+                    select.appendChild(new Option(placeholder, ''));
+                }
+                items.forEach(item => select.appendChild(new Option(item.label, item.value)));
+            }
+
+            const dayItems = Array.from({ length: 31 }, (_, i) => ({ value: String(i + 1), label: String(i + 1) }));
+            const monthItems = Array.from({ length: 12 }, (_, i) => ({ value: String(i + 1), label: 'Tháng ' + (i + 1) }));
+            const yearItems = Array.from({ length: 101 }, (_, i) => {
+                const y = currentYear - i;
+                return { value: String(y), label: String(y) };
+            });
+
+            // Date of birth (locked): keep the existing fixed value 30 / Tháng 6 / 2001
+            [
+                [document.getElementById('dob-day'), dayItems, '30'],
+                [document.getElementById('dob-month'), monthItems, '6'],
+                [document.getElementById('dob-year'), yearItems, '2001']
+            ].forEach(([select, items, selected]) => {
+                fillOptions(select, items);
+                select.value = selected;
+            });
+
+            // ID issue date (editable)
+            fillOptions(idDaySelect, dayItems, 'Ngày');
+            fillOptions(idMonthSelect, monthItems, 'Tháng');
+            fillOptions(idYearSelect, yearItems, 'Năm');
+
+            // ---------- Change tracking ----------
+            let initialState = getFormState();
+
+            function getFormState() {
+                const checkedGender = document.querySelector('input[name="gender"]:checked');
+                return {
+                    salutation: salutationSelect.value,
+                    fullname: fullnameInput.value,
+                    gender: checkedGender ? checkedGender.value : '',
+                    address: addressInput.value,
+                    idNumber: idNumberInput.value,
+                    idPlace: idPlaceInput.value,
+                    idDay: idDaySelect.value,
+                    idMonth: idMonthSelect.value,
+                    idYear: idYearSelect.value,
+                    avatarSrc: avatarPreview.src
+                };
+            }
+
+            function checkFormChanges() {
+                const currentState = getFormState();
+                const isChanged = JSON.stringify(currentState) !== JSON.stringify(initialState);
+                btnSave.disabled = !isChanged;
+                btnReset.disabled = !isChanged;
+            }
+
+            [salutationSelect, fullnameInput, addressInput, idNumberInput, idPlaceInput, idDaySelect, idMonthSelect, idYearSelect].forEach(element => {
+                element.addEventListener('input', checkFormChanges);
+                element.addEventListener('change', checkFormChanges);
+            });
+
+            genderRadios.forEach(radio => {
+                radio.addEventListener('change', checkFormChanges);
+            });
+
+            btnToggleExtra.addEventListener('click', () => {
+                isExtraOpen = !isExtraOpen;
+                extraIdentitySection.classList.toggle('active', isExtraOpen);
+                btnToggleExtra.setAttribute('aria-expanded', String(isExtraOpen));
+                toggleIcon.textContent = isExtraOpen ? '-' : '+';
+                toggleText.textContent = isExtraOpen ? 'Ẩn bớt...' : 'Thông tin thêm...';
+            });
+
+            // ---------- Avatar upload ----------
+            function openFilePicker() {
+                fileInput.click();
+            }
+
+            btnChangeAvatar.addEventListener('click', openFilePicker);
+            btnEditAvatarBadge.addEventListener('click', openFilePicker);
+
+            // Center-crop to a square and downscale before storing the preview
+            function resizeAvatar(file, callback) {
+                const objectUrl = URL.createObjectURL(file);
+                const img = new Image();
+
+                img.onload = () => {
+                    const side = Math.min(img.naturalWidth, img.naturalHeight);
+                    const sx = (img.naturalWidth - side) / 2;
+                    const sy = (img.naturalHeight - side) / 2;
+
+                    const canvas = document.createElement('canvas');
+                    canvas.width = AVATAR_SIZE;
+                    canvas.height = AVATAR_SIZE;
+                    const ctx = canvas.getContext('2d');
+                    ctx.fillStyle = '#ffffff';
+                    ctx.fillRect(0, 0, AVATAR_SIZE, AVATAR_SIZE);
+                    ctx.drawImage(img, sx, sy, side, side, 0, 0, AVATAR_SIZE, AVATAR_SIZE);
+
+                    URL.revokeObjectURL(objectUrl);
+                    callback(canvas.toDataURL('image/jpeg', 0.85));
+                };
+
+                img.onerror = () => {
+                    URL.revokeObjectURL(objectUrl);
+                    callback(null);
+                };
+
+                img.src = objectUrl;
+            }
+
+            fileInput.addEventListener('change', (e) => {
+                const file = e.target.files[0];
+                fileInput.value = ''; // allow picking the same file again
+                if (!file) return;
+
+                if (!AVATAR_TYPES.includes(file.type)) {
+                    showToast('Chỉ hỗ trợ ảnh JPG, PNG, WebP hoặc GIF.', 'error');
+                    return;
+                }
+                if (file.size > AVATAR_MAX_BYTES) {
+                    showToast('Ảnh quá lớn, vui lòng chọn ảnh dưới 5MB.', 'error');
+                    return;
+                }
+
+                resizeAvatar(file, (dataUrl) => {
+                    if (!dataUrl) {
+                        showToast('Không thể đọc ảnh này, vui lòng thử ảnh khác.', 'error');
+                        return;
+                    }
+                    avatarPreview.src = dataUrl;
+                    checkFormChanges();
+                    showToast('Đã tải lên ảnh đại diện mới!');
+                });
+            });
+
+            // ---------- Save / Reset ----------
+            btnSave.addEventListener('click', () => {
+                if (btnSave.disabled) return;
+
+                const newName = fullnameInput.value.trim();
+                if (newName) {
+                    fullnameInput.value = newName;
+                    mainDisplayName.textContent = newName;
+                    initialState = getFormState(); // Reset baseline after saving
+                    checkFormChanges();
+                    showToast('Đã lưu thông tin hồ sơ thành công!');
+                } else {
+                    showToast('Tên hiển thị không được để trống!', 'error');
+                    fullnameInput.focus();
+                }
+            });
+
+            btnReset.addEventListener('click', () => {
+                if (btnReset.disabled) return;
+
+                salutationSelect.value = initialState.salutation;
+                fullnameInput.value = initialState.fullname;
+                addressInput.value = initialState.address;
+                idNumberInput.value = initialState.idNumber;
+                idPlaceInput.value = initialState.idPlace;
+                idDaySelect.value = initialState.idDay;
+                idMonthSelect.value = initialState.idMonth;
+                idYearSelect.value = initialState.idYear;
+                avatarPreview.src = initialState.avatarSrc;
+
+                genderRadios.forEach(radio => {
+                    radio.checked = (radio.value === initialState.gender);
+                });
+
+                checkFormChanges();
+                showToast('Đã khôi phục các thay đổi.');
+            });
+
+            // ---------- Toast ----------
+            const TOAST_ICONS = {
+                success: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>',
+                error: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#F4577B" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>'
+            };
+
+            let toastTimer;
+            function showToast(message, type = 'success') {
+                const toastType = TOAST_ICONS[type] ? type : 'success';
+                toastMessage.textContent = message;
+                toastIcon.innerHTML = TOAST_ICONS[toastType];
+                toast.dataset.type = toastType;
+                toast.classList.add('active');
+
+                clearTimeout(toastTimer);
+                toastTimer = setTimeout(() => {
+                    toast.classList.remove('active');
+                }, 3200);
+            }
+
+            document.querySelectorAll('a.btn-link-action, a.status-unlinked').forEach(link => {
+                link.addEventListener('click', (e) => {
+                    if (link.getAttribute('href') === '#') {
+                        e.preventDefault();
+                        showToast('Hệ thống đang mở liên kết xác thực.');
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
