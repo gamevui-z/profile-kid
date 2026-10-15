@@ -12,9 +12,18 @@ Trang hồ sơ HTML/CSS/JavaScript thuần, không cần bước build.
 
 ## Phần cha mẹ
 
-Card **Chế độ cha mẹ** nằm sau Thông tin cá nhân. Gồm hướng dẫn ba bước và dialog quản lý mẫu với hai bí danh hư cấu. Có thể thay đổi mức tuổi, hạn mức, hủy thay đổi, chọn hồ sơ và xem thời lượng minh họa. Đóng dialog sẽ xóa mọi thay đổi của bản xem thử.
+Card **Chế độ cha mẹ** nằm sau Thông tin cá nhân. Bấm **Xem các gói** để trải nghiệm:
 
-Đây là **UI preview**, chưa phải dịch vụ quản lý gia đình. Nút kích hoạt bị vô hiệu hóa có giải thích. Không thu PIN/mật khẩu/thông tin trẻ, không gọi API, không ghi browser storage. Khoảng 0–180 phút và mức tuổi trong bản xem thử chỉ phục vụ minh họa, không phải quy định hoặc cấu hình production. Luồng lưu hồ sơ sẵn có cũng chỉ lưu trong bộ nhớ trang.
+1. Chọn dùng thử **1 tháng 0đ**, hoặc gói **3 tháng / 6 tháng / 1 năm**. Giá gói dài hạn chưa được chốt nên hiển thị “Giá sẽ công bố”.
+2. Xác nhận đang dùng demo rồi kích hoạt tài khoản cha mẹ mẫu.
+3. Tạo tài khoản con bằng bí danh, username, mức tuổi và hạn mức mẫu. Username được chuẩn hóa chữ thường và kiểm tra trùng trong phiên demo. Thông tin đăng nhập minh họa được sinh tự động, không dùng đăng nhập thật.
+4. Tạo thêm con, chọn hồ sơ và cập nhật/hủy quy tắc. Đổi gói không xóa các hồ sơ đã tạo.
+
+Trạng thái kích hoạt và các hồ sơ tự tạo được giữ trong bộ nhớ khi đóng/mở dialog, mất khi tải lại trang. “Để sau” giữ trạng thái cha mẹ đã kích hoạt nhưng không tạo con. Trước khi kích hoạt, “Xem thử khu vực quản lý” vẫn dùng hai hồ sơ hư cấu có sẵn và xóa thay đổi mỗi lần đóng.
+
+Đây là **demo tương tác**, chưa phải dịch vụ quản lý gia đình. Kích hoạt và xác minh chỉ mô phỏng; không thu tiền, tự động gia hạn, yêu cầu thẻ, PIN hay mật khẩu thật. Form yêu cầu dùng thông tin mẫu, không gửi dữ liệu ra ngoài và không ghi browser storage. Khoảng 0–180 phút và mức tuổi chỉ phục vụ minh họa, không phải quy định hoặc cấu hình production. Luồng lưu hồ sơ sẵn có cũng chỉ lưu trong bộ nhớ trang.
+
+Phần chọn gói được bổ sung theo yêu cầu demo mới; chưa triển khai thương mại hóa, thanh toán hay paywall trong `trien-khai.md`.
 
 ## Trước khi kết nối dịch vụ thật
 
