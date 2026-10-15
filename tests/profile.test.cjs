@@ -55,7 +55,7 @@ test('family preview validates, isolates edits, restores focus and clears sample
     await page.locator('#family-demo-save').click();
     assert.match(await page.locator('#family-remaining').textContent(), /hết hạn mức/);
     assert.equal(await page.locator('#family-usage-progress').getAttribute('max'), '1');
-    assert.match(await page.locator('#family-feedback').textContent(), /Chưa áp dụng/);
+    assert.match(await page.locator('#family-feedback').textContent(), /Đã lưu cài đặt demo/);
     await page.locator('[data-family-child="1"]').click();
     assert.equal(await page.locator('#family-limit').inputValue(), '45');
     await page.locator('#family-limit').fill('90');
@@ -167,6 +167,8 @@ test('plans, demo activation and child creation work end to end without network 
     await page.locator('#family-create-form button[type="submit"]').click();
     assert.equal(await page.locator('#family-new-name').getAttribute('aria-invalid'), 'true');
     await page.locator('#family-new-name').fill('Gấu Nhỏ');
+    await page.locator('#family-new-password').fill('SamplePass123');
+    await page.locator('#family-confirm-password').fill('SamplePass123');
     await page.locator('#family-new-username').fill('bad name');
     await page.locator('#family-create-form button[type="submit"]').click();
     assert.equal(await page.locator('#family-new-username').getAttribute('aria-invalid'), 'true');
@@ -177,10 +179,12 @@ test('plans, demo activation and child creation work end to end without network 
     await page.locator('#family-new-limit').fill('30');
     await page.locator('#family-create-form button[type="submit"]').click();
     assert.equal(await page.locator('#family-created-username').textContent(), 'demo_gau');
-    assert.match(await page.locator('#family-created-password').textContent(), /^Demo-/);
+    assert.equal(await page.locator('#family-new-password').inputValue(), '');
     assert.match(await page.locator('#family-parent-summary-text').textContent(), /1 tài khoản con/);
     await page.locator('#family-create-another').click();
     await page.locator('#family-new-name').fill('Cá Nhỏ');
+    await page.locator('#family-new-password').fill('SamplePass456');
+    await page.locator('#family-confirm-password').fill('SamplePass456');
     await page.locator('#family-new-username').fill('demo_gau');
     await page.locator('#family-create-form button[type="submit"]').click();
     assert.match(await page.locator('#family-create-error').textContent(), /đã có/);
@@ -242,12 +246,121 @@ test('onboarding mobile, keyboard, cancel and activated empty state', async () =
     assert.equal(await page.locator('#family-create-form').isVisible(), true);
     assert.equal(await page.locator('#family-preview').evaluate(e => e.open), false);
     await page.locator('#family-new-name').fill('<img src=x onerror=alert(1)>');
+    await page.locator('#family-new-password').fill('SamplePass123');
+    await page.locator('#family-confirm-password').fill('SamplePass123');
     await page.locator('#family-create-form button[type="submit"]').click();
     assert.equal(await page.locator('#family-created-message img').count(), 0);
     await page.locator('#family-manage-created').click();
     await page.waitForFunction(() => document.getElementById('family-preview').open);
     assert.equal(await page.locator('#family-child-name img').count(), 0);
     assert.match(await page.locator('#family-child-name').textContent(), /<img/);
+    await page.close();
+});
+
+test('age ceilings and handwritten chart follow each child and saved settings', async () => {
+    const page = await browser.newPage({ viewport: { width: 1440, height: 1000 } });
+    await page.goto(url);
+    await page.locator('#family-preview-open').click();
+    assert.deepEqual(await page.locator('#family-age option').evaluateAll(options => options.map(o => o.value)), ['0', '12', '16', 'none']);
+    assert.deepEqual(await page.locator('#family-week-chart li').evaluateAll(items => items.map(e => e.getAttribute('aria-label'))), ['T2: 15 phút', 'T3: 35 phút', 'T4: 10 phút', 'T5: 45 phút', 'T6: 30 phút', 'T7: 20 phút', 'CN: 25 phút']);
+    await page.screenshot({ path: path.join(output, 'management-1440.png') });
+    for (const [value, ratings] of [['12', ['0+', '6+', '12+']], ['16', ['0+', '6+', '12+', '16+']], ['none', ['0+', '6+', '12+', '16+', '18+']], ['0', ['0+']]]) {
+        await page.locator('#family-age').selectOption(value);
+        await page.locator('#family-demo-save').click();
+        assert.deepEqual(await page.locator('#family-allowed-ratings span').allTextContents(), ratings);
+    }
+    await page.locator('#family-age').selectOption('none');
+    await page.locator('#family-demo-reset').click();
+    assert.equal(await page.locator('#family-age').inputValue(), '0');
+    await page.locator('[data-family-child="1"]').click();
+    assert.equal(await page.locator('#family-age').inputValue(), '12');
+    assert.equal(await page.locator('#family-week-chart li').last().getAttribute('aria-label'), 'CN: 40 phút');
+    await page.setViewportSize({ width: 390, height: 900 });
+    assert.equal(await page.locator('#family-preview').evaluate(e => e.scrollWidth <= e.clientWidth), true);
+    await page.screenshot({ path: path.join(output, 'management-390.png') });
+    await page.close();
+});
+
+test('password confirmation, compact active overview and zero history for new children', async () => {
+    const page = await browser.newPage({ viewport: { width: 1440, height: 1000 } });
+    const logs = [];
+    page.on('console', message => logs.push(message.text()));
+    await page.goto(url);
+    await page.locator('#family-guide-toggle').click();
+    await page.locator('#family-activate-open').click();
+    await page.locator('[data-family-plan="trial"]').click();
+    await page.locator('#family-demo-consent').check();
+    await page.locator('#family-activate-submit').click();
+    await page.locator('#family-new-name').fill('Mèo Mướp');
+    await page.locator('#family-new-age').selectOption('16');
+    await page.locator('#family-create-form button[type="submit"]').click();
+    assert.equal(await page.locator('#family-new-password').getAttribute('aria-invalid'), 'true');
+    await page.locator('#family-new-password').fill('short');
+    await page.locator('#family-create-form button[type="submit"]').click();
+    assert.match(await page.locator('#family-create-error').textContent(), /8 đến 64/);
+    await page.locator('#family-new-password').fill('DemoOnly-1234');
+    await page.locator('#family-confirm-password').fill('DoesNotMatch');
+    await page.locator('#family-create-form button[type="submit"]').click();
+    assert.equal(await page.locator('#family-confirm-password').getAttribute('aria-invalid'), 'true');
+    await page.locator('#family-password-toggle').click();
+    assert.equal(await page.locator('#family-new-password').getAttribute('type'), 'text');
+    assert.equal(await page.locator('#family-confirm-password').getAttribute('type'), 'text');
+    await page.locator('#family-password-toggle').click();
+    await page.locator('#family-confirm-password').fill('DemoOnly-1234');
+    await page.locator('#family-create-form button[type="submit"]').click();
+    assert.equal(await page.locator('#family-new-password').inputValue(), '');
+    assert.equal(await page.locator('#family-confirm-password').inputValue(), '');
+    assert.equal(await page.locator('#family-new-password').getAttribute('type'), 'password');
+    await page.locator('#family-onboarding-close').click();
+    await page.waitForFunction(() => document.activeElement === document.getElementById('family-preview-open'));
+    assert.equal(await page.locator('#family-preview-open').evaluate(e => e === document.activeElement), true);
+    assert.equal(await page.locator('#family-marketing').isVisible(), false);
+    assert.equal(await page.locator('#family-guide').isVisible(), false);
+    assert.equal(await page.locator('#family-guide-toggle').isVisible(), false);
+    assert.equal(await page.locator('#family-title').textContent(), 'Quản lý gia đình');
+    assert.match(await page.locator('[data-overview-child="0"]').textContent(), /Mèo Mướp.*≤16.*0\/60/);
+    await page.locator('#parent-section').screenshot({ path: path.join(output, 'active-family-1440.png') });
+    await page.locator('[data-overview-child="0"]').click();
+    assert.equal(await page.locator('#family-child-name').textContent(), 'Mèo Mướp');
+    assert.equal(await page.locator('#family-age').inputValue(), '16');
+    assert.ok((await page.locator('#family-week-chart li').evaluateAll(items => items.map(e => e.getAttribute('aria-label')))).every(text => text.endsWith(': 0 phút')));
+    await page.locator('#family-age').selectOption('12');
+    await page.locator('#family-limit').fill('45');
+    await page.locator('#family-demo-save').click();
+    await page.locator('#family-preview-close').click();
+    assert.match(await page.locator('[data-overview-child="0"]').textContent(), /≤12.*0\/45/);
+    for (const width of [320, 390, 640, 868, 869, 1440]) {
+        await page.setViewportSize({ width, height: 900 });
+        assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), true, `active page overflow ${width}`);
+        if (width === 390) await page.locator('#parent-section').screenshot({ path: path.join(output, 'active-family-390.png') });
+    }
+    await page.locator('#family-add-child').click();
+    await page.locator('#family-new-password').fill('Cancelled-1234');
+    await page.locator('#family-onboarding-close').click();
+    await page.locator('#family-add-child').click();
+    assert.equal(await page.locator('#family-new-password').inputValue(), '');
+    assert.equal(logs.some(text => /DemoOnly|Cancelled/.test(text)), false);
+    assert.deepEqual(await page.evaluate(() => [localStorage.length, sessionStorage.length]), [0, 0]);
+    await page.close();
+});
+
+test('runtime is self contained: no CDN, external libraries, fonts or network data calls', async () => {
+    const scripts = [...html.matchAll(/<script\b[^>]*>([\s\S]*?)<\/script>/gi)];
+    assert.equal(scripts.length, 2);
+    scripts.forEach(([, source]) => assert.doesNotThrow(() => new Function(source)));
+    assert.equal(/<script[^>]+src\s*=/i.test(html), false);
+    assert.equal(/<link\b/i.test(html), false);
+    assert.equal(/@import\b|@font-face\b/.test(html), false);
+    const css = html.match(/<style>([\s\S]*?)<\/style>/i)[1];
+    const cssUrls = [...css.matchAll(/url\(["']?([^)'"\s]+)/g)].map(match => match[1]);
+    assert.ok(cssUrls.every(url => url.startsWith('data:')));
+    assert.equal(/\b(fetch\s*\(|XMLHttpRequest|WebSocket|sendBeacon\s*\(|import\s*\()/.test(scripts.map(([, source]) => source).join('\n')), false);
+    const page = await browser.newPage();
+    const requests = [];
+    page.on('request', request => requests.push(request.url()));
+    await page.goto(url);
+    assert.deepEqual(await page.locator('[src]').evaluateAll(elements => elements.map(e => e.getAttribute('src')).filter(src => !src.startsWith('data:'))), []);
+    assert.deepEqual(requests, [url + '/']);
     await page.close();
 });
 

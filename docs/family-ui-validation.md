@@ -11,14 +11,17 @@ Chỉ có `index.html` và `trien-khai.md`; không có backend hoặc assets ngo
 - CSS mới giới hạn ở Family; giữ breakpoint cũ 640/869px và độ rộng trang 920px. Nút mới tối thiểu 44px, dialog cuộn có nút đóng luôn nhìn thấy.
 - Controller Family tách khỏi `getFormState`, save/reset và avatar hiện hữu. Đổi hồ sơ khi có thay đổi chưa cập nhật yêu cầu người dùng cập nhật hoặc hủy trước.
 - Thêm “Xem các gói”: dùng thử 1 tháng 0đ, 3 tháng, 6 tháng, 1 năm. Giá gói dài hạn để “Giá sẽ công bố”; không tự đặt giá hoặc tạo thanh toán.
-- Luồng kích hoạt cha mẹ demo, form tạo con (bí danh, username, mức tuổi, hạn mức), kết quả với thông tin đăng nhập minh họa, tạo thêm con và quản lý các hồ sơ đã tạo.
+- Luồng kích hoạt cha mẹ demo, form tạo con (bí danh, username, mật khẩu/xác nhận, mức tuổi, hạn mức), tạo thêm con và quản lý các hồ sơ đã tạo. Mật khẩu được kiểm tra rồi xóa, không lưu hoặc hiện lại ở kết quả.
+- Card đã kích hoạt ẩn giới thiệu/hướng dẫn, hiển thị danh sách con với mức tuổi và phút chơi/hạn mức; từng dòng mở đúng hồ sơ.
+- Bộ lọc bốn trần nhãn game: 0+, ≤12, ≤16, không giới hạn; badge hiển thị các nhãn thỏa điều kiện khi lưu.
+- Biểu đồ cột 7 ngày tự viết bằng HTML/CSS/JS, có giá trị số và nhãn đọc được. Dữ liệu mẫu được phân biệt với lịch sử 0 của hồ sơ mới.
 - Không có activation/API/PIN thật; không lưu mẫu vào localStorage/sessionStorage. Hai hồ sơ xem thử sẵn có reset khi đóng; các hồ sơ người dùng tạo trong demo giữ trong bộ nhớ đến khi reload. Mật khẩu minh họa không được lưu vào hồ sơ.
 - `tests/profile.test.cjs`, `package.json`: bộ kiểm thử trình duyệt có thể chạy lại.
 - `scripts/preview.cjs`, `README.md`, `.gitignore`: phục vụ preview và hướng dẫn phát triển.
 
 ## Đã kiểm thử
 
-Kiểm thử tự động trên Edge headless/Windows bằng Playwright: **6/6 nhóm pass** ở bản mở rộng chọn gói/kích hoạt/tạo con. Xem lịch sử commit/PR cho lần chạy cuối.
+Kiểm thử tự động trên Edge headless/Windows bằng Playwright: **9/9 nhóm pass** ở bản quản lý gọn, mật khẩu và trần nhãn game. Xem lịch sử commit/PR cho lần chạy cuối.
 
 - Mở/đóng hướng dẫn; dialog focus, Tab, Escape và trả focus.
 - Validation hạn mức rỗng, âm, vượt khoảng, số thập phân; hạn mức 0; cập nhật/hủy; bảo vệ thay đổi đang sửa khi chuyển hồ sơ; xóa mẫu khi đóng.
@@ -32,6 +35,10 @@ Kiểm thử tự động trên Edge headless/Windows bằng Playwright: **6/6 n
 - Giữ quy tắc khi đóng/mở lại hồ sơ tự tạo; đổi gói giữ các con; “Để sau” không tạo con; reload reset toàn bộ trạng thái demo.
 - Nội dung nhập dạng HTML được hiển thị như văn bản; không chèn thành DOM thực thi.
 - Dialog onboarding: 6 viewport từ 320–1440px, vòng Tab, Escape, trả focus và không tràn ngang.
+- Password: bắt buộc, quá ngắn, xác nhận không khớp, hiện/ẩn cả hai ô, xóa sau tạo/đóng; không xuất hiện trong console/storage.
+- Bốn trần tuổi trả đúng badge; hủy giữ cài đặt cũ; chọn con không làm lẫn dữ liệu/biểu đồ.
+- Quản lý đã kích hoạt: ẩn phần giới thiệu, mở đúng con từ danh sách, lưu cập nhật lại dòng tổng quan; hồi focus khi nút mở đã bị ẩn.
+- Kiểm kê script/link/CSS URL/ảnh và request thực tế: không tải CDN, font, thư viện hoặc tài nguyên ngoài; cả hai script inline qua kiểm tra cú pháp.
 
 ## Chưa kiểm thử / điều kiện production
 

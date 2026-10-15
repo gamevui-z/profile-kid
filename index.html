@@ -790,10 +790,9 @@
         #parent-section .card-title-group { min-width: 0; }
         .family-status { display: inline-flex; align-items: center; gap: 6px; padding: 5px 10px; border: 1px solid var(--border-strong); border-radius: 20px; font-size: .75rem; font-weight: 600; color: var(--text-muted); background: var(--bg-muted); white-space: nowrap; }
         .family-intro { max-width: 620px; font-size: .95rem; line-height: 1.65; color: var(--text-muted); }
-        .family-benefits { list-style: none; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; margin: 22px 0; }
-        .family-benefits li { min-width: 0; padding-left: 14px; border-left: 2px solid var(--primary-border); }
-        .family-benefits strong { display: block; font-size: .88rem; margin-bottom: 6px; }
-        .family-benefits p, .family-note { font-size: .81rem; line-height: 1.6; color: var(--text-muted); }
+        .family-benefits { list-style: none; display: flex; flex-wrap: wrap; gap: 8px; margin: 16px 0 20px; }
+        .family-benefits li { padding: 6px 10px; background: var(--bg-muted); border-radius: 8px; font-size: .8rem; color: var(--text-muted); }
+        .family-note { font-size: .81rem; line-height: 1.6; color: var(--text-muted); }
         .family-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; }
         #parent-section .btn, #family-preview .btn { min-height: 44px; white-space: normal; }
         #parent-section .btn-primary, #family-preview .btn-primary { background: var(--primary-ink); }
@@ -816,6 +815,7 @@
         .family-close { width: 44px; height: 44px; flex: 0 0 44px; border: 1px solid var(--border); border-radius: var(--radius-md); background: white; color: var(--text-main); font-size: 1.5rem; cursor: pointer; }
         .family-close:focus-visible, .family-child:focus-visible { outline: 2px solid var(--primary); outline-offset: 3px; }
         .family-dialog-body { padding: 0 24px 24px; }
+        .family-dialog-body > .family-notice { margin: 0 0 18px; padding: 10px 12px; }
         .family-preview-label { font-size: .72rem; font-weight: 700; letter-spacing: .06em; color: var(--primary-ink); text-transform: uppercase; }
         .family-dashboard { display: grid; grid-template-columns: 190px minmax(0, 1fr); gap: 24px; }
         .family-children { display: flex; flex-direction: column; gap: 8px; }
@@ -841,12 +841,36 @@
         #family-preview input:focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; }
         .family-error { min-height: 20px; margin-top: 8px; font-size: .82rem; color: #A20A32; }
         .family-feedback { min-height: 24px; margin-top: 12px; font-size: .82rem; line-height: 1.5; color: var(--text-muted); }
-        .family-sample-games { margin-top: 16px; padding-top: 16px; border-top: 1px solid var(--border); }
-        .family-sample-games summary { min-height: 44px; display: list-item; align-content: center; cursor: pointer; font-size: .85rem; font-weight: 600; }
-        .family-sample-games summary:focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; }
-        .family-sample-games ul { padding-left: 20px; color: var(--text-muted); font-size: .82rem; line-height: 1.8; }
+        .family-error:empty, .family-feedback:empty { display: none; }
+        .family-text-button { border: 0; background: none; color: var(--text-muted); text-decoration: underline; text-underline-offset: 3px; min-height: 44px; padding: 8px; cursor: pointer; }
+        .family-text-button:focus-visible, .family-overview-row:focus-visible, .family-password-toggle:focus-visible { outline: 2px solid var(--primary); outline-offset: 3px; }
+        .family-summary-heading { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; margin-bottom: 16px; }
+        .family-overview-list { display: grid; gap: 10px; }
+        .family-overview-row { display: grid; grid-template-columns: 36px minmax(0, 1fr) minmax(130px, 180px) 20px; align-items: center; gap: 12px; padding: 14px; width: 100%; border: 1px solid var(--border); border-radius: var(--radius-md); background: white; color: var(--text-main); text-align: left; cursor: pointer; }
+        .family-overview-row:hover { border-color: var(--primary-border); background: var(--bg-body); }
+        .family-overview-name { display: grid; gap: 5px; overflow-wrap: anywhere; min-width: 0; }
+        .family-overview-name small, .family-overview-time { font-size: .78rem; color: var(--text-muted); }
+        .family-overview-time { display: grid; gap: 8px; }
+        .family-mini-track { height: 5px; background: var(--border); border-radius: 6px; overflow: hidden; }
+        .family-mini-track span { display: block; height: 100%; background: var(--primary-ink); }
+        .family-chart { margin: 0 0 20px; border: 1px solid var(--border); border-radius: var(--radius-md); padding: 14px; }
+        .family-chart-heading { display: flex; justify-content: space-between; gap: 8px; font-size: .78rem; color: var(--text-muted); }
+        .family-chart-heading figcaption { font-weight: 600; color: var(--text-main); }
+        .family-week-chart { list-style: none; display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 8px; margin-top: 16px; }
+        .family-week-chart li { min-width: 0; text-align: center; font-size: .72rem; color: var(--text-muted); }
+        .family-chart-plot { height: 68px; display: flex; align-items: flex-end; justify-content: center; margin: 5px 0 8px; border-bottom: 1px solid var(--border); }
+        .family-chart-bar { width: min(24px, 100%); background: var(--primary-ink); border-radius: 4px 4px 0 0; }
+        .family-chart-caption { margin-top: 10px; font-size: .72rem; color: var(--text-muted); }
+        .family-age-preview { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; padding-top: 14px; border-top: 1px solid var(--border); font-size: .78rem; color: var(--text-muted); }
+        .family-rating-list { display: flex; flex-wrap: wrap; gap: 6px; }
+        .family-rating-list span { padding: 4px 8px; border-radius: 6px; background: var(--primary-light); color: var(--primary-ink); font-weight: 700; }
+        .family-password-field { position: relative; }
+        #family-onboarding .family-password-field input { padding-right: 65px; }
+        .family-password-toggle { position: absolute; right: 1px; top: 0; bottom: 0; padding: 0 12px; min-width: 54px; border: 0; border-radius: var(--radius-md); background: transparent; color: var(--primary-ink); font-weight: 600; cursor: pointer; }
         @media (max-width: 640px) {
-            .family-benefits { grid-template-columns: 1fr; gap: 16px; }
+            .family-overview-row { grid-template-columns: 32px minmax(0, 1fr) 16px; gap: 10px; }
+            .family-overview-time { grid-column: 2; grid-row: 2; }
+            .family-overview-arrow { grid-column: 3; grid-row: 1 / 3; }
             .family-actions .btn { width: 100%; }
             #family-preview { width: calc(100% - 24px); max-height: calc(100dvh - 24px); }
             .family-dialog-header { padding: 18px 18px 12px; }
@@ -883,8 +907,8 @@
         .family-confirm-box { margin: 20px 0; padding: 18px; border-radius: var(--radius-md); border: 1px solid var(--primary-border); background: var(--primary-light); line-height: 1.7; }
         .family-consent { display: flex; align-items: flex-start; gap: 10px; min-height: 44px; margin: 18px 0; cursor: pointer; font-weight: 400; line-height: 1.6; }
         .family-consent input { margin-top: 3px; width: 20px; height: 20px; flex-shrink: 0; accent-color: var(--primary-ink); }
-        .family-parent-summary { margin-top: 18px; padding: 18px; border: 1px solid var(--success-border); border-radius: var(--radius-md); background: var(--success-bg); }
-        .family-parent-summary p { margin: 6px 0 14px; font-size: .85rem; line-height: 1.6; }
+        .family-parent-summary { margin-top: 20px; padding-top: 18px; border-top: 1px solid var(--border); }
+        .family-parent-summary p { font-size: .85rem; line-height: 1.6; color: var(--text-muted); }
         #family-parent-status[data-active="true"] { color: var(--success); border-color: var(--success-border); background: var(--success-bg); }
         .family-created-credentials { display: grid; gap: 12px; margin: 18px 0; padding: 18px; background: var(--bg-muted); border-radius: var(--radius-md); }
         .family-created-credentials dt { color: var(--text-muted); font-size: .8rem; margin-bottom: 4px; }
@@ -1151,38 +1175,31 @@
                         </div>
                         <div>
                             <h2 id="family-title" class="card-title">Chế độ cha mẹ</h2>
-                            <p class="card-desc">Cùng con xây dựng thói quen chơi lành mạnh</p>
+                            <p class="card-desc">Thời gian chơi & nội dung phù hợp</p>
                         </div>
                     </div>
                     <span id="family-parent-status" class="family-status">Chưa kích hoạt · Demo</span>
                 </div>
-                <p class="family-intro">Một không gian riêng để cha mẹ đồng hành cùng con: quản lý tài khoản, lựa chọn nội dung phù hợp và cân bằng thời gian chơi trên GameVui.</p>
-                <ul class="family-benefits">
-                    <li><strong>Tài khoản riêng cho con</strong><p>Con có thông tin đăng nhập và tiến trình riêng, không cần dùng chung mật khẩu của cha mẹ.</p></li>
-                    <li><strong>Nội dung phù hợp</strong><p>Thiết lập mức tuổi và chọn những game cần chặn cho từng tài khoản con.</p></li>
-                    <li><strong>Thời gian cân bằng</strong><p>Đặt hạn mức mỗi ngày, theo dõi thời gian đã chơi và thời gian còn lại.</p></li>
-                </ul>
+                <div id="family-marketing">
+                    <p class="family-intro">Quản lý thời gian chơi và nội dung phù hợp cho từng con.</p>
+                    <ul class="family-benefits"><li>Tài khoản riêng</li><li>Giới hạn thời gian</li><li>Lọc game theo tuổi</li></ul>
+                </div>
                 <div class="family-actions">
                     <button type="button" id="family-plans-open" class="btn btn-primary" aria-haspopup="dialog" aria-controls="family-onboarding" hidden>Xem các gói</button>
-                    <button type="button" id="family-guide-toggle" class="btn btn-secondary" aria-expanded="false" aria-controls="family-guide" hidden>Tìm hiểu chế độ cha mẹ</button>
-                    <button type="button" id="family-preview-open" class="btn btn-secondary" aria-haspopup="dialog" aria-controls="family-preview" hidden>Xem thử khu vực quản lý</button>
+                    <button type="button" id="family-preview-open" class="btn btn-secondary" aria-haspopup="dialog" aria-controls="family-preview" hidden>Xem thử quản lý</button>
+                    <button type="button" id="family-guide-toggle" class="family-text-button" aria-expanded="false" aria-controls="family-guide" hidden>Cách hoạt động</button>
                 </div>
-                <p id="family-demo-note" class="family-note">Demo tương tác: chọn gói, kích hoạt cha mẹ và tạo tài khoản con mẫu. Không thu tiền; không tạo tài khoản thật. Dữ liệu demo mất khi tải lại trang.</p>
                 <div id="family-parent-summary" class="family-parent-summary" hidden>
-                    <strong>Đã kích hoạt tài khoản cha mẹ · Demo</strong>
-                    <p id="family-parent-summary-text"></p>
-                    <div class="family-actions"><button type="button" id="family-add-child" class="btn btn-primary" aria-haspopup="dialog" aria-controls="family-onboarding">Tạo tài khoản con</button></div>
+                    <div class="family-summary-heading"><p id="family-parent-summary-text"></p><button type="button" id="family-add-child" class="btn btn-primary" aria-haspopup="dialog" aria-controls="family-onboarding">+ Thêm con</button></div>
+                    <p id="family-empty" class="family-note">Chưa có tài khoản con. Thêm con để bắt đầu quản lý.</p>
+                    <div id="family-overview-list" class="family-overview-list" aria-label="Tổng quan tài khoản con"></div>
                 </div>
                 <div id="family-guide" class="family-guide">
-                    <h3>Bắt đầu với ba bước</h3>
-                    <ol class="family-steps">
-                        <li><div><strong>Xác minh quyền quản lý</strong><p>Dùng tài khoản hiện có, xem thông tin về quyền riêng tư và hoàn thành bước xác minh được yêu cầu.</p></div></li>
-                        <li><div><strong>Tạo tài khoản riêng cho con</strong><p>Thiết lập PIN quản lý, chọn bí danh và thông tin đăng nhập riêng cho con.</p></div></li>
-                        <li><div><strong>Thiết lập quy tắc phù hợp</strong><p>Chọn mức tuổi, hạn mức mỗi ngày và game bị chặn. Kiểm tra xác nhận trước khi cho con sử dụng.</p></div></li>
-                    </ol>
-                    <p id="family-activation-note" class="family-notice"><strong>Trải nghiệm quy trình bằng demo.</strong> Bước xác minh và kích hoạt được mô phỏng. Không nhập thông tin cá nhân, PIN hoặc mật khẩu thật.</p>
-                    <button type="button" id="family-activate-open" class="btn btn-primary" aria-haspopup="dialog" aria-controls="family-onboarding" hidden>Kích hoạt cha mẹ · Demo</button>
+                    <h3>Ba bước bắt đầu</h3>
+                    <ol class="family-steps"><li><div>Chọn gói và kích hoạt cha mẹ.</div></li><li><div>Tạo tài khoản riêng cho con.</div></li><li><div>Đặt thời gian và mức tuổi game.</div></li></ol>
+                    <button type="button" id="family-activate-open" class="btn btn-primary" aria-haspopup="dialog" aria-controls="family-onboarding" hidden>Bắt đầu demo</button>
                 </div>
+                <p id="family-demo-note" class="family-note">Demo · Không thu tiền. Dữ liệu mất khi tải lại trang.</p>
             </section>
 
             <div class="card">
@@ -1274,38 +1291,43 @@
 
     <dialog id="family-preview" aria-labelledby="family-preview-title" aria-describedby="family-preview-description">
         <div class="family-dialog-header">
-            <div><span class="family-preview-label">GameVui Family · Bản xem thử</span><h2 id="family-preview-title">Không gian của gia đình</h2></div>
+            <div><span class="family-preview-label">GameVui Family · Bản xem thử</span><h2 id="family-preview-title">Quản lý tài khoản con</h2></div>
             <button type="button" id="family-preview-close" class="family-close" aria-label="Đóng bản xem thử" autofocus>×</button>
         </div>
         <div class="family-dialog-body">
             <p id="family-preview-description" class="family-notice">Đây là <strong>dữ liệu mẫu</strong>. Bạn có thể thử thay đổi quy tắc; các thay đổi chỉ tồn tại trong bản xem thử, không được gửi đi và sẽ mất khi đóng.</p>
             <div class="family-dashboard">
                 <div class="family-children" role="group" aria-labelledby="family-children-title">
-                    <h3 id="family-children-title">Tài khoản con · Dữ liệu mẫu</h3>
+                    <h3 id="family-children-title">Tài khoản con</h3>
                     <button type="button" class="family-child" data-family-child="0" aria-pressed="true" aria-controls="family-detail"><span class="family-child-avatar" aria-hidden="true">M</span><span><strong>Mây Nhỏ</strong><small>Hồ sơ mẫu 01</small></span></button>
                     <button type="button" class="family-child" data-family-child="1" aria-pressed="false" aria-controls="family-detail"><span class="family-child-avatar" aria-hidden="true">N</span><span><strong>Nắng Vàng</strong><small>Hồ sơ mẫu 02</small></span></button>
                 </div>
                 <section id="family-detail" class="family-detail" aria-labelledby="family-child-name">
                     <h3 id="family-child-name">Mây Nhỏ</h3>
-                    <p class="family-note" style="margin-top: 0">Tổng quan hôm nay · Số liệu minh họa</p>
+                    <p class="family-note" style="margin-top: 0"><span id="family-current-policy">Chỉ game 0+</span> · Hôm nay</p>
                     <div class="family-usage">
                         <div class="family-usage-row"><span>Thời gian đã chơi</span><strong id="family-usage-text">25 / 60 phút</strong></div>
                         <progress id="family-usage-progress" value="25" max="60" aria-label="Thời gian chơi minh họa"></progress>
                         <p id="family-remaining" class="family-note" style="margin-top: 0">Còn 35 phút trong ví dụ này</p>
                     </div>
+                    <figure class="family-chart" aria-labelledby="family-chart-title">
+                        <div class="family-chart-heading"><figcaption id="family-chart-title">Thời gian chơi · 7 ngày mẫu</figcaption><span>Phút</span></div>
+                        <ol id="family-week-chart" class="family-week-chart" aria-label="Số phút chơi từng ngày"></ol>
+                        <p id="family-chart-caption" class="family-chart-caption">Dữ liệu minh họa · T2–CN</p>
+                    </figure>
                     <form id="family-demo-form" novalidate>
                         <fieldset>
-                            <legend>Thử điều chỉnh quy tắc</legend>
+                            <legend>Cài đặt cho con</legend>
                             <div class="family-fields">
-                                <div class="form-group"><label for="family-age">Mức tuổi nội dung</label><select id="family-age" name="demoAge"><option value="all">Mọi lứa tuổi</option><option value="6">Từ 6 tuổi</option><option value="12">Từ 12 tuổi</option></select></div>
-                                <div class="form-group"><label for="family-limit">Hạn mức mỗi ngày (phút)</label><input id="family-limit" name="demoLimit" type="number" min="0" max="180" step="1" value="60" inputmode="numeric" aria-describedby="family-limit-hint family-limit-error"><span id="family-limit-hint" class="field-hint">0–180 phút chỉ là khoảng minh họa.</span></div>
+                                <div class="form-group"><label for="family-age">Game được hiển thị</label><select id="family-age" name="demoAge"><option value="0">Chỉ game 0+</option><option value="12">Game ≤12 tuổi</option><option value="16">Game ≤16 tuổi</option><option value="none">Không giới hạn</option></select></div>
+                                <div class="form-group"><label for="family-limit">Hạn mức mỗi ngày (phút)</label><input id="family-limit" name="demoLimit" type="number" min="0" max="180" step="1" value="60" inputmode="numeric" aria-describedby="family-limit-hint family-limit-error"><span id="family-limit-hint" class="field-hint">0–180 phút/ngày trong demo.</span></div>
                             </div>
                             <p id="family-limit-error" class="family-error" aria-live="polite"></p>
                         </fieldset>
-                        <div class="family-actions"><button type="submit" id="family-demo-save" class="btn btn-primary" disabled>Cập nhật bản xem thử</button><button type="button" id="family-demo-reset" class="btn btn-secondary" disabled>Hủy thay đổi</button></div>
-                        <p id="family-feedback" class="family-feedback" role="status" aria-live="polite">Chọn một hồ sơ mẫu để khám phá cách quản lý.</p>
+                        <div class="family-actions"><button type="submit" id="family-demo-save" class="btn btn-primary" disabled>Lưu cài đặt</button><button type="button" id="family-demo-reset" class="btn btn-secondary" disabled>Hủy thay đổi</button></div>
+                        <p id="family-feedback" class="family-feedback" role="status" aria-live="polite"></p>
                     </form>
-                    <details class="family-sample-games"><summary>Nội dung & quyền riêng tư</summary><ul><li>Game chưa được phân loại cần có chính sách xử lý rõ ràng.</li><li>Hạn mức thực tế phụ thuộc cấu hình được phê duyệt.</li><li>Tài khoản con đăng nhập riêng; đổi hồ sơ mẫu ở đây không phải chuyển tài khoản.</li></ul></details>
+                    <div class="family-age-preview"><span>Nhãn game được hiển thị</span><div id="family-allowed-ratings" class="family-rating-list" aria-live="polite"></div></div>
                 </section>
             </div>
         </div>
@@ -1317,40 +1339,42 @@
             <button type="button" id="family-onboarding-close" class="family-close" aria-label="Đóng thiết lập demo">×</button>
         </div>
         <div class="family-dialog-body">
-            <p id="family-onboarding-note" class="family-notice">Trải nghiệm mô phỏng, không thu tiền hoặc tạo tài khoản thật. Chỉ dùng bí danh và dữ liệu mẫu. Dữ liệu giữ đến khi tải lại trang.</p>
+            <p id="family-onboarding-note" class="family-notice">Demo · Không thu tiền hoặc tạo tài khoản thật. Chỉ dùng thông tin mẫu.</p>
             <ol class="family-flow-steps" aria-label="Các bước thiết lập"><li data-flow-step="plans" aria-current="step">1. Chọn gói</li><li data-flow-step="activate">2. Kích hoạt cha mẹ</li><li data-flow-step="child">3. Tạo tài khoản con</li></ol>
             <section data-flow-panel="plans" aria-labelledby="family-plans-title">
                 <h3 id="family-plans-title" class="family-flow-title" tabindex="-1">Chọn thời gian đồng hành</h3>
-                <p class="family-intro">Bắt đầu bằng một tháng dùng thử miễn phí, hoặc khám phá các lựa chọn dài hạn.</p>
+                <p class="family-intro">Dùng thử 1 tháng miễn phí, sau đó chọn thời hạn phù hợp.</p>
                 <div class="family-plans">
                     <article class="family-plan"><h4>Dùng thử 1 tháng</h4><div class="family-plan-price">0đ</div><p>Trải nghiệm luồng quản lý gia đình.<br>Không yêu cầu thẻ.</p><button type="button" class="btn btn-primary" data-family-plan="trial">Dùng thử 0đ</button></article>
                     <article class="family-plan"><h4>Gói 3 tháng</h4><div class="family-plan-price">Giá sẽ công bố</div><p>Lựa chọn đồng hành trong 3 tháng.</p><button type="button" class="btn btn-secondary" data-family-plan="quarter">Chọn 3 tháng</button></article>
                     <article class="family-plan"><h4>Gói 6 tháng</h4><div class="family-plan-price">Giá sẽ công bố</div><p>Lựa chọn đồng hành trong 6 tháng.</p><button type="button" class="btn btn-secondary" data-family-plan="halfyear">Chọn 6 tháng</button></article>
                     <article class="family-plan"><h4>Gói 1 năm</h4><div class="family-plan-price">Giá sẽ công bố</div><p>Lựa chọn đồng hành trong 12 tháng.</p><button type="button" class="btn btn-secondary" data-family-plan="year">Chọn 1 năm</button></article>
                 </div>
-                <p class="family-note">Các gói chỉ minh họa lựa chọn thời hạn. Chưa có thanh toán, tự động gia hạn hoặc cam kết giá. Các chức năng bảo vệ cơ bản không bị khóa theo gói trong demo.</p>
+                <p class="family-note">Demo không thanh toán hoặc tự động gia hạn.</p>
             </section>
             <section data-flow-panel="activate" aria-labelledby="family-activate-title" hidden>
                 <h3 id="family-activate-title" class="family-flow-title" tabindex="-1">Kích hoạt tài khoản cha mẹ</h3>
-                <p class="family-intro">Sử dụng hồ sơ hiện tại để mở không gian quản lý gia đình trong bản demo.</p>
-                <div class="family-confirm-box"><strong id="family-selected-plan"></strong><p id="family-selected-price"></p><p class="family-note">Không thu tiền. Chưa đăng ký thuê bao hoặc xác minh quyền giám hộ thực tế.</p></div>
+                <p class="family-intro">Mở khu vực quản lý từ hồ sơ hiện tại.</p>
+                <div class="family-confirm-box"><strong id="family-selected-plan"></strong><p id="family-selected-price"></p></div>
                 <form id="family-activate-form" novalidate>
-                    <label class="family-consent" for="family-demo-consent"><input type="checkbox" id="family-demo-consent" required aria-describedby="family-activate-error"><span>Tôi hiểu đây là bản demo và sẽ chỉ sử dụng thông tin mẫu để trải nghiệm.</span></label>
+                    <label class="family-consent" for="family-demo-consent"><input type="checkbox" id="family-demo-consent" required aria-describedby="family-activate-error"><span>Tôi đồng ý trải nghiệm bằng dữ liệu mẫu.</span></label>
                     <p id="family-activate-error" class="family-error" role="alert"></p>
                     <div class="family-actions"><button type="button" id="family-plan-back" class="btn btn-secondary">Chọn lại gói</button><button type="submit" id="family-activate-submit" class="btn btn-primary">Kích hoạt cha mẹ · Demo</button></div>
                 </form>
             </section>
             <section data-flow-panel="child" aria-labelledby="family-create-title" hidden>
                 <h3 id="family-create-title" class="family-flow-title" tabindex="-1">Tạo tài khoản con đầu tiên</h3>
-                <p id="family-create-intro" class="family-notice">Tài khoản cha mẹ đã được kích hoạt trong demo. Hãy tạo một hồ sơ mẫu để trải nghiệm quản lý.</p>
+                <p id="family-create-intro" class="family-notice">Đặt thông tin đăng nhập và quy tắc cho con.</p>
                 <form id="family-create-form" novalidate autocomplete="off">
                     <div class="family-fields">
-                        <div class="form-group"><label for="family-new-name">Bí danh của con</label><input id="family-new-name" type="text" maxlength="30" required placeholder="Ví dụ: Gấu Nhỏ" aria-describedby="family-name-hint family-create-error"><span id="family-name-hint" class="field-hint">2–30 ký tự. Dùng tên mẫu, không dùng họ tên thật.</span></div>
+                        <div class="form-group"><label for="family-new-name">Bí danh của con</label><input id="family-new-name" type="text" maxlength="30" required placeholder="Ví dụ: Gấu Nhỏ" aria-describedby="family-name-hint family-create-error"><span id="family-name-hint" class="field-hint">2–30 ký tự, dùng bí danh mẫu.</span></div>
                         <div class="form-group"><label for="family-new-username">Tên đăng nhập demo</label><input id="family-new-username" type="text" maxlength="24" required spellcheck="false" autocapitalize="none" aria-describedby="family-username-hint family-create-error"><span id="family-username-hint" class="field-hint">4–24 ký tự: chữ không dấu, số hoặc dấu gạch dưới.</span></div>
-                        <div class="form-group"><label for="family-new-age">Mức tuổi nội dung mẫu</label><select id="family-new-age"><option value="all">Mọi lứa tuổi</option><option value="6">Từ 6 tuổi</option><option value="12">Từ 12 tuổi</option></select></div>
-                        <div class="form-group"><label for="family-new-limit">Hạn mức mỗi ngày (phút)</label><input id="family-new-limit" type="number" min="0" max="180" step="1" inputmode="numeric" value="60" required aria-describedby="family-new-limit-hint family-create-error"><span id="family-new-limit-hint" class="field-hint">0–180 phút chỉ là khoảng minh họa.</span></div>
+                        <div class="form-group"><label for="family-new-password">Mật khẩu</label><div class="family-password-field"><input id="family-new-password" type="password" minlength="8" maxlength="64" autocomplete="new-password" required aria-describedby="family-password-hint family-create-error"><button type="button" id="family-password-toggle" class="family-password-toggle" aria-label="Hiện mật khẩu" aria-pressed="false" aria-controls="family-new-password family-confirm-password">Hiện</button></div><span id="family-password-hint" class="field-hint">8–64 ký tự. Dùng mật khẩu mẫu.</span></div>
+                        <div class="form-group"><label for="family-confirm-password">Nhập lại mật khẩu</label><input id="family-confirm-password" type="password" minlength="8" maxlength="64" autocomplete="new-password" required aria-describedby="family-create-error"></div>
+                        <div class="form-group"><label for="family-new-age">Game được hiển thị</label><select id="family-new-age"><option value="0">Chỉ game 0+</option><option value="12">Game ≤12 tuổi</option><option value="16">Game ≤16 tuổi</option><option value="none">Không giới hạn</option></select></div>
+                        <div class="form-group"><label for="family-new-limit">Hạn mức mỗi ngày (phút)</label><input id="family-new-limit" type="number" min="0" max="180" step="1" inputmode="numeric" value="60" required aria-describedby="family-new-limit-hint family-create-error"><span id="family-new-limit-hint" class="field-hint">0–180 phút/ngày trong demo.</span></div>
                     </div>
-                    <p class="family-note">Thông tin đăng nhập mẫu được tạo tự động sau bước này. Không cần nhập mật khẩu thật.</p>
+                    
                     <p id="family-create-error" class="family-error" role="alert"></p>
                     <div class="family-actions"><button type="button" id="family-create-later" class="btn btn-secondary">Để sau</button><button type="submit" class="btn btn-primary">Tạo tài khoản con · Demo</button></div>
                 </form>
@@ -1358,8 +1382,8 @@
             <section data-flow-panel="success" aria-labelledby="family-created-title" hidden>
                 <h3 id="family-created-title" class="family-flow-title" tabindex="-1">Đã tạo tài khoản con · Demo</h3>
                 <p id="family-created-message" class="family-intro"></p>
-                <dl class="family-created-credentials"><div><dt>Tên đăng nhập mẫu</dt><dd><code id="family-created-username"></code></dd></div><div><dt>Mật khẩu mẫu (không dùng đăng nhập thật)</dt><dd><code id="family-created-password"></code></dd></div></dl>
-                <p class="family-note">Hồ sơ chỉ có trong phiên demo này. Tải lại trang sẽ đưa mọi thứ về ban đầu.</p>
+                <dl class="family-created-credentials"><div><dt>Tên đăng nhập mẫu</dt><dd><code id="family-created-username"></code></dd></div></dl>
+                <p class="family-note">Mật khẩu đã được kiểm tra, không lưu trong demo. Hồ sơ mất khi tải lại trang.</p>
                 <div class="family-actions" style="margin-top: 20px"><button type="button" id="family-create-another" class="btn btn-secondary">Tạo thêm tài khoản con</button><button type="button" id="family-manage-created" class="btn btn-primary">Quản lý tài khoản con</button></div>
             </section>
         </div>
@@ -1617,7 +1641,7 @@
         });
     </script>
     <script>
-        // Isolated preview controller. No credentials, persistence or production API calls.
+        // Handwritten Family demo: in-memory profiles, no production API or storage.
         document.addEventListener('DOMContentLoaded', () => {
             const root = document.getElementById('parent-section');
             const guideToggle = root.querySelector('#family-guide-toggle');
@@ -1634,12 +1658,15 @@
             const feedback = dialog.querySelector('#family-feedback');
             const error = dialog.querySelector('#family-limit-error');
             const sampleChildren = [
-                { name: 'Mây Nhỏ', age: 'all', limit: 60, used: 25 },
-                { name: 'Nắng Vàng', age: '6', limit: 45, used: 40 }
+                { name: 'Mây Nhỏ', age: '0', limit: 60, used: 25, week: [15, 35, 10, 45, 30, 20, 25] },
+                { name: 'Nắng Vàng', age: '12', limit: 45, used: 40, week: [20, 30, 25, 40, 15, 35, 40] }
             ];
+            const ageLabels = { '0': 'Chỉ game 0+', '12': 'Game ≤12 tuổi', '16': 'Game ≤16 tuổi', none: 'Không giới hạn' };
+            const gameRatings = [0, 6, 12, 16, 18];
             let children = [];
             let selected = 0;
             let previousOverflow = '';
+            let managerTrigger = openButton;
             let parentActivated = false;
             let activePlan = null;
             const createdChildren = [];
@@ -1650,7 +1677,7 @@
                 const expanded = guideToggle.getAttribute('aria-expanded') !== 'true';
                 guideToggle.setAttribute('aria-expanded', String(expanded));
                 guide.hidden = !expanded;
-                guideToggle.textContent = expanded ? 'Thu gọn hướng dẫn' : 'Tìm hiểu chế độ cha mẹ';
+                guideToggle.textContent = expanded ? 'Thu gọn' : 'Cách hoạt động';
             });
 
             // Keep the readable guide available in browsers without native dialog support.
@@ -1691,12 +1718,13 @@
                     const name = document.createElement('strong');
                     name.textContent = entry.name;
                     const caption = document.createElement('small');
-                    caption.textContent = parentActivated ? 'Tài khoản demo' : 'Hồ sơ mẫu 0' + (index + 1);
+                    caption.textContent = entry.used + '/' + entry.limit + ' phút · ' + ageLabels[entry.age];
                     text.append(name, caption);
                     button.append(avatar, text);
                     childList.append(button);
                 });
                 dialog.querySelector('#family-child-name').textContent = child.name;
+                dialog.querySelector('#family-current-policy').textContent = ageLabels[child.age];
                 age.value = child.age;
                 limit.value = child.limit;
                 dialog.querySelector('#family-usage-text').textContent = child.used + ' / ' + child.limit + ' phút';
@@ -1706,29 +1734,66 @@
                 progress.setAttribute('aria-label', child.name + ': đã chơi ' + child.used + ' phút, hạn mức mẫu ' + child.limit + ' phút');
                 const remaining = Math.max(0, child.limit - child.used);
                 dialog.querySelector('#family-remaining').textContent = remaining > 0
-                    ? 'Còn ' + remaining + ' phút trong ví dụ này'
-                    : 'Đã hết hạn mức trong ví dụ này';
+                    ? 'Còn ' + remaining + ' phút hôm nay'
+                    : 'Đã hết hạn mức hôm nay';
+                renderChart(child);
+                const ratings = dialog.querySelector('#family-allowed-ratings');
+                ratings.replaceChildren();
+                gameRatings.filter(rating => child.age === 'none' || rating <= Number(child.age)).forEach(rating => {
+                    const badge = document.createElement('span');
+                    badge.textContent = rating + '+';
+                    ratings.append(badge);
+                });
                 clearError();
                 updateButtons();
             }
 
-            openButton.addEventListener('click', () => {
+            function renderChart(child) {
+                const chart = dialog.querySelector('#family-week-chart');
+                const days = ['T2', 'T3', 'T4', 'T5', 'T6', 'T7', 'CN'];
+                const values = child.week;
+                const scale = Math.max(1, ...values);
+                chart.replaceChildren();
+                values.forEach((minutes, index) => {
+                    const item = document.createElement('li');
+                    item.setAttribute('aria-label', days[index] + ': ' + minutes + ' phút');
+                    const value = document.createElement('span');
+                    value.textContent = minutes;
+                    const plot = document.createElement('div');
+                    plot.className = 'family-chart-plot';
+                    plot.setAttribute('aria-hidden', 'true');
+                    const bar = document.createElement('span');
+                    bar.className = 'family-chart-bar';
+                    bar.style.height = (minutes / scale * 100) + '%';
+                    plot.append(bar);
+                    const label = document.createElement('span');
+                    label.textContent = days[index];
+                    item.append(value, plot, label);
+                    chart.append(item);
+                });
+                dialog.querySelector('#family-chart-caption').textContent = parentActivated
+                    ? 'Hồ sơ mới · Chưa có lượt chơi trong demo.'
+                    : 'Dữ liệu mẫu · T2–CN, không phải lịch sử chơi thật.';
+            }
+
+            function openManager(index, trigger = openButton) {
                 if (parentActivated && createdChildren.length === 0) {
                     openOnboarding('child', openButton);
                     return;
                 }
+                managerTrigger = trigger;
                 children = parentActivated ? createdChildren : sampleChildren.map(child => ({ ...child }));
-                selected = parentActivated ? children.length - 1 : 0;
+                selected = index ?? (parentActivated ? children.length - 1 : 0);
                 renderChild();
-                feedback.textContent = 'Đang xem hồ sơ mẫu ' + children[selected].name + '. Các thay đổi không ảnh hưởng tài khoản thật.';
+                feedback.textContent = '';
                 dialog.querySelector('#family-preview-description').textContent = parentActivated
-                    ? 'Đây là dữ liệu demo do bạn vừa tạo. Thay đổi được giữ khi đóng cửa sổ và mất khi tải lại trang. Chưa có tài khoản hay quy tắc bảo vệ thật.'
-                    : 'Đây là dữ liệu mẫu. Các thay đổi chỉ tồn tại trong bản xem thử, không được gửi đi và sẽ mất khi đóng.';
-                dialog.querySelector('details').open = false;
+                    ? 'Demo · Cài đặt giữ đến khi tải lại trang.'
+                    : 'Dữ liệu mẫu · Cài đặt đặt lại khi đóng.';
                 previousOverflow = document.body.style.overflow;
                 dialog.showModal();
                 document.body.style.overflow = 'hidden';
-            });
+            }
+            openButton.addEventListener('click', () => openManager());
 
             closeButton.addEventListener('click', () => dialog.close());
             dialog.addEventListener('keydown', event => {
@@ -1750,7 +1815,7 @@
                 form.reset();
                 clearError();
                 document.body.style.overflow = previousOverflow;
-                openButton.focus();
+                (managerTrigger.isConnected ? managerTrigger : openButton).focus();
             });
 
             childList.addEventListener('click', event => {
@@ -1760,13 +1825,13 @@
                 if (index === selected) return;
                 // Keep uncommitted edits until the user explicitly saves or cancels.
                 if (hasChanges()) {
-                    feedback.textContent = 'Hãy cập nhật bản xem thử hoặc hủy thay đổi trước khi chọn hồ sơ khác.';
+                    feedback.textContent = 'Lưu hoặc hủy thay đổi trước khi chọn con khác.';
                     save.focus();
                     return;
                 }
                 selected = index;
                 renderChild();
-                feedback.textContent = 'Đang xem hồ sơ mẫu ' + children[selected].name + '.';
+                feedback.textContent = 'Đang quản lý ' + children[selected].name + '.';
                 childList.querySelector('[data-family-child="' + selected + '"]').focus();
             });
 
@@ -1785,11 +1850,12 @@
                 children[selected].age = age.value;
                 children[selected].limit = minutes;
                 renderChild();
-                feedback.textContent = 'Đã cập nhật bản xem thử cho ' + children[selected].name + '. Chưa áp dụng quy tắc cho tài khoản thật.';
+                if (parentActivated) updateParentSummary();
+                feedback.textContent = 'Đã lưu cài đặt demo.';
             });
             reset.addEventListener('click', () => {
                 renderChild();
-                feedback.textContent = 'Đã hủy thay đổi chưa cập nhật của hồ sơ mẫu.';
+                feedback.textContent = 'Đã hủy thay đổi.';
             });
 
             // Demo onboarding stays in memory. It never verifies identity or charges money.
@@ -1803,6 +1869,9 @@
             const nameInput = onboarding.querySelector('#family-new-name');
             const usernameInput = onboarding.querySelector('#family-new-username');
             const newLimit = onboarding.querySelector('#family-new-limit');
+            const password = onboarding.querySelector('#family-new-password');
+            const confirmPassword = onboarding.querySelector('#family-confirm-password');
+            const passwordToggle = onboarding.querySelector('#family-password-toggle');
             const createError = onboarding.querySelector('#family-create-error');
             const plans = {
                 trial: { name: 'Dùng thử 1 tháng', price: '0đ · Không yêu cầu thẻ' },
@@ -1817,12 +1886,58 @@
             plansOpen.hidden = activateOpen.hidden = false;
 
             function updateParentSummary() {
+                root.querySelector('#family-title').textContent = 'Quản lý gia đình';
                 root.querySelector('#family-parent-status').textContent = 'Đã kích hoạt · Demo';
                 root.querySelector('#family-parent-status').dataset.active = 'true';
                 root.querySelector('#family-parent-summary').hidden = false;
-                root.querySelector('#family-parent-summary-text').textContent = plans[activePlan].name + ' · ' + createdChildren.length + ' tài khoản con demo. Không có thuê bao hoặc thanh toán thật.';
-                openButton.textContent = createdChildren.length ? 'Quản lý tài khoản con · Demo' : 'Tạo tài khoản con đầu tiên';
-                activateOpen.textContent = 'Xem gói đang chọn · Demo';
+                root.querySelector('#family-marketing').hidden = true;
+                guide.hidden = guideToggle.hidden = true;
+                guideToggle.setAttribute('aria-expanded', 'false');
+                plansOpen.className = 'btn btn-secondary';
+                plansOpen.textContent = 'Xem gói';
+                openButton.className = 'btn btn-primary';
+                openButton.textContent = createdChildren.length ? 'Quản lý các con' : 'Tạo tài khoản con đầu tiên';
+                root.querySelector('#family-parent-summary-text').textContent = plans[activePlan].name + ' · ' + createdChildren.length + ' tài khoản con';
+                root.querySelector('#family-empty').hidden = createdChildren.length > 0;
+                const overview = root.querySelector('#family-overview-list');
+                overview.replaceChildren();
+                createdChildren.forEach((child, index) => {
+                    const row = document.createElement('button');
+                    row.type = 'button';
+                    row.className = 'family-overview-row';
+                    row.dataset.overviewChild = index;
+                    row.setAttribute('aria-haspopup', 'dialog');
+                    row.setAttribute('aria-controls', 'family-preview');
+                    const avatar = document.createElement('span');
+                    avatar.className = 'family-child-avatar';
+                    avatar.setAttribute('aria-hidden', 'true');
+                    avatar.textContent = Array.from(child.name)[0];
+                    const info = document.createElement('span');
+                    info.className = 'family-overview-name';
+                    const name = document.createElement('strong');
+                    name.textContent = child.name;
+                    const policy = document.createElement('small');
+                    policy.textContent = ageLabels[child.age];
+                    info.append(name, policy);
+                    const time = document.createElement('span');
+                    time.className = 'family-overview-time';
+                    const timeText = document.createElement('span');
+                    timeText.textContent = child.used + '/' + child.limit + ' phút hôm nay';
+                    const track = document.createElement('span');
+                    track.className = 'family-mini-track';
+                    track.setAttribute('aria-hidden', 'true');
+                    const fill = document.createElement('span');
+                    fill.style.width = Math.min(100, child.used / Math.max(1, child.limit) * 100) + '%';
+                    track.append(fill);
+                    time.append(timeText, track);
+                    const arrow = document.createElement('span');
+                    arrow.className = 'family-overview-arrow';
+                    arrow.textContent = '›';
+                    arrow.setAttribute('aria-hidden', 'true');
+                    row.append(avatar, info, time, arrow);
+                    row.addEventListener('click', () => openManager(index, row));
+                    overview.append(row);
+                });
             }
 
             function clearCreateError() {
@@ -1832,6 +1947,7 @@
 
             function prepareChildForm() {
                 createForm.reset();
+                resetPasswordVisibility();
                 clearCreateError();
                 let sequence = createdChildren.length + 1;
                 while (createdChildren.some(child => child.username === 'demo_con_' + sequence)) sequence++;
@@ -1897,6 +2013,19 @@
                 showStep('child');
             });
             createForm.addEventListener('input', clearCreateError);
+            function resetPasswordVisibility() {
+                password.type = confirmPassword.type = 'password';
+                passwordToggle.textContent = 'Hiện';
+                passwordToggle.setAttribute('aria-label', 'Hiện mật khẩu');
+                passwordToggle.setAttribute('aria-pressed', 'false');
+            }
+            passwordToggle.addEventListener('click', () => {
+                const show = password.type === 'password';
+                password.type = confirmPassword.type = show ? 'text' : 'password';
+                passwordToggle.textContent = show ? 'Ẩn' : 'Hiện';
+                passwordToggle.setAttribute('aria-label', show ? 'Ẩn mật khẩu' : 'Hiện mật khẩu');
+                passwordToggle.setAttribute('aria-pressed', String(show));
+            });
             createForm.addEventListener('submit', event => {
                 event.preventDefault();
                 if (!parentActivated || onboarding.querySelector('[data-flow-panel="child"]').hidden) return;
@@ -1913,22 +2042,25 @@
                 if (!/^[a-z0-9_]{4,24}$/.test(username)) return reject(usernameInput, 'Tên đăng nhập cần 4–24 ký tự gồm chữ không dấu, số hoặc dấu gạch dưới.');
                 if (createdChildren.some(child => child.username === username)) return reject(usernameInput, 'Tên đăng nhập này đã có trong phiên demo. Hãy chọn tên khác.');
                 if (!newLimit.value.trim() || !Number.isInteger(minutes) || minutes < 0 || minutes > 180 || !newLimit.validity.valid) return reject(newLimit, 'Hạn mức minh họa phải là số nguyên từ 0 đến 180 phút.');
-                createdChildren.push({ name, username, age: onboarding.querySelector('#family-new-age').value, limit: minutes, used: 0 });
+                if (password.value.length < 8 || password.value.length > 64 || !password.value.trim()) return reject(password, 'Mật khẩu cần từ 8 đến 64 ký tự.');
+                if (password.value !== confirmPassword.value) return reject(confirmPassword, 'Mật khẩu nhập lại chưa khớp.');
+                createdChildren.push({ name, username, age: onboarding.querySelector('#family-new-age').value, limit: minutes, used: 0, week: [0, 0, 0, 0, 0, 0, 0] });
+                // Validate the creation UI without retaining a plaintext demo password.
+                password.value = confirmPassword.value = '';
+                resetPasswordVisibility();
                 updateParentSummary();
-                onboarding.querySelector('#family-created-message').textContent = 'Hồ sơ ' + name + ' đã sẵn sàng để quản lý trong bản demo.';
+                onboarding.querySelector('#family-created-message').textContent = name + ' đã sẵn sàng để quản lý.';
                 onboarding.querySelector('#family-created-username').textContent = username;
-                const token = crypto.getRandomValues(new Uint32Array(1))[0].toString(36);
-                onboarding.querySelector('#family-created-password').textContent = 'Demo-' + token;
                 showStep('success');
             });
             onboarding.querySelector('#family-create-another').addEventListener('click', () => { prepareChildForm(); showStep('child'); });
             onboarding.querySelector('#family-manage-created').addEventListener('click', () => { manageAfterClose = true; onboarding.close(); });
             onboarding.addEventListener('close', () => {
                 createForm.reset();
+                resetPasswordVisibility();
                 clearCreateError();
-                onboarding.querySelector('#family-created-password').textContent = '';
                 document.body.style.overflow = onboardingOverflow;
-                onboardingTrigger.focus();
+                (onboardingTrigger.getClientRects().length ? onboardingTrigger : openButton).focus();
                 if (manageAfterClose) { manageAfterClose = false; openButton.click(); }
             });
             onboarding.addEventListener('keydown', event => {
