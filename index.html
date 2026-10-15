@@ -785,6 +785,80 @@
             flex-shrink: 0;
         }
 
+        /* ---------- Family: scoped UI preview, no account activation ---------- */
+        #parent-section .family-heading { align-items: flex-start; flex-wrap: wrap; gap: 12px; }
+        #parent-section .card-title-group { min-width: 0; }
+        .family-status { display: inline-flex; align-items: center; gap: 6px; padding: 5px 10px; border: 1px solid var(--border-strong); border-radius: 20px; font-size: .75rem; font-weight: 600; color: var(--text-muted); background: var(--bg-muted); white-space: nowrap; }
+        .family-intro { max-width: 620px; font-size: .95rem; line-height: 1.65; color: var(--text-muted); }
+        .family-benefits { list-style: none; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; margin: 22px 0; }
+        .family-benefits li { min-width: 0; padding-left: 14px; border-left: 2px solid var(--primary-border); }
+        .family-benefits strong { display: block; font-size: .88rem; margin-bottom: 6px; }
+        .family-benefits p, .family-note { font-size: .81rem; line-height: 1.6; color: var(--text-muted); }
+        .family-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; }
+        #parent-section .btn, #family-preview .btn { min-height: 44px; white-space: normal; }
+        #parent-section .btn-primary, #family-preview .btn-primary { background: var(--primary-ink); }
+        #parent-section .btn-primary:hover, #family-preview .btn-primary:hover { background: var(--primary-hover); }
+        .family-note { margin-top: 14px; }
+        #parent-section [hidden], #family-preview [hidden] { display: none !important; }
+        .family-guide { margin-top: 22px; padding-top: 22px; border-top: 1px solid var(--border); }
+        .family-guide h3 { font-size: 1rem; margin-bottom: 14px; }
+        .family-steps { list-style: none; counter-reset: family-step; display: grid; gap: 16px; }
+        .family-steps li { counter-increment: family-step; display: grid; grid-template-columns: 30px minmax(0, 1fr); gap: 12px; font-size: .85rem; line-height: 1.6; }
+        .family-steps li::before { content: counter(family-step); display: flex; align-items: center; justify-content: center; width: 30px; height: 30px; border-radius: 50%; background: var(--primary-light); color: var(--primary-ink); font-weight: 700; }
+        .family-steps strong { display: block; }
+        .family-steps p { color: var(--text-muted); }
+        .family-notice { padding: 14px 16px; margin: 18px 0; border: 1px solid var(--border); border-radius: var(--radius-md); background: var(--bg-muted); color: var(--text-muted); font-size: .83rem; line-height: 1.65; }
+        .family-notice strong { color: var(--text-main); }
+        #family-preview { width: min(800px, calc(100% - 32px)); max-height: calc(100dvh - 32px); margin: auto; padding: 0; border: 1px solid var(--border); border-radius: var(--radius-lg); color: var(--text-main); background: var(--bg-card); overflow-y: auto; overscroll-behavior: contain; }
+        #family-preview::backdrop { background: rgba(27, 27, 20, .55); }
+        .family-dialog-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; padding: 24px 24px 16px; position: sticky; top: 0; z-index: 1; background: var(--bg-card); }
+        .family-dialog-header h2 { font-size: 1.2rem; margin-top: 8px; }
+        .family-close { width: 44px; height: 44px; flex: 0 0 44px; border: 1px solid var(--border); border-radius: var(--radius-md); background: white; color: var(--text-main); font-size: 1.5rem; cursor: pointer; }
+        .family-close:focus-visible, .family-child:focus-visible { outline: 2px solid var(--primary); outline-offset: 3px; }
+        .family-dialog-body { padding: 0 24px 24px; }
+        .family-preview-label { font-size: .72rem; font-weight: 700; letter-spacing: .06em; color: var(--primary-ink); text-transform: uppercase; }
+        .family-dashboard { display: grid; grid-template-columns: 190px minmax(0, 1fr); gap: 24px; }
+        .family-children { display: flex; flex-direction: column; gap: 8px; }
+        .family-children h3 { font-size: .8rem; font-weight: 600; color: var(--text-muted); margin-bottom: 4px; }
+        .family-child { display: flex; align-items: center; gap: 10px; width: 100%; min-height: 64px; padding: 10px; border: 1px solid var(--border); border-radius: var(--radius-md); color: var(--text-main); background: white; text-align: left; cursor: pointer; }
+        .family-child[aria-pressed="true"] { border-color: var(--primary); background: var(--primary-light); }
+        .family-child-avatar { width: 36px; height: 36px; display: grid; place-items: center; flex-shrink: 0; border-radius: 50%; background: var(--bg-muted); color: var(--primary-ink); font-weight: 700; }
+        .family-child strong, .family-child small { display: block; line-height: 1.5; }
+        .family-child small { color: var(--text-muted); font-size: .74rem; }
+        .family-detail { min-width: 0; }
+        .family-detail h3 { font-size: 1rem; margin-bottom: 4px; overflow-wrap: anywhere; }
+        .family-usage { margin: 18px 0; padding: 16px; background: var(--bg-body); border-radius: var(--radius-md); }
+        .family-usage-row { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 6px 12px; font-size: .82rem; }
+        .family-usage progress { display: block; width: 100%; height: 9px; margin: 12px 0 8px; border: 0; border-radius: 8px; overflow: hidden; background: var(--border); accent-color: var(--primary-ink); }
+        .family-usage progress::-webkit-progress-bar { background: var(--border); }
+        .family-usage progress::-webkit-progress-value { background: var(--primary-ink); }
+        .family-usage progress::-moz-progress-bar { background: var(--primary-ink); }
+        .family-detail fieldset { border: 0; min-width: 0; }
+        .family-detail legend { font-size: .9rem; font-weight: 700; margin-bottom: 14px; }
+        .family-fields { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+        #family-preview select, #family-preview input[type="number"] { width: 100%; min-height: 44px; font-size: 1rem; padding: 10px 12px; border: 1px solid var(--border-strong); border-radius: var(--radius-md); background-color: white; color: var(--text-main); }
+        #family-preview select { padding-right: 34px; }
+        #family-preview input:focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; }
+        .family-error { min-height: 20px; margin-top: 8px; font-size: .82rem; color: #A20A32; }
+        .family-feedback { min-height: 24px; margin-top: 12px; font-size: .82rem; line-height: 1.5; color: var(--text-muted); }
+        .family-sample-games { margin-top: 16px; padding-top: 16px; border-top: 1px solid var(--border); }
+        .family-sample-games summary { min-height: 44px; display: list-item; align-content: center; cursor: pointer; font-size: .85rem; font-weight: 600; }
+        .family-sample-games summary:focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; }
+        .family-sample-games ul { padding-left: 20px; color: var(--text-muted); font-size: .82rem; line-height: 1.8; }
+        @media (max-width: 640px) {
+            .family-benefits { grid-template-columns: 1fr; gap: 16px; }
+            .family-actions .btn { width: 100%; }
+            #family-preview { width: calc(100% - 24px); max-height: calc(100dvh - 24px); }
+            .family-dialog-header { padding: 18px 18px 12px; }
+            .family-dialog-body { padding: 0 18px 18px; }
+            .family-dashboard { grid-template-columns: 1fr; gap: 20px; }
+            .family-children { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+            .family-children h3 { grid-column: 1 / -1; }
+            .family-child { gap: 7px; padding: 8px; }
+            .family-child-avatar { width: 28px; height: 28px; }
+            .family-fields { grid-template-columns: 1fr; }
+        }
+
         /* ---------- Responsive ---------- */
         @media (min-width: 869px) {
             .main-grid {
@@ -1034,6 +1108,42 @@
                 </div>
             </div>
 
+            <section id="parent-section" class="card card-wide" aria-labelledby="family-title">
+                <div class="card-header family-heading">
+                    <div class="card-title-group">
+                        <div class="card-icon">
+                            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2 3 6v6c0 5 4 9 9 10 5-1 9-5 9-10V6l-9-4zm0 2.2 7 3.1V12c0 3.8-2.8 7-7 8-4.2-1-7-4.2-7-8V7.3l7-3.1zm-1 10.4-3-3-1.4 1.4L11 17l6.4-6.4L16 9.2l-5 5.4z"/></svg>
+                        </div>
+                        <div>
+                            <h2 id="family-title" class="card-title">Chế độ cha mẹ</h2>
+                            <p class="card-desc">Cùng con xây dựng thói quen chơi lành mạnh</p>
+                        </div>
+                    </div>
+                    <span class="family-status">Chưa kích hoạt</span>
+                </div>
+                <p class="family-intro">Một không gian riêng để cha mẹ đồng hành cùng con: quản lý tài khoản, lựa chọn nội dung phù hợp và cân bằng thời gian chơi trên GameVui.</p>
+                <ul class="family-benefits">
+                    <li><strong>Tài khoản riêng cho con</strong><p>Con có thông tin đăng nhập và tiến trình riêng, không cần dùng chung mật khẩu của cha mẹ.</p></li>
+                    <li><strong>Nội dung phù hợp</strong><p>Thiết lập mức tuổi và chọn những game cần chặn cho từng tài khoản con.</p></li>
+                    <li><strong>Thời gian cân bằng</strong><p>Đặt hạn mức mỗi ngày, theo dõi thời gian đã chơi và thời gian còn lại.</p></li>
+                </ul>
+                <div class="family-actions">
+                    <button type="button" id="family-guide-toggle" class="btn btn-primary" aria-expanded="false" aria-controls="family-guide" hidden>Tìm hiểu chế độ cha mẹ</button>
+                    <button type="button" id="family-preview-open" class="btn btn-secondary" aria-haspopup="dialog" aria-controls="family-preview" hidden>Xem thử khu vực quản lý</button>
+                </div>
+                <p class="family-note">Tính năng đang được chuẩn bị. Bản xem thử dùng dữ liệu mẫu; chưa có tài khoản con hoặc quy tắc bảo vệ nào được kích hoạt.</p>
+                <div id="family-guide" class="family-guide">
+                    <h3>Bắt đầu với ba bước</h3>
+                    <ol class="family-steps">
+                        <li><div><strong>Xác minh quyền quản lý</strong><p>Dùng tài khoản hiện có, xem thông tin về quyền riêng tư và hoàn thành bước xác minh được yêu cầu.</p></div></li>
+                        <li><div><strong>Tạo tài khoản riêng cho con</strong><p>Thiết lập PIN quản lý, chọn bí danh và thông tin đăng nhập riêng cho con.</p></div></li>
+                        <li><div><strong>Thiết lập quy tắc phù hợp</strong><p>Chọn mức tuổi, hạn mức mỗi ngày và game bị chặn. Kiểm tra xác nhận trước khi cho con sử dụng.</p></div></li>
+                    </ol>
+                    <p id="family-activation-note" class="family-notice"><strong>Chưa mở kích hoạt.</strong> Khi tính năng sẵn sàng, cha mẹ sẽ hoàn thành xác minh ngay tại đây. Hiện trang không thu PIN, mật khẩu hay thông tin của con.</p>
+                    <button type="button" class="btn btn-secondary" disabled aria-describedby="family-activation-note">Kích hoạt chế độ cha mẹ</button>
+                </div>
+            </section>
+
             <div class="card">
                 <div class="card-header">
                     <div class="card-title-group">
@@ -1120,6 +1230,45 @@
         </div>
 
     </div>
+
+    <dialog id="family-preview" aria-labelledby="family-preview-title" aria-describedby="family-preview-description">
+        <div class="family-dialog-header">
+            <div><span class="family-preview-label">GameVui Family · Bản xem thử</span><h2 id="family-preview-title">Không gian của gia đình</h2></div>
+            <button type="button" id="family-preview-close" class="family-close" aria-label="Đóng bản xem thử" autofocus>×</button>
+        </div>
+        <div class="family-dialog-body">
+            <p id="family-preview-description" class="family-notice">Đây là <strong>dữ liệu mẫu</strong>. Bạn có thể thử thay đổi quy tắc; các thay đổi chỉ tồn tại trong bản xem thử, không được gửi đi và sẽ mất khi đóng.</p>
+            <div class="family-dashboard">
+                <div class="family-children" role="group" aria-labelledby="family-children-title">
+                    <h3 id="family-children-title">Tài khoản con · Dữ liệu mẫu</h3>
+                    <button type="button" class="family-child" data-family-child="0" aria-pressed="true" aria-controls="family-detail"><span class="family-child-avatar" aria-hidden="true">M</span><span><strong>Mây Nhỏ</strong><small>Hồ sơ mẫu 01</small></span></button>
+                    <button type="button" class="family-child" data-family-child="1" aria-pressed="false" aria-controls="family-detail"><span class="family-child-avatar" aria-hidden="true">N</span><span><strong>Nắng Vàng</strong><small>Hồ sơ mẫu 02</small></span></button>
+                </div>
+                <section id="family-detail" class="family-detail" aria-labelledby="family-child-name">
+                    <h3 id="family-child-name">Mây Nhỏ</h3>
+                    <p class="family-note" style="margin-top: 0">Tổng quan hôm nay · Số liệu minh họa</p>
+                    <div class="family-usage">
+                        <div class="family-usage-row"><span>Thời gian đã chơi</span><strong id="family-usage-text">25 / 60 phút</strong></div>
+                        <progress id="family-usage-progress" value="25" max="60" aria-label="Thời gian chơi minh họa"></progress>
+                        <p id="family-remaining" class="family-note" style="margin-top: 0">Còn 35 phút trong ví dụ này</p>
+                    </div>
+                    <form id="family-demo-form" novalidate>
+                        <fieldset>
+                            <legend>Thử điều chỉnh quy tắc</legend>
+                            <div class="family-fields">
+                                <div class="form-group"><label for="family-age">Mức tuổi nội dung</label><select id="family-age" name="demoAge"><option value="all">Mọi lứa tuổi</option><option value="6">Từ 6 tuổi</option><option value="12">Từ 12 tuổi</option></select></div>
+                                <div class="form-group"><label for="family-limit">Hạn mức mỗi ngày (phút)</label><input id="family-limit" name="demoLimit" type="number" min="0" max="180" step="1" value="60" inputmode="numeric" aria-describedby="family-limit-hint family-limit-error"><span id="family-limit-hint" class="field-hint">0–180 phút chỉ là khoảng minh họa.</span></div>
+                            </div>
+                            <p id="family-limit-error" class="family-error" aria-live="polite"></p>
+                        </fieldset>
+                        <div class="family-actions"><button type="submit" id="family-demo-save" class="btn btn-primary" disabled>Cập nhật bản xem thử</button><button type="button" id="family-demo-reset" class="btn btn-secondary" disabled>Hủy thay đổi</button></div>
+                        <p id="family-feedback" class="family-feedback" role="status" aria-live="polite">Chọn một hồ sơ mẫu để khám phá cách quản lý.</p>
+                    </form>
+                    <details class="family-sample-games"><summary>Nội dung & quyền riêng tư</summary><ul><li>Game chưa được phân loại cần có chính sách xử lý rõ ràng.</li><li>Hạn mức thực tế phụ thuộc cấu hình được phê duyệt.</li><li>Tài khoản con đăng nhập riêng; đổi hồ sơ mẫu ở đây không phải chuyển tài khoản.</li></ul></details>
+                </section>
+            </div>
+        </div>
+    </dialog>
 
     <!-- Toast Notification Component -->
     <div id="toast" role="status" aria-live="polite" data-type="success">
@@ -1372,5 +1521,148 @@
             });
         });
     </script>
+    <script>
+        // Isolated preview controller. No credentials, persistence or production API calls.
+        document.addEventListener('DOMContentLoaded', () => {
+            const root = document.getElementById('parent-section');
+            const guideToggle = root.querySelector('#family-guide-toggle');
+            const guide = root.querySelector('#family-guide');
+            const openButton = root.querySelector('#family-preview-open');
+            const dialog = document.getElementById('family-preview');
+            const closeButton = dialog.querySelector('#family-preview-close');
+            const form = dialog.querySelector('#family-demo-form');
+            const childButtons = Array.from(dialog.querySelectorAll('[data-family-child]'));
+            const age = dialog.querySelector('#family-age');
+            const limit = dialog.querySelector('#family-limit');
+            const save = dialog.querySelector('#family-demo-save');
+            const reset = dialog.querySelector('#family-demo-reset');
+            const feedback = dialog.querySelector('#family-feedback');
+            const error = dialog.querySelector('#family-limit-error');
+            const sampleChildren = [
+                { name: 'Mây Nhỏ', age: 'all', limit: 60, used: 25 },
+                { name: 'Nắng Vàng', age: '6', limit: 45, used: 40 }
+            ];
+            let children = [];
+            let selected = 0;
+            let previousOverflow = '';
+
+            guide.hidden = true;
+            guideToggle.hidden = false;
+            guideToggle.addEventListener('click', () => {
+                const expanded = guideToggle.getAttribute('aria-expanded') !== 'true';
+                guideToggle.setAttribute('aria-expanded', String(expanded));
+                guide.hidden = !expanded;
+                guideToggle.textContent = expanded ? 'Thu gọn hướng dẫn' : 'Tìm hiểu chế độ cha mẹ';
+            });
+
+            // Keep the readable guide available in browsers without native dialog support.
+            if (typeof dialog.showModal !== 'function') return;
+            openButton.hidden = false;
+
+            function clearError() {
+                error.textContent = '';
+                limit.removeAttribute('aria-invalid');
+            }
+
+            function hasChanges() {
+                const child = children[selected];
+                return age.value !== child.age || limit.value !== String(child.limit);
+            }
+
+            function updateButtons() {
+                save.disabled = reset.disabled = !hasChanges();
+            }
+
+            function renderChild() {
+                const child = children[selected];
+                childButtons.forEach((button, index) => button.setAttribute('aria-pressed', String(index === selected)));
+                dialog.querySelector('#family-child-name').textContent = child.name;
+                age.value = child.age;
+                limit.value = child.limit;
+                dialog.querySelector('#family-usage-text').textContent = child.used + ' / ' + child.limit + ' phút';
+                const progress = dialog.querySelector('#family-usage-progress');
+                progress.max = Math.max(child.limit, 1);
+                progress.value = Math.min(child.used, progress.max);
+                progress.setAttribute('aria-label', child.name + ': đã chơi ' + child.used + ' phút, hạn mức mẫu ' + child.limit + ' phút');
+                const remaining = Math.max(0, child.limit - child.used);
+                dialog.querySelector('#family-remaining').textContent = remaining > 0
+                    ? 'Còn ' + remaining + ' phút trong ví dụ này'
+                    : 'Đã hết hạn mức trong ví dụ này';
+                clearError();
+                updateButtons();
+            }
+
+            openButton.addEventListener('click', () => {
+                children = sampleChildren.map(child => ({ ...child }));
+                selected = 0;
+                renderChild();
+                feedback.textContent = 'Đang xem hồ sơ mẫu Mây Nhỏ. Các thay đổi không ảnh hưởng tài khoản thật.';
+                dialog.querySelector('details').open = false;
+                previousOverflow = document.body.style.overflow;
+                dialog.showModal();
+                document.body.style.overflow = 'hidden';
+            });
+
+            closeButton.addEventListener('click', () => dialog.close());
+            dialog.addEventListener('keydown', event => {
+                if (event.key !== 'Tab') return;
+                const controls = Array.from(dialog.querySelectorAll('button:not(:disabled), input:not(:disabled), select:not(:disabled), summary'))
+                    .filter(element => element.getClientRects().length > 0);
+                const first = controls[0];
+                const last = controls[controls.length - 1];
+                if (event.shiftKey && document.activeElement === first) {
+                    event.preventDefault();
+                    last.focus();
+                } else if (!event.shiftKey && document.activeElement === last) {
+                    event.preventDefault();
+                    first.focus();
+                }
+            });
+            dialog.addEventListener('close', () => {
+                children = [];
+                form.reset();
+                clearError();
+                document.body.style.overflow = previousOverflow;
+                openButton.focus();
+            });
+
+            childButtons.forEach((button, index) => button.addEventListener('click', () => {
+                if (index === selected) return;
+                // Keep uncommitted edits until the user explicitly saves or cancels.
+                if (hasChanges()) {
+                    feedback.textContent = 'Hãy cập nhật bản xem thử hoặc hủy thay đổi trước khi chọn hồ sơ khác.';
+                    save.focus();
+                    return;
+                }
+                selected = index;
+                renderChild();
+                feedback.textContent = 'Đang xem hồ sơ mẫu ' + children[selected].name + '.';
+            }));
+
+            form.addEventListener('input', () => { clearError(); updateButtons(); });
+            form.addEventListener('change', updateButtons);
+            form.addEventListener('submit', event => {
+                event.preventDefault();
+                if (!hasChanges()) return;
+                const minutes = Number(limit.value);
+                if (limit.value.trim() === '' || !Number.isInteger(minutes) || minutes < 0 || minutes > 180 || !limit.validity.valid) {
+                    error.textContent = 'Nhập số phút nguyên từ 0 đến 180 để xem thử.';
+                    limit.setAttribute('aria-invalid', 'true');
+                    limit.focus();
+                    return;
+                }
+                children[selected].age = age.value;
+                children[selected].limit = minutes;
+                renderChild();
+                feedback.textContent = 'Đã cập nhật bản xem thử cho ' + children[selected].name + '. Chưa áp dụng quy tắc cho tài khoản thật.';
+            });
+            reset.addEventListener('click', () => {
+                renderChild();
+                feedback.textContent = 'Đã hủy thay đổi chưa cập nhật của hồ sơ mẫu.';
+            });
+        });
+    </script>
 </body>
 </html>
+
+
