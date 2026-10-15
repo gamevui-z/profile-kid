@@ -142,3 +142,112 @@ test('readable setup guide without JavaScript', async () => {
     await context.close();
 });
 
+test('plans, demo activation and child creation work end to end without network or storage', async () => {
+    const page = await browser.newPage({ viewport: { width: 1440, height: 1000 } });
+    const errors = [], requests = [];
+    page.on('pageerror', error => errors.push(error.message));
+    page.on('request', request => { if (request.url() !== url + '/') requests.push(request.url()); });
+    await page.goto(url);
+    await page.locator('#family-plans-open').click();
+    assert.equal(await page.locator('.family-plan').count(), 4);
+    assert.equal(await page.locator('.family-plan-price').first().textContent(), '0đ');
+    await page.screenshot({ path: path.join(output, 'plans-1440.png') });
+    for (const [key, name] of [['quarter', 'Gói 3 tháng'], ['halfyear', 'Gói 6 tháng'], ['year', 'Gói 1 năm'], ['trial', 'Dùng thử 1 tháng']]) {
+        await page.locator(`[data-family-plan="${key}"]`).click();
+        assert.equal(await page.locator('#family-selected-plan').textContent(), name);
+        assert.match(await page.locator('#family-selected-price').textContent(), key === 'trial' ? /0đ/ : /Giá sẽ công bố/);
+        await page.locator('#family-plan-back').click();
+    }
+    await page.locator('[data-family-plan="trial"]').click();
+    await page.locator('#family-activate-submit').click();
+    assert.equal(await page.locator('#family-demo-consent').getAttribute('aria-invalid'), 'true');
+    await page.locator('#family-demo-consent').check();
+    await page.locator('#family-activate-submit').click();
+    assert.equal(await page.locator('#family-parent-status').getAttribute('data-active'), 'true');
+    await page.locator('#family-create-form button[type="submit"]').click();
+    assert.equal(await page.locator('#family-new-name').getAttribute('aria-invalid'), 'true');
+    await page.locator('#family-new-name').fill('Gấu Nhỏ');
+    await page.locator('#family-new-username').fill('bad name');
+    await page.locator('#family-create-form button[type="submit"]').click();
+    assert.equal(await page.locator('#family-new-username').getAttribute('aria-invalid'), 'true');
+    await page.locator('#family-new-username').fill('DEMO_GAU');
+    await page.locator('#family-new-limit').fill('181');
+    await page.locator('#family-create-form button[type="submit"]').click();
+    assert.equal(await page.locator('#family-new-limit').getAttribute('aria-invalid'), 'true');
+    await page.locator('#family-new-limit').fill('30');
+    await page.locator('#family-create-form button[type="submit"]').click();
+    assert.equal(await page.locator('#family-created-username').textContent(), 'demo_gau');
+    assert.match(await page.locator('#family-created-password').textContent(), /^Demo-/);
+    assert.match(await page.locator('#family-parent-summary-text').textContent(), /1 tài khoản con/);
+    await page.locator('#family-create-another').click();
+    await page.locator('#family-new-name').fill('Cá Nhỏ');
+    await page.locator('#family-new-username').fill('demo_gau');
+    await page.locator('#family-create-form button[type="submit"]').click();
+    assert.match(await page.locator('#family-create-error').textContent(), /đã có/);
+    await page.locator('#family-new-username').fill('demo_ca');
+    await page.locator('#family-create-form button[type="submit"]').click();
+    await page.locator('#family-manage-created').click();
+    await page.waitForFunction(() => document.getElementById('family-preview').open);
+    assert.equal(await page.locator('#family-child-name').textContent(), 'Cá Nhỏ');
+    assert.equal(await page.locator('[data-family-child]').count(), 2);
+    await page.locator('[data-family-child="0"]').click();
+    assert.equal(await page.locator('#family-limit').inputValue(), '30');
+    await page.locator('#family-limit').fill('15');
+    await page.locator('#family-demo-save').click();
+    await page.locator('#family-preview-close').click();
+    await page.locator('#family-preview-open').click();
+    await page.locator('[data-family-child="0"]').click();
+    assert.equal(await page.locator('#family-limit').inputValue(), '15');
+    await page.locator('#family-preview-close').click();
+    assert.equal(await page.locator('#btn-save').isDisabled(), true);
+    await page.locator('#family-plans-open').click();
+    await page.locator('[data-family-plan="year"]').click();
+    await page.locator('#family-demo-consent').check();
+    await page.locator('#family-activate-submit').click();
+    await page.locator('#family-create-later').click();
+    assert.match(await page.locator('#family-parent-summary-text').textContent(), /Gói 1 năm · 2 tài khoản con/);
+    assert.deepEqual(await page.evaluate(() => [localStorage.length, sessionStorage.length]), [0, 0]);
+    assert.deepEqual(errors, []);
+    assert.deepEqual(requests, []);
+    await page.reload();
+    assert.equal(await page.locator('#family-parent-summary').isVisible(), false);
+    await page.close();
+});
+
+test('onboarding mobile, keyboard, cancel and activated empty state', async () => {
+    const page = await browser.newPage();
+    await page.goto(url);
+    for (const width of [320, 390, 640, 768, 1024, 1440]) {
+        await page.setViewportSize({ width, height: 900 });
+        await page.locator('#family-plans-open').click();
+        assert.equal(await page.locator('#family-onboarding').evaluate(e => e.scrollWidth <= e.clientWidth), true, `plans overflow ${width}`);
+        if (width === 390) await page.screenshot({ path: path.join(output, 'plans-390.png') });
+        for (let i = 0; i < 10; i++) {
+            await page.keyboard.press('Tab');
+            assert.equal(await page.evaluate(() => !!document.activeElement.closest('#family-onboarding')), true);
+        }
+        await page.keyboard.press('Escape');
+        assert.equal(await page.locator('#family-plans-open').evaluate(e => e === document.activeElement), true);
+    }
+    await page.setViewportSize({ width: 390, height: 900 });
+    await page.locator('#family-plans-open').click();
+    await page.locator('[data-family-plan="trial"]').click();
+    await page.locator('#family-demo-consent').check();
+    await page.locator('#family-activate-submit').click();
+    await page.screenshot({ path: path.join(output, 'create-child-390.png') });
+    assert.equal(await page.locator('#family-onboarding').evaluate(e => e.scrollWidth <= e.clientWidth), true);
+    await page.locator('#family-create-later').click();
+    assert.match(await page.locator('#family-parent-summary-text').textContent(), /0 tài khoản con/);
+    await page.locator('#family-preview-open').click();
+    assert.equal(await page.locator('#family-create-form').isVisible(), true);
+    assert.equal(await page.locator('#family-preview').evaluate(e => e.open), false);
+    await page.locator('#family-new-name').fill('<img src=x onerror=alert(1)>');
+    await page.locator('#family-create-form button[type="submit"]').click();
+    assert.equal(await page.locator('#family-created-message img').count(), 0);
+    await page.locator('#family-manage-created').click();
+    await page.waitForFunction(() => document.getElementById('family-preview').open);
+    assert.equal(await page.locator('#family-child-name img').count(), 0);
+    assert.match(await page.locator('#family-child-name').textContent(), /<img/);
+    await page.close();
+});
+
