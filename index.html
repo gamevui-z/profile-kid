@@ -917,6 +917,12 @@
         .family-flow-title:focus { outline: none; }
         .family-flow-steps { display: flex; flex-wrap: wrap; gap: 8px 18px; list-style: none; font-size: .78rem; line-height: 1.6; color: var(--text-muted); padding-bottom: 14px; border-bottom: 1px solid var(--border); }
         .family-flow-steps [aria-current="step"] { color: var(--primary-ink); font-weight: 700; }
+        .family-tier-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:12px; margin:18px 0 24px; }
+        .family-tier-grid article { border:1px solid var(--border); border-radius:12px; padding:16px; font-size:.82rem; line-height:1.7; }
+        .family-tier-grid h4 { font-size:1rem; color:var(--primary-ink); }
+        .family-tier-grid ul { padding-left:18px; }
+        .family-schedule-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:8px; }
+        @media(max-width:640px) { .family-tier-grid { grid-template-columns:1fr; } }
         .family-plans { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; margin: 20px 0; }
         .family-plan { display: flex; flex-direction: column; min-width: 0; gap: 14px; padding: 18px 14px; border: 1px solid var(--border); border-radius: var(--radius-md); }
         .family-plan-featured { border: 2px solid var(--primary-ink); background: #fff5f7; }
@@ -1087,7 +1093,7 @@
                     <div class="user-details">
                         <div class="user-name-row">
                             <h1 class="user-name" id="main-display-name">GameVui</h1>
-                            <span class="user-badge">id: 455873</span>
+                            <span class="user-badge">id: demo-parent</span>
                         </div>
                     </div>
                 </div>
@@ -1116,7 +1122,7 @@
                             <h3>Con vui khám phá.<br><span>Cha mẹ an tâm.</span></h3>
                             <p class="family-intro">Đồng hành cùng con trên GameVui: chọn nội dung phù hợp, cân bằng giờ chơi và theo dõi mỗi ngày.</p>
                         </div>
-                        <div class="family-trial"><span>KHỞI ĐẦU CÙNG CON</span><strong>1 tháng <b>0đ</b></strong><small>Sau đó 30.000đ/tháng · Tự gia hạn (mô phỏng)</small></div>
+                        <div class="family-trial"><span>KHỞI ĐẦU CÙNG CON</span><strong>1 tháng <b>0đ</b></strong><small>Sau đó 49.000đ/tháng · Tự gia hạn (mô phỏng)</small></div>
                     </div>
                     <ul class="family-benefits">
                         <li><span class="family-benefit-icon" aria-hidden="true">☺</span><div><strong>Không gian riêng cho con</strong><span>Tạo tài khoản và thiết lập riêng cho từng bé.</span></div></li>
@@ -1206,7 +1212,7 @@
                     <!-- Địa chỉ -->
                     <div class="form-group form-group-full">
                         <label for="address">Địa chỉ</label>
-                        <input type="text" id="address" value="Miếu Đầm, phố Mễ Trì, quận Nam Từ Liêm" placeholder="Nhập địa chỉ hiện tại..." autocomplete="street-address">
+                        <input type="text" id="address" value="" placeholder="Nhập địa chỉ mẫu..." autocomplete="street-address">
                     </div>
                 </div>
 
@@ -1263,7 +1269,7 @@
                     <div class="security-row-item">
                         <div class="security-info-group">
                             <span class="security-title">Email đăng nhập</span>
-                            <span class="security-value">ngochung@meta.vn</span>
+                            <span class="security-value">parent@example.com</span>
                         </div>
                         <a href="#" class="btn-link-action" id="link-change-email">Thay đổi Email</a>
                     </div>
@@ -1354,6 +1360,7 @@
                         <progress id="family-usage-progress" value="25" max="60" aria-label="Thời gian chơi minh họa"></progress>
                         <p id="family-remaining" class="family-note" style="margin-top: 0">Còn 35 phút trong ví dụ này</p>
                     </div>
+                    <div class="form-group"><label for="family-history-days">Khoảng thời gian báo cáo</label><select id="family-history-days"><option value="7">7 ngày</option></select></div><p id="family-history-summary" class="family-note" aria-live="polite"></p><p id="family-comparison" class="family-note" hidden></p><button type="button" id="family-export" class="btn btn-secondary" hidden>Xuất báo cáo CSV</button>
                     <figure class="family-chart" aria-labelledby="family-chart-title">
                         <div class="family-chart-heading"><figcaption id="family-chart-title">Thời gian chơi · 7 ngày mẫu</figcaption><span>Phút</span></div>
                         <ol id="family-week-chart" class="family-week-chart" aria-label="Số phút chơi từng ngày"></ol>
@@ -1367,6 +1374,7 @@
                                 <div class="form-group"><label for="family-limit">Hạn mức mỗi ngày (phút)</label><input id="family-limit" name="demoLimit" type="number" min="0" max="180" step="1" value="60" inputmode="numeric" aria-describedby="family-limit-hint family-limit-error"><span id="family-limit-hint" class="field-hint">0–180 phút/ngày trong demo.</span></div>
                             </div>
                     <div class="form-grid"><div class="form-group"><label for="family-manage-categories">Danh mục được phép</label><select id="family-manage-categories"><option value="all">Tất cả danh mục phù hợp tuổi</option><option value="learning">Học tập, tô màu, ghép hình</option><option value="puzzle">Trí tuệ, sáng tạo, thể thao</option><option value="strategy">Trí tuệ, chiến thuật, thể thao</option></select></div><div class="form-group"><label for="family-manage-keywords">Từ khóa chặn</label><input id="family-manage-keywords" type="text" maxlength="200" placeholder="Ví dụ: kinh dị, bạo lực"><span class="field-hint">Phân tách bằng dấu phẩy. Demo chỉ lưu quy tắc, chưa lọc danh mục game thật.</span></div></div>
+                            <div id="family-advanced" class="family-notice" hidden><strong>Lịch tuần và giờ nghỉ · Pro</strong><p>Hạn mức riêng từng ngày (phút). Khung nghỉ qua đêm được hỗ trợ; chưa khóa game thật.</p><div id="family-schedule" class="family-schedule-grid"></div><div class="form-grid"><div class="form-group"><label for="family-rest-start">Bắt đầu nghỉ</label><input id="family-rest-start" type="time"></div><div class="form-group"><label for="family-rest-end">Kết thúc nghỉ</label><input id="family-rest-end" type="time"></div></div></div>
                             <p id="family-limit-error" class="family-error" aria-live="polite"></p>
                         </fieldset>
                         <div class="family-actions"><button type="submit" id="family-demo-save" class="btn btn-primary" disabled>Lưu cài đặt</button><button type="button" id="family-demo-reset" class="btn btn-secondary" disabled>Hủy thay đổi</button></div>
@@ -1387,16 +1395,23 @@
             <p id="family-onboarding-note" class="family-notice">Demo · Không thu tiền hoặc tạo tài khoản thật. Chỉ dùng thông tin mẫu.</p>
             <ol class="family-flow-steps" aria-label="Các bước thiết lập"><li data-flow-step="plans" aria-current="step">1. Chọn gói</li><li data-flow-step="activate">2. Kích hoạt cha mẹ</li><li data-flow-step="child">3. Tạo tài khoản con</li></ol>
             <section data-flow-panel="plans" aria-labelledby="family-plans-title">
-                <h3 id="family-plans-title" class="family-flow-title" tabindex="-1">Chọn thời gian đồng hành</h3>
-                <p class="family-intro">Từ những bước đầu đến đồng hành lâu dài — chọn mức hỗ trợ phù hợp với gia đình.</p>
-                <div class="family-plans">
-                    <article class="family-plan"><div class="family-plan-badge"></div><span class="family-plan-kicker">Khám phá</span><h4>Dùng thử 1 tháng</h4><div class="family-plan-price">0đ</div><p class="family-plan-unit">Miễn phí tháng đầu</p><button type="button" class="btn btn-secondary" data-family-plan="trial">Dùng thử 0đ</button><p>Làm quen với cách đồng hành cùng con.</p><ul class="family-plan-benefits"><li>1 hồ sơ con*</li><li>Giới hạn thời gian mỗi ngày</li><li>Chọn mức tuổi game</li><li>Biểu đồ chơi 7 ngày</li></ul><p class="family-plan-renewal">Sau 1 tháng, tự gia hạn 30.000đ/tháng cho quyền lợi cơ bản của gói dùng thử. Hủy trước kỳ gia hạn để không bị tính phí.</p></article>
-                    <article class="family-plan"><div class="family-plan-badge"></div><span class="family-plan-kicker">Cơ bản</span><h4>Gói 3 tháng</h4><div class="family-plan-price">89.000đ</div><p class="family-plan-unit">Cho trọn 3 tháng</p><button type="button" class="btn btn-secondary" data-family-plan="quarter">Chọn 3 tháng</button><p>Thiết lập thói quen cho cả gia đình.</p><ul class="family-plan-benefits"><li>Mọi quyền lợi dùng thử</li><li>Nâng lên 2 hồ sơ con*</li><li>Lịch sử chơi 30 ngày*</li><li>Báo cáo tổng kết mỗi tháng*</li></ul><p class="family-plan-renewal">Thanh toán một lần. Không tự gia hạn.</p></article>
-                    <article class="family-plan family-plan-featured"><div class="family-plan-badge">Đề xuất</div><span class="family-plan-kicker">Nâng cao</span><h4>Gói 6 tháng</h4><div class="family-plan-price">159.000đ</div><p class="family-plan-unit">Tiết kiệm 10,7%</p><button type="button" class="btn btn-primary" data-family-plan="halfyear">Chọn 6 tháng</button><p>Hiểu thói quen, chủ động điều chỉnh.</p><ul class="family-plan-benefits"><li>Mọi quyền lợi gói 3 tháng</li><li>Nâng lên 3 hồ sơ con*</li><li>Lịch sử chơi 90 ngày*</li><li>Lịch chơi riêng từng ngày*</li><li>So sánh hoạt động theo tuần*</li></ul><p class="family-plan-renewal">Thanh toán một lần. Không tự gia hạn.</p></article>
-                    <article class="family-plan"><div class="family-plan-badge">Nhiều quyền lợi nhất</div><span class="family-plan-kicker">Toàn diện</span><h4>Gói 1 năm</h4><div class="family-plan-price">269.000đ</div><p class="family-plan-unit">Tiết kiệm 24,4%</p><button type="button" class="btn btn-secondary" data-family-plan="year">Chọn 1 năm</button><p>Theo sát hành trình của con cả năm.</p><ul class="family-plan-benefits"><li>Mọi quyền lợi gói 6 tháng</li><li>Nâng lên 5 hồ sơ con*</li><li>Lịch sử chơi 365 ngày*</li><li>Xuất báo cáo cho từng con*</li><li>Tổng kết xu hướng cả năm*</li></ul><p class="family-plan-renewal">Thanh toán một lần. Không tự gia hạn.</p></article>
+                <h3 id="family-plans-title" class="family-flow-title" tabindex="-1">Chọn gói cho gia đình</h3>
+                <p class="family-intro">Chọn cấp tính năng, rồi chọn thời hạn. Mua lâu hơn chỉ giảm giá.</p>
+                <div class="form-group"><label for="family-tier">1. Cấp gói</label><select id="family-tier"><option value="standard">Standard · 49.000đ/tháng</option><option value="pro">Pro · 79.000đ/tháng (giá demo)</option><option value="plus">Pro+ · 109.000đ/tháng (giá demo)</option></select></div>
+                <div class="family-tier-grid">
+                    <article><h4>Standard</h4><p>1 tài khoản con</p><ul><li>Giới hạn thời gian mỗi ngày</li><li>Lọc tuổi, danh mục và từ khóa</li><li>Xem hoạt động 7 ngày</li></ul></article>
+                    <article><h4>Pro</h4><p>Mọi quyền lợi Standard, thêm:</p><ul><li>Tối đa 3 tài khoản con</li><li>Lịch chơi từng ngày trong tuần</li><li>Khung giờ nghỉ</li><li>Xem hoạt động 30 ngày</li></ul></article>
+                    <article><h4>Pro+</h4><p>Mọi quyền lợi Pro, thêm:</p><ul><li>Tối đa 5 tài khoản con</li><li>Xem hoạt động 90 ngày</li><li>So sánh hai tuần gần nhất</li><li>Xuất báo cáo CSV</li></ul></article>
                 </div>
-                <p class="family-note"><strong>* Quyền lợi đề xuất:</strong> hạn mức hồ sơ và các tính năng nâng cao đang được mô phỏng trên bảng gói, chưa áp dụng trong phần quản lý hiện tại.</p>
-                <p class="family-note">Giá mô phỏng. Mức tiết kiệm so với mua nối tiếp gói 3 tháng 89.000đ; tỷ lệ làm tròn 1 chữ số. Demo không thu tiền hoặc thực hiện gia hạn thật.</p>
+                <h4>2. Thời hạn thanh toán</h4>
+                <div class="family-plans">
+                    <article class="family-plan"><h4>1 tháng</h4><div class="family-plan-price" data-price="month"></div><p>Thanh toán từng tháng</p><button type="button" class="btn btn-secondary" data-family-plan="month">Chọn 1 tháng</button></article>
+                    <article class="family-plan"><h4>3 tháng</h4><div class="family-plan-price" data-price="quarter"></div><p>Tiết kiệm 10%</p><button type="button" class="btn btn-secondary" data-family-plan="quarter">Chọn 3 tháng</button></article>
+                    <article class="family-plan"><h4>6 tháng</h4><div class="family-plan-price" data-price="halfyear"></div><p>Tiết kiệm 15%</p><button type="button" class="btn btn-secondary" data-family-plan="halfyear">Chọn 6 tháng</button></article>
+                    <article class="family-plan"><h4>12 tháng</h4><div class="family-plan-price" data-price="year"></div><p>Tiết kiệm 25%</p><button type="button" class="btn btn-secondary" data-family-plan="year">Chọn 12 tháng</button></article>
+                </div>
+                <div class="family-notice"><strong>Dùng thử Standard 1 tháng · 0đ</strong><p>Sau đó tự gia hạn Standard 49.000đ/tháng. Hủy trước kỳ gia hạn để không bị tính phí.</p><button type="button" class="btn btn-primary" data-family-plan="trial">Dùng thử Standard 0đ</button></div>
+                <p class="family-note">Giá Pro/Pro+ và chiết khấu là đề xuất demo; so với giá tháng của cùng cấp gói. Gói trả trước không tự gia hạn. Demo không thu tiền; lịch chơi và bộ lọc chỉ lưu quy tắc, chưa thực thi trên game thật.</p>
             </section>
             <section data-flow-panel="activate" aria-labelledby="family-activate-title" hidden>
                 <h3 id="family-activate-title" class="family-flow-title" tabindex="-1">Kích hoạt tài khoản cha mẹ</h3>
@@ -1501,11 +1516,11 @@
                 return { value: String(y), label: String(y) };
             });
 
-            // Date of birth (locked): keep the existing fixed value 30 / Tháng 6 / 2001
+            // Synthetic date of birth for the demo profile.
             [
-                [document.getElementById('dob-day'), dayItems, '30'],
-                [document.getElementById('dob-month'), monthItems, '6'],
-                [document.getElementById('dob-year'), yearItems, '2001']
+                [document.getElementById('dob-day'), dayItems, '1'],
+                [document.getElementById('dob-month'), monthItems, '1'],
+                [document.getElementById('dob-year'), yearItems, '2000']
             ].forEach(([select, items, selected]) => {
                 fillOptions(select, items);
                 select.value = selected;
@@ -1721,6 +1736,7 @@
             let managerTrigger = openButton;
             let parentActivated = false;
             let activePlan = null;
+            let activeTier = 'standard';
             const createdChildren = [];
 
             guide.hidden = true;
@@ -1741,9 +1757,11 @@
                 limit.removeAttribute('aria-invalid');
             }
 
+            function scheduleValue() { return Array.from(dialog.querySelectorAll('[data-weekday]'), input => Number(input.value)); }
+            function advancedDirty(child) { return activeTier !== 'standard' && (JSON.stringify(scheduleValue()) !== JSON.stringify(child.schedule || Array(7).fill(child.limit)) || dialog.querySelector('#family-rest-start').value !== (child.restStart || '') || dialog.querySelector('#family-rest-end').value !== (child.restEnd || '')); }
             function hasChanges() {
                 const child = children[selected];
-                return !!child && (age.value !== child.age || limit.value !== String(child.limit) || categories.value !== (child.categories || 'all') || keywords.value !== (child.keywords || ''));
+                return !!child && (age.value !== child.age || limit.value !== String(child.limit) || categories.value !== (child.categories || 'all') || keywords.value !== (child.keywords || '') || advancedDirty(child));
             }
 
             function updateButtons() {
@@ -1779,6 +1797,22 @@
                 dialog.querySelector('#family-current-policy').textContent = ageLabels[child.age];
                 age.value = child.age;
                 limit.value = child.limit;
+                dialog.querySelector('#family-advanced').hidden = activeTier === 'standard';
+                const schedule = dialog.querySelector('#family-schedule');
+                schedule.replaceChildren();
+                ['T2','T3','T4','T5','T6','T7','CN'].forEach((day,index) => {
+                    const label = document.createElement('label'); label.textContent = day;
+                    const input = document.createElement('input'); input.type='number'; input.min='0'; input.max='180'; input.step='1'; input.dataset.weekday=index; input.value=(child.schedule || Array(7).fill(child.limit))[index]; label.append(input); schedule.append(label);
+                });
+                dialog.querySelector('#family-rest-start').value = child.restStart || '';
+                dialog.querySelector('#family-rest-end').value = child.restEnd || '';
+                const history = dialog.querySelector('#family-history-days');
+                const previous = history.value;
+                history.replaceChildren();
+                [7,30,90].filter(days => days <= tiers[activeTier].days).forEach(days => { const option=document.createElement('option'); option.value=days; option.textContent=days+' ngày'; history.append(option); });
+                if (Array.from(history.options).some(option => option.value === previous)) history.value = previous;
+                renderHistory(child);
+
                 categories.value = child.categories || 'all';
                 keywords.value = child.keywords || '';
                 dialog.querySelector('#family-usage-text').textContent = child.used + ' / ' + child.limit + ' phút';
@@ -1802,6 +1836,24 @@
                 updateButtons();
             }
 
+            function historyRows(child) {
+                const count=Number(dialog.querySelector('#family-history-days').value);
+                return Array.from({length:count},(_,index) => { const date=new Date(); date.setDate(date.getDate()-(count-1-index)); return { date:date.getFullYear()+'-'+String(date.getMonth()+1).padStart(2,'0')+'-'+String(date.getDate()).padStart(2,'0'), minutes:parentActivated ? 0 : (index>=count-7 ? child.week[index-(count-7)] : 0) }; });
+            }
+            function renderHistory(child) {
+                const rows=historyRows(child), total=rows.reduce((sum,row)=>sum+row.minutes,0);
+                dialog.querySelector('#family-history-summary').textContent=rows.length+' ngày · '+total+' phút · '+(parentActivated ? 'Hồ sơ demo chưa có dữ liệu chơi thật.' : 'Dữ liệu mẫu, chỉ 7 ngày cuối có số liệu.');
+                const compare=dialog.querySelector('#family-comparison'); compare.hidden=activeTier!=='plus';
+                compare.textContent='So sánh 2 tuần: '+(parentActivated ? '0 phút / 0 phút · Chưa có dữ liệu chơi thật.' : 'Không đủ dữ liệu tuần trước để so sánh.');
+                dialog.querySelector('#family-export').hidden=activeTier!=='plus';
+            }
+            dialog.querySelector('#family-history-days').addEventListener('change',()=>renderHistory(children[selected]));
+            dialog.querySelector('#family-export').addEventListener('click',()=>{
+                if (activeTier!=='plus' || !children[selected]) return;
+                const csv='date,minutes,source\r\n'+historyRows(children[selected]).map(row=>row.date+','+row.minutes+',demo').join('\r\n');
+                const url=URL.createObjectURL(new Blob(['\ufeff'+csv],{type:'text/csv;charset=utf-8'}));
+                const link=document.createElement('a'); link.href=url; link.download='gamevui-demo-report.csv'; link.click(); setTimeout(()=>URL.revokeObjectURL(url),1000);
+            });
             function renderChart(child) {
                 const chart = dialog.querySelector('#family-week-chart');
                 const days = ['T2', 'T3', 'T4', 'T5', 'T6', 'T7', 'CN'];
@@ -1901,6 +1953,14 @@
                     limit.focus();
                     return;
                 }
+                if (activeTier !== 'standard') {
+                    const inputs = Array.from(dialog.querySelectorAll('[data-weekday]'));
+                    const invalid = inputs.find(input => input.value === '' || !input.validity.valid);
+                    const start = dialog.querySelector('#family-rest-start'), end = dialog.querySelector('#family-rest-end');
+                    if (invalid) { error.textContent='Mỗi ngày cần số phút nguyên từ 0 đến 180.'; invalid.focus(); return; }
+                    if (!!start.value !== !!end.value || (start.value && start.value === end.value)) { error.textContent='Nhập cả hai giờ nghỉ khác nhau, hoặc để trống cả hai.'; start.focus(); return; }
+                    children[selected].schedule=scheduleValue(); children[selected].restStart=start.value; children[selected].restEnd=end.value;
+                }
                 children[selected].age = age.value;
                 children[selected].limit = minutes;
                 children[selected].categories = categories.value;
@@ -1929,12 +1989,27 @@
             const confirmPassword = onboarding.querySelector('#family-confirm-password');
             const passwordToggle = onboarding.querySelector('#family-password-toggle');
             const createError = onboarding.querySelector('#family-create-error');
-            const plans = {
-                trial: { name: 'Dùng thử 1 tháng', price: '0đ tháng đầu; sau đó tự gia hạn 30.000đ/tháng. Hủy trước kỳ gia hạn để không bị tính phí. Điều kiện mô phỏng; không thu tiền thật.' },
-                quarter: { name: 'Gói 3 tháng', price: '89.000đ / 3 tháng · Thanh toán một lần, không tự gia hạn. Giá mô phỏng; không thu tiền thật.' },
-                halfyear: { name: 'Gói 6 tháng', price: '159.000đ / 6 tháng · Thanh toán một lần, không tự gia hạn. Giá mô phỏng; không thu tiền thật.' },
-                year: { name: 'Gói 1 năm', price: '269.000đ / 12 tháng · Thanh toán một lần, không tự gia hạn. Giá mô phỏng; không thu tiền thật.' }
+            const tiers = {
+                standard: { name:'Standard', price:49000, cap:1, days:7 },
+                pro: { name:'Pro', price:79000, cap:3, days:30 },
+                plus: { name:'Pro+', price:109000, cap:5, days:90 }
             };
+            const terms = { month:[1,0], quarter:[3,.10], halfyear:[6,.15], year:[12,.25] };
+            const money = value => new Intl.NumberFormat('vi-VN').format(value) + 'đ';
+            const plans = { trial:{name:'Dùng thử 1 tháng'}, month:{name:'Gói 1 tháng'}, quarter:{name:'Gói 3 tháng'}, halfyear:{name:'Gói 6 tháng'}, year:{name:'Gói 1 năm'} };
+            const tierSelect = onboarding.querySelector('#family-tier');
+            let selectedTier = 'standard';
+            function refreshPrices() {
+                selectedTier = tierSelect.value;
+                Object.entries(terms).forEach(([key,[months,discount]]) => {
+                    const total = Math.round(tiers[selectedTier].price * months * (1-discount));
+                    plans[key].price = money(total) + ' / ' + months + ' tháng · Không tự gia hạn. Demo không thu tiền.';
+                    onboarding.querySelector('[data-price="'+key+'"]').textContent = money(total);
+                });
+                plans.trial.price = '0đ tháng đầu; sau đó tự gia hạn Standard 49.000đ/tháng. Hủy trước kỳ gia hạn. Demo không thu tiền.';
+            }
+            tierSelect.addEventListener('change', refreshPrices);
+            refreshPrices();
             let selectedPlan = 'trial';
             let onboardingTrigger = plansOpen;
             let onboardingOverflow = '';
@@ -1954,7 +2029,7 @@
                 plansOpen.textContent = 'Xem gói';
                 openButton.className = 'btn btn-primary';
                 openButton.textContent = createdChildren.length ? 'Quản lý các con' : 'Tạo tài khoản con đầu tiên';
-                root.querySelector('#family-parent-summary-text').textContent = plans[activePlan].name + ' · ' + createdChildren.length + ' tài khoản con';
+                root.querySelector('#family-parent-summary-text').textContent = tiers[activeTier].name + ' · ' + plans[activePlan].name + ' · ' + createdChildren.length + '/' + tiers[activeTier].cap + ' tài khoản con';
                 root.querySelector('#family-empty').hidden = createdChildren.length > 0;
                 const overview = root.querySelector('#family-overview-list');
                 overview.replaceChildren();
@@ -2030,6 +2105,7 @@
                 consent.checked = false;
                 consent.removeAttribute('aria-invalid');
                 onboarding.querySelector('#family-activate-error').textContent = '';
+                if (step === 'child' && createdChildren.length >= tiers[activeTier].cap) step = 'plans';
                 if (step === 'child') prepareChildForm();
                 onboardingOverflow = document.body.style.overflow;
                 onboarding.showModal();
@@ -2045,9 +2121,11 @@
             onboarding.querySelector('#family-plan-back').addEventListener('click', () => showStep('plans'));
             onboarding.querySelectorAll('[data-family-plan]').forEach(button => button.addEventListener('click', () => {
                 selectedPlan = button.dataset.familyPlan;
-                onboarding.querySelector('#family-selected-benefits').textContent = 'Quyền lợi đề xuất: ' + { trial: '1 hồ sơ con, biểu đồ 7 ngày.', quarter: '2 hồ sơ con, lịch sử 30 ngày và báo cáo tháng.', halfyear: '3 hồ sơ con, lịch sử 90 ngày, lịch chơi riêng và so sánh tuần.', year: '5 hồ sơ con, lịch sử 365 ngày, xuất báo cáo và tổng kết năm.' }[selectedPlan] + ' Hạn mức hồ sơ và tính năng nâng cao chưa áp dụng trong demo quản lý.';
-                onboarding.querySelector('#family-consent-text').textContent = selectedPlan === 'trial' ? 'Tôi đã đọc điều kiện mô phỏng: miễn phí tháng đầu, sau đó tự gia hạn 30.000đ/tháng; hủy trước kỳ gia hạn để không bị tính phí. Demo không thu tiền thật.' : 'Tôi đồng ý với giá và thời hạn mô phỏng đã chọn. Gói không tự gia hạn; demo không thu tiền thật.';
-                onboarding.querySelector('#family-selected-plan').textContent = plans[selectedPlan].name;
+                if (selectedPlan === 'trial') tierSelect.value = 'standard';
+                refreshPrices();
+                onboarding.querySelector('#family-selected-benefits').textContent = tiers[selectedTier].name + ': tối đa ' + tiers[selectedTier].cap + ' con, lịch sử ' + tiers[selectedTier].days + ' ngày. Quy tắc chỉ lưu trong phiên demo; chưa thực thi trên game thật.';
+                onboarding.querySelector('#family-consent-text').textContent = selectedPlan === 'trial' ? 'Tôi đồng ý điều kiện demo: tháng đầu 0đ, sau đó tự gia hạn Standard 49.000đ/tháng; hủy trước kỳ gia hạn. Không thu tiền thật.' : 'Tôi đồng ý giá và thời hạn mô phỏng. Gói không tự gia hạn; không thu tiền thật.';
+                onboarding.querySelector('#family-selected-plan').textContent = tiers[selectedTier].name + ' · ' + plans[selectedPlan].name;
                 onboarding.querySelector('#family-selected-price').textContent = plans[selectedPlan].price;
                 onboarding.querySelector('#family-activate-submit').textContent = parentActivated ? 'Xác nhận gói · Demo' : 'Kích hoạt cha mẹ · Demo';
                 consent.checked = false;
@@ -2067,6 +2145,8 @@
                     consent.focus();
                     return;
                 }
+                if (createdChildren.length > tiers[selectedTier].cap) { onboarding.querySelector('#family-activate-error').textContent = 'Gói này chỉ hỗ trợ ' + tiers[selectedTier].cap + ' con. Giữ gói hiện tại hoặc chọn gói đủ chỗ; không xóa hồ sơ con.'; return; }
+                activeTier = selectedTier;
                 parentActivated = true;
                 activePlan = selectedPlan;
                 updateParentSummary();
@@ -2131,6 +2211,7 @@
                 event.preventDefault();
                 if (!parentActivated || onboarding.querySelector('[data-flow-panel="child"]').hidden) return;
                 clearCreateError();
+                if (createdChildren.length >= tiers[activeTier].cap) { createError.textContent = 'Đã đủ ' + tiers[activeTier].cap + ' tài khoản con của gói ' + tiers[activeTier].name + '. Chọn gói cao hơn để thêm con.'; return; }
                 const name = nameInput.value.trim();
                 const username = usernameInput.value.trim().toLowerCase();
                 const minutes = Number(newLimit.value);

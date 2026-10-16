@@ -49,6 +49,61 @@ test('child birth date, preset preview/apply and editable content rules', async 
 });
 let browser, server, url;
 
+test('tiers are independent of terms; caps, downgrade protection, schedule and CSV', async () => {
+    const page = await browser.newPage({ acceptDownloads: true });
+    await page.goto(url);
+    await page.locator('#family-plans-open').click();
+    for (const [tier, prices] of [['standard',['49.000đ','132.300đ','249.900đ','441.000đ']],['pro',['79.000đ','213.300đ','402.900đ','711.000đ']],['plus',['109.000đ','294.300đ','555.900đ','981.000đ']]]) {
+        await page.locator('#family-tier').selectOption(tier);
+        assert.deepEqual(await page.locator('[data-price]').allTextContents(), prices);
+    }
+    await page.locator('[data-family-plan="month"]').click();
+    await page.locator('#family-demo-consent').check();
+    await page.locator('#family-activate-submit').click();
+    for (let i=0;i<5;i++) {
+        if(i) await page.locator('#family-create-another').click();
+        await page.locator('#family-new-name').fill('Con mẫu '+i);
+        await page.locator('#family-new-dob').fill('2018-06-15');
+        await page.locator('#family-new-gender').selectOption('other');
+        await page.locator('#family-new-password').fill('Example1234');
+        await page.locator('#family-confirm-password').fill('Example1234');
+        await page.locator('#family-create-form button[type="submit"]').click();
+        assert.equal(await page.locator('[data-flow-panel="success"]').isVisible(),true);
+    }
+    await page.locator('#family-create-another').click();
+    await page.locator('#family-create-form button[type="submit"]').click();
+    assert.match(await page.locator('#family-create-error').textContent(),/Đã đủ 5/);
+    await page.locator('#family-onboarding-close').click();
+    await page.locator('#family-preview-open').click();
+    assert.equal(await page.locator('#family-advanced').isVisible(),true);
+    await page.locator('[data-weekday="0"]').fill('35');
+    await page.locator('#family-rest-start').fill('21:00');
+    await page.locator('#family-rest-end').fill('07:00');
+    await page.locator('#family-demo-save').click();
+    await page.locator('#family-history-days').selectOption('90');
+    assert.match(await page.locator('#family-history-summary').textContent(),/90 ngày/);
+    assert.equal(await page.locator('#family-comparison').isVisible(),true);
+    const downloadEvent=page.waitForEvent('download');
+    await page.locator('#family-export').click();
+    const download=await downloadEvent;
+    const csv=fs.readFileSync(await download.path(),'utf8');
+    assert.equal(csv.trim().split('\r\n').length,91);
+    assert.match(csv,/date,minutes,source/);
+    await page.locator('#family-preview-close').click();
+    await page.locator('#family-preview-open').click();
+    assert.equal(await page.locator('[data-weekday="0"]').inputValue(),'35');
+    await page.locator('#family-preview-close').click();
+    await page.locator('#family-plans-open').click();
+    await page.locator('#family-tier').selectOption('standard');
+    await page.locator('[data-family-plan="year"]').click();
+    await page.locator('#family-demo-consent').check();
+    await page.locator('#family-activate-submit').click();
+    assert.match(await page.locator('#family-activate-error').textContent(),/không xóa hồ sơ/);
+    await page.locator('#family-onboarding-close').click();
+    assert.match(await page.locator('#family-parent-summary-text').textContent(),/Pro\+.*5\/5/);
+    await page.close();
+});
+
 before(async () => {
     fs.mkdirSync(output, { recursive: true });
     server = http.createServer((request, response) => {
@@ -157,7 +212,7 @@ test('responsive layout, dialog overflow, touch targets and DOM references', asy
         if ([390, 1440].includes(width)) await page.screenshot({ path: path.join(output, `profile-${width}.png`), fullPage: true });
         await page.locator('#family-preview-open').click();
         assert.equal(await page.locator('#family-preview').evaluate(e => e.scrollWidth <= e.clientWidth), true, `dialog overflow ${width}`);
-        const targets = await page.locator('#family-preview button').evaluateAll(elements => elements.map(e => ({ width: e.getBoundingClientRect().width, height: e.getBoundingClientRect().height })));
+        const targets = await page.locator('#family-preview button:visible').evaluateAll(elements => elements.map(e => ({ width: e.getBoundingClientRect().width, height: e.getBoundingClientRect().height })));
         assert.ok(targets.every(e => e.width >= 44 && e.height >= 44), `touch targets ${width}`);
         if ([390, 1440].includes(width)) await page.screenshot({ path: path.join(output, `family-${width}.png`) });
         await page.locator('#family-preview-close').click();
@@ -191,14 +246,14 @@ test('plans, demo activation and child creation work end to end without network 
     await page.goto(url);
     await page.locator('#family-plans-open').click();
     assert.equal(await page.locator('.family-plan').count(), 4);
-    assert.equal(await page.locator('.family-plan-price').first().textContent(), '0đ');
+    assert.equal(await page.locator('.family-plan-price').first().textContent(), '49.000đ');
     await page.screenshot({ path: path.join(output, 'plans-1440.png') });
     for (const [key, name] of [['quarter', 'Gói 3 tháng'], ['halfyear', 'Gói 6 tháng'], ['year', 'Gói 1 năm'], ['trial', 'Dùng thử 1 tháng']]) {
         await page.locator(`[data-family-plan="${key}"]`).click();
-        assert.equal(await page.locator('#family-selected-plan').textContent(), name);
-        const expectedPrice = { trial: '0đ', quarter: '89.000đ', halfyear: '159.000đ', year: '269.000đ' }[key];
+        assert.equal(await page.locator('#family-selected-plan').textContent(), 'Standard · ' + name);
+        const expectedPrice = { trial: '0đ', quarter: '132.300đ', halfyear: '249.900đ', year: '441.000đ' }[key];
         assert.ok((await page.locator('#family-selected-price').textContent()).startsWith(expectedPrice));
-        assert.match(await page.locator('#family-consent-text').textContent(), key === 'trial' ? /tự gia hạn 30.000đ\/tháng/ : /không tự gia hạn/);
+        assert.match(await page.locator('#family-consent-text').textContent(), key === 'trial' ? /tự gia hạn Standard 49.000đ\/tháng/ : /không tự gia hạn/);
         assert.equal(await page.locator('#family-demo-consent').isChecked(), false);
         await page.locator('#family-plan-back').click();
     }
@@ -226,8 +281,13 @@ test('plans, demo activation and child creation work end to end without network 
     await page.locator('#family-create-form button[type="submit"]').click();
     assert.equal(await page.locator('#family-created-username').textContent(), 'demo_gau');
     assert.equal(await page.locator('#family-new-password').inputValue(), '');
-    assert.match(await page.locator('#family-parent-summary-text').textContent(), /1 tài khoản con/);
-    await page.locator('#family-create-another').click();
+    assert.match(await page.locator('#family-parent-summary-text').textContent(), /1\/1 tài khoản con/);
+    await page.locator('#family-onboarding-close').click();
+    await page.locator('#family-plans-open').click();
+    await page.locator('#family-tier').selectOption('pro');
+    await page.locator('[data-family-plan="month"]').click();
+    await page.locator('#family-demo-consent').check();
+    await page.locator('#family-activate-submit').click();
     await page.locator('#family-new-name').fill('Cá Nhỏ');
     await page.locator('#family-new-dob').fill('2018-06-15');
     await page.locator('#family-new-gender').selectOption('other');
@@ -257,7 +317,7 @@ test('plans, demo activation and child creation work end to end without network 
     await page.locator('#family-demo-consent').check();
     await page.locator('#family-activate-submit').click();
     await page.locator('#family-create-later').click();
-    assert.match(await page.locator('#family-parent-summary-text').textContent(), /Gói 1 năm · 2 tài khoản con/);
+    assert.match(await page.locator('#family-parent-summary-text').textContent(), /Pro · Gói 1 năm · 2\/3 tài khoản con/);
     assert.deepEqual(await page.evaluate(() => [localStorage.length, sessionStorage.length]), [0, 0]);
     assert.deepEqual(errors, []);
     assert.deepEqual(requests, []);
@@ -279,7 +339,7 @@ test('onboarding mobile, keyboard, cancel and activated empty state', async () =
             assert.equal(await page.evaluate(() => !!document.activeElement.closest('#family-onboarding')), true);
         }
         await page.keyboard.press('Escape');
-        assert.equal(await page.locator('#family-plans-open').evaluate(e => e === document.activeElement), true);
+        await page.waitForFunction(() => document.activeElement.id === 'family-plans-open');
     }
     await page.setViewportSize({ width: 390, height: 900 });
     await page.locator('#family-plans-open').click();
@@ -289,7 +349,7 @@ test('onboarding mobile, keyboard, cancel and activated empty state', async () =
     await page.screenshot({ path: path.join(output, 'create-child-390.png') });
     assert.equal(await page.locator('#family-onboarding').evaluate(e => e.scrollWidth <= e.clientWidth), true);
     await page.locator('#family-create-later').click();
-    assert.match(await page.locator('#family-parent-summary-text').textContent(), /0 tài khoản con/);
+    assert.match(await page.locator('#family-parent-summary-text').textContent(), /0\/1 tài khoản con/);
     await page.locator('#family-preview-open').click();
     assert.equal(await page.locator('#family-create-form').isVisible(), true);
     assert.equal(await page.locator('#family-preview').evaluate(e => e.open), false);
@@ -387,7 +447,7 @@ test('password confirmation, compact active overview and zero history for new ch
         if (width === 390) await page.locator('#parent-section').screenshot({ path: path.join(output, 'active-family-390.png') });
     }
     await page.locator('#family-add-child').click();
-    await page.locator('#family-new-password').fill('Cancelled-1234');
+    assert.equal(await page.locator('#family-tier').isVisible(), true);
     await page.locator('#family-onboarding-close').click();
     await page.locator('#family-add-child').click();
     assert.equal(await page.locator('#family-new-password').inputValue(), '');
