@@ -1,5 +1,7 @@
 # Giá và quyền lợi mô phỏng
 
+> Tài liệu lịch sử. Luồng hiện tại được thay thế bởi docs/unified-family.md: Standard / Pro / Pro+ và kỳ hạn độc lập. Không dùng các giá/quyền lợi theo kỳ bên dưới cho bản hiện tại.
+
 ## Cập nhật phân tầng quyền lợi
 
 Bảng gói mới bỏ giá quy đổi mỗi tháng, nhấn tổng giá và đặt nút chọn trước danh sách quyền lợi. Gói 6 tháng được đánh dấu “Đề xuất”, không dùng tuyên bố phổ biến không có dữ liệu. Tham khảo cách kế thừa quyền lợi của https://chatgpt.com/pricing/.
