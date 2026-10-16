@@ -1,5 +1,13 @@
 # Giá và quyền lợi mô phỏng
 
+## Cập nhật phân tầng quyền lợi
+
+Bảng gói mới bỏ giá quy đổi mỗi tháng, nhấn tổng giá và đặt nút chọn trước danh sách quyền lợi. Gói 6 tháng được đánh dấu “Đề xuất”, không dùng tuyên bố phổ biến không có dữ liệu. Tham khảo cách kế thừa quyền lợi của https://chatgpt.com/pricing/.
+
+Quyền lợi đề xuất mới thay thế phương án mọi gói giống nhau bên dưới: dùng thử 1 hồ sơ/biểu đồ 7 ngày; 3 tháng 2 hồ sơ/lịch sử 30 ngày/báo cáo tháng; 6 tháng 3 hồ sơ/lịch sử 90 ngày/lịch chơi từng ngày/so sánh tuần; 1 năm 5 hồ sơ/lịch sử 365 ngày/xuất báo cáo/tổng kết năm. Các gói kế thừa quyền lợi gói thấp hơn.
+
+Đây là thay đổi thiết kế bảng gói, chưa triển khai hạn mức hồ sơ hoặc tính năng nâng cao trong quản lý. Những quyền lợi này có dấu * và chú thích ngay dưới bảng, đồng thời được nhắc ở bước xác nhận. Gia hạn dùng thử 30.000đ/tháng giữ quyền lợi cơ bản dùng thử. Cần chốt chính sách và triển khai enforcement, lưu lịch sử/báo cáo trước production.
+
 Cập nhật thay thế thông tin “Giá sẽ công bố” và “không tự gia hạn” của gói dùng thử trong tài liệu cũ.
 
 - Dùng thử: đầy đủ tính năng, 0đ tháng đầu; điều kiện mô phỏng tự gia hạn 30.000đ/tháng sau đó, hủy trước kỳ gia hạn để không bị tính phí.
