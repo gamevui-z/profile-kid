@@ -155,7 +155,10 @@ test('plans, demo activation and child creation work end to end without network 
     for (const [key, name] of [['quarter', 'Gói 3 tháng'], ['halfyear', 'Gói 6 tháng'], ['year', 'Gói 1 năm'], ['trial', 'Dùng thử 1 tháng']]) {
         await page.locator(`[data-family-plan="${key}"]`).click();
         assert.equal(await page.locator('#family-selected-plan').textContent(), name);
-        assert.match(await page.locator('#family-selected-price').textContent(), key === 'trial' ? /0đ/ : /Giá sẽ công bố/);
+        const expectedPrice = { trial: '0đ', quarter: '89.000đ', halfyear: '159.000đ', year: '269.000đ' }[key];
+        assert.ok((await page.locator('#family-selected-price').textContent()).startsWith(expectedPrice));
+        assert.match(await page.locator('#family-consent-text').textContent(), key === 'trial' ? /tự gia hạn 30.000đ\/tháng/ : /không tự gia hạn/);
+        assert.equal(await page.locator('#family-demo-consent').isChecked(), false);
         await page.locator('#family-plan-back').click();
     }
     await page.locator('[data-family-plan="trial"]').click();
