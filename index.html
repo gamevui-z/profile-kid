@@ -926,6 +926,7 @@
         .family-plans { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; margin: 20px 0; }
         .family-plan { display: flex; flex-direction: column; min-width: 0; gap: 14px; padding: 18px 14px; border: 1px solid var(--border); border-radius: var(--radius-md); }
         .family-plan-featured { border: 2px solid var(--primary-ink); background: #fff5f7; }
+        #family-recommendations [aria-pressed="true"] { border-color: var(--primary-ink); background: var(--primary-light); color: var(--primary-ink); box-shadow: inset 0 0 0 1px var(--primary-ink); }
         .family-plan-badge { min-height: 24px; font-size: .72rem; font-weight: 700; color: var(--primary-ink); }
         .family-plan-kicker { font-size: .75rem; font-weight: 600; color: var(--text-muted); }
         .family-plan h4 { font-size: 1rem; line-height: 1.4; font-weight: 650; }
@@ -1393,7 +1394,7 @@
         </div>
         <div class="family-dialog-body">
             <p id="family-onboarding-note" class="family-notice">Demo · Không thu tiền hoặc tạo tài khoản thật. Chỉ dùng thông tin mẫu.</p>
-            <ol class="family-flow-steps" aria-label="Các bước thiết lập"><li data-flow-step="plans" aria-current="step">1. Chọn gói</li><li data-flow-step="activate">2. Kích hoạt cha mẹ</li><li data-flow-step="child">3. Tạo tài khoản con</li></ol>
+            <ol class="family-flow-steps" aria-label="Các bước thiết lập"><li data-flow-step="plans" aria-current="step">1. Chọn gói</li><li data-flow-step="activate">2. Kích hoạt cha mẹ</li><li data-flow-step="child">3. Tạo tài khoản con</li><li data-flow-step="success">4. Thiết lập cho con</li></ol>
             <section data-flow-panel="plans" aria-labelledby="family-plans-title">
                 <h3 id="family-plans-title" class="family-flow-title" tabindex="-1">Chọn gói cho gia đình</h3>
                 <p class="family-intro">Chọn cấp tính năng, rồi chọn thời hạn. Mua lâu hơn chỉ giảm giá.</p>
@@ -1425,7 +1426,7 @@
             </section>
             <section data-flow-panel="child" aria-labelledby="family-create-title" hidden>
                 <h3 id="family-create-title" class="family-flow-title" tabindex="-1">Tạo tài khoản con đầu tiên</h3>
-                <p id="family-create-intro" class="family-notice">Đặt thông tin đăng nhập và quy tắc cho con.</p>
+                <p id="family-create-intro" class="family-notice">Nhập thông tin tài khoản. Sau khi tạo, chọn thiết lập phù hợp với con.</p>
                 <form id="family-create-form" novalidate autocomplete="off">
                     <div class="family-fields">
                         <div class="form-group"><label for="family-new-name">Tên hiển thị của con</label><input id="family-new-name" type="text" maxlength="30" required placeholder="Ví dụ: Gấu Nhỏ" aria-describedby="family-name-hint family-create-error"><span id="family-name-hint" class="field-hint">2–30 ký tự, dùng bí danh mẫu.</span></div>
@@ -1434,12 +1435,8 @@
                         <div class="form-group"><label for="family-confirm-password">Nhập lại mật khẩu</label><input id="family-confirm-password" type="password" minlength="8" maxlength="64" autocomplete="new-password" required aria-describedby="family-create-error"></div>
                         <div class="form-group"><label for="family-new-dob">Ngày sinh</label><input id="family-new-dob" type="date" required aria-describedby="family-child-age family-create-error"><span id="family-child-age" class="field-hint" aria-live="polite">Nhập ngày sinh để tính tuổi.</span></div>
                         <div class="form-group"><label for="family-new-gender">Giới tính</label><select id="family-new-gender" required><option value="">Chọn giới tính</option><option value="male">Nam</option><option value="female">Nữ</option><option value="other">Không tiết lộ</option></select></div>
-                        <div class="form-group form-group-full" id="family-recommendations" hidden><span class="field-label">Gợi ý theo nhóm tuổi</span><div class="family-actions"><button type="button" class="btn btn-secondary" data-preset="preschool" aria-pressed="false">Mẫu giáo · ≤5 tuổi</button><button type="button" class="btn btn-secondary" data-preset="young" aria-pressed="false">Trẻ nhỏ · 6–12 tuổi</button><button type="button" class="btn btn-secondary" data-preset="teen" aria-pressed="false">Trẻ lớn · 13–16 tuổi</button></div><p id="family-preset-content" class="family-notice" aria-live="polite">Chọn nhóm để xem nội dung gợi ý.</p><button type="button" class="btn btn-secondary" id="family-apply-preset" disabled>Áp dụng gợi ý</button><span class="field-hint">Thiết lập mẫu để cha mẹ cân nhắc; không phải khuyến nghị sức khỏe. Áp dụng sẽ thay các quy tắc bên dưới.</span></div>
-                        <div class="form-group"><label for="family-new-age">Game được hiển thị</label><select id="family-new-age"><option value="0">Chỉ game 0+</option><option value="12">Game ≤12 tuổi</option><option value="16">Game ≤16 tuổi</option><option value="none">Không giới hạn</option></select></div>
-                        <div class="form-group"><label for="family-new-limit">Hạn mức mỗi ngày (phút)</label><input id="family-new-limit" type="number" min="0" max="180" step="1" inputmode="numeric" value="60" required aria-describedby="family-new-limit-hint family-create-error"><span id="family-new-limit-hint" class="field-hint">0–180 phút/ngày trong demo.</span></div>
                     </div>
                     
-                    <div class="form-grid"><div class="form-group"><label for="family-new-categories">Danh mục được phép</label><select id="family-new-categories"><option value="all">Tất cả danh mục phù hợp tuổi</option><option value="learning">Học tập, tô màu, ghép hình</option><option value="puzzle">Trí tuệ, sáng tạo, thể thao</option><option value="strategy">Trí tuệ, chiến thuật, thể thao</option></select></div><div class="form-group"><label for="family-new-keywords">Từ khóa chặn</label><input id="family-new-keywords" type="text" maxlength="200" placeholder="Ví dụ: kinh dị, bạo lực"><span class="field-hint">Phân tách bằng dấu phẩy. Demo chỉ lưu quy tắc, chưa lọc danh mục game thật.</span></div></div>
                     <p id="family-create-error" class="family-error" role="alert"></p>
                     <div class="family-actions"><button type="button" id="family-create-later" class="btn btn-secondary">Để sau</button><button type="submit" class="btn btn-primary">Tạo tài khoản con · Demo</button></div>
                 </form>
@@ -1447,9 +1444,11 @@
             <section data-flow-panel="success" aria-labelledby="family-created-title" hidden>
                 <h3 id="family-created-title" class="family-flow-title" tabindex="-1">Đã tạo tài khoản con · Demo</h3>
                 <p id="family-created-message" class="family-intro"></p>
+                        <div class="form-group form-group-full" id="family-recommendations"><span class="field-label">Chọn thiết lập theo độ tuổi</span><div class="family-actions"><button type="button" class="btn btn-secondary" data-preset="preschool" aria-pressed="false">Mẫu giáo · ≤5 tuổi</button><button type="button" class="btn btn-secondary" data-preset="young" aria-pressed="false">Trẻ nhỏ · 6–12 tuổi</button><button type="button" class="btn btn-secondary" data-preset="teen" aria-pressed="false">Trẻ lớn · 13–16 tuổi</button></div><p id="family-preset-content" class="family-notice" aria-live="polite">Chọn nhóm để xem nội dung gợi ý.</p><button type="button" class="btn btn-primary" id="family-apply-preset" disabled>Áp dụng và mở cài đặt</button><span class="field-hint">Thiết lập mẫu để cha mẹ cân nhắc; không phải khuyến nghị sức khỏe. Có thể chỉnh lại từng quy tắc trong cài đặt tài khoản con.</span></div>
+                <p id="family-pending-policy" class="family-note">Nếu để sau: chỉ game 0+, hạn mức 0 phút/ngày, tất cả danh mục phù hợp tuổi, chưa chặn từ khóa. Hãy hoàn tất thiết lập trước khi cho con chơi.</p>
                 <dl class="family-created-credentials"><div><dt>Tên đăng nhập mẫu</dt><dd><code id="family-created-username"></code></dd></div></dl>
                 <p class="family-note">Mật khẩu đã được kiểm tra, không lưu trong demo. Hồ sơ mất khi tải lại trang.</p>
-                <div class="family-actions" style="margin-top: 20px"><button type="button" id="family-create-another" class="btn btn-secondary">Tạo thêm tài khoản con</button><button type="button" id="family-manage-created" class="btn btn-primary">Quản lý tài khoản con</button></div>
+                <div class="family-actions" style="margin-top: 20px"><button type="button" id="family-setup-later" class="btn btn-secondary">Thiết lập sau</button><button type="button" id="family-create-another" class="btn btn-secondary">Tạo thêm tài khoản con</button><button type="button" id="family-manage-created" class="btn btn-primary">Tự chỉnh trong cài đặt</button></div>
             </section>
         </div>
     </dialog>
@@ -1984,7 +1983,7 @@
             const consent = onboarding.querySelector('#family-demo-consent');
             const nameInput = onboarding.querySelector('#family-new-name');
             const usernameInput = onboarding.querySelector('#family-new-username');
-            const newLimit = onboarding.querySelector('#family-new-limit');
+
             const password = onboarding.querySelector('#family-new-password');
             const confirmPassword = onboarding.querySelector('#family-confirm-password');
             const passwordToggle = onboarding.querySelector('#family-password-toggle');
@@ -2092,7 +2091,7 @@
             function showStep(step) {
                 onboarding.querySelectorAll('[data-flow-panel]').forEach(panel => { panel.hidden = panel.dataset.flowPanel !== step; });
                 onboarding.querySelectorAll('[data-flow-step]').forEach(item => {
-                    if (item.dataset.flowStep === (step === 'success' ? 'child' : step)) item.setAttribute('aria-current', 'step');
+                    if (item.dataset.flowStep === step) item.setAttribute('aria-current', 'step');
                     else item.removeAttribute('aria-current');
                 });
                 onboarding.scrollTop = 0;
@@ -2178,7 +2177,7 @@
             }
             dob.addEventListener('input', () => {
                 const years = childAge();
-                recommendations.hidden = years === null;
+
                 onboarding.querySelector('#family-child-age').textContent = years === null ? 'Nhập ngày sinh hợp lệ của trẻ dưới 18 tuổi.' : 'Tuổi hiện tại: ' + years + ' tuổi.';
                 if (years !== null && years <= 16) previewPreset(years <= 5 ? 'preschool' : years <= 12 ? 'young' : 'teen');
                 else { chosenPreset = null; onboarding.querySelector('#family-apply-preset').disabled = true; onboarding.querySelector('#family-preset-content').textContent = '17 tuổi: cha mẹ tự chọn quy tắc hoặc xem một nhóm tham khảo.'; onboarding.querySelectorAll('[data-preset]').forEach(button => button.setAttribute('aria-pressed','false')); }
@@ -2187,11 +2186,12 @@
             onboarding.querySelector('#family-apply-preset').addEventListener('click', () => {
                 if (!chosenPreset) return;
                 const preset = presets[chosenPreset];
-                onboarding.querySelector('#family-new-age').value = preset.age;
-                newLimit.value = preset.limit;
-                onboarding.querySelector('#family-new-categories').value = preset.categories;
-                onboarding.querySelector('#family-new-keywords').value = preset.keywords;
-                onboarding.querySelector('#family-preset-content').textContent = 'Đã áp dụng ' + preset.label + '. ' + preset.description;
+                const child = createdChildren[createdChildren.length - 1];
+                if (!child || onboarding.querySelector('[data-flow-panel="success"]').hidden) return;
+                Object.assign(child, { age:preset.age, limit:preset.limit, categories:preset.categories, keywords:preset.keywords });
+                updateParentSummary();
+                manageAfterClose = true;
+                onboarding.close();
             });
             createForm.addEventListener('input', clearCreateError);
             function resetPasswordVisibility() {
@@ -2214,7 +2214,7 @@
                 if (createdChildren.length >= tiers[activeTier].cap) { createError.textContent = 'Đã đủ ' + tiers[activeTier].cap + ' tài khoản con của gói ' + tiers[activeTier].name + '. Chọn gói cao hơn để thêm con.'; return; }
                 const name = nameInput.value.trim();
                 const username = usernameInput.value.trim().toLowerCase();
-                const minutes = Number(newLimit.value);
+
                 function reject(input, message) {
                     createError.textContent = message;
                     input.setAttribute('aria-invalid', 'true');
@@ -2223,20 +2223,21 @@
                 if (Array.from(name).length < 2 || Array.from(name).length > 30) return reject(nameInput, 'Bí danh cần có từ 2 đến 30 ký tự.');
                 if (!/^[a-z0-9_]{4,24}$/.test(username)) return reject(usernameInput, 'Tên đăng nhập cần 4–24 ký tự gồm chữ không dấu, số hoặc dấu gạch dưới.');
                 if (createdChildren.some(child => child.username === username)) return reject(usernameInput, 'Tên đăng nhập này đã có trong phiên demo. Hãy chọn tên khác.');
-                if (!newLimit.value.trim() || !Number.isInteger(minutes) || minutes < 0 || minutes > 180 || !newLimit.validity.valid) return reject(newLimit, 'Hạn mức minh họa phải là số nguyên từ 0 đến 180 phút.');
                 if (password.value.length < 8 || password.value.length > 64 || !password.value.trim()) return reject(password, 'Mật khẩu cần từ 8 đến 64 ký tự.');
                 if (password.value !== confirmPassword.value) return reject(confirmPassword, 'Mật khẩu nhập lại chưa khớp.');
                 if (childAge() === null) return reject(dob, 'Nhập ngày sinh hợp lệ của trẻ dưới 18 tuổi.');
                 if (!gender.value) return reject(gender, 'Chọn giới tính hoặc Không tiết lộ.');
-                createdChildren.push({ name, username, dob: dob.value, gender: gender.value, categories: onboarding.querySelector('#family-new-categories').value, keywords: onboarding.querySelector('#family-new-keywords').value.trim(), age: onboarding.querySelector('#family-new-age').value, limit: minutes, used: 0, week: [0, 0, 0, 0, 0, 0, 0] });
+                createdChildren.push({ name, username, dob: dob.value, gender: gender.value, categories: 'all', keywords: '', age: '0', limit: 0, used: 0, week: [0, 0, 0, 0, 0, 0, 0] });
                 // Validate the creation UI without retaining a plaintext demo password.
                 password.value = confirmPassword.value = '';
                 resetPasswordVisibility();
                 updateParentSummary();
-                onboarding.querySelector('#family-created-message').textContent = name + ' đã sẵn sàng để quản lý.';
+                onboarding.querySelector('#family-created-message').textContent = name + ' đã được tạo. Chọn nhóm để xem gợi ý, rồi áp dụng hoặc tự chỉnh trong cài đặt.';
                 onboarding.querySelector('#family-created-username').textContent = username;
+                recommendations.hidden = false;
                 showStep('success');
             });
+            onboarding.querySelector('#family-setup-later').addEventListener('click', () => onboarding.close());
             onboarding.querySelector('#family-create-another').addEventListener('click', () => { prepareChildForm(); showStep('child'); });
             onboarding.querySelector('#family-manage-created').addEventListener('click', () => { manageAfterClose = true; onboarding.close(); });
             onboarding.addEventListener('close', () => {
