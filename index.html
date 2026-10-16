@@ -919,15 +919,23 @@
         .family-flow-steps [aria-current="step"] { color: var(--primary-ink); font-weight: 700; }
         .family-plans { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; margin: 20px 0; }
         .family-plan { display: flex; flex-direction: column; min-width: 0; gap: 14px; padding: 18px 14px; border: 1px solid var(--border); border-radius: var(--radius-md); }
-        .family-plan:first-child { border-color: var(--primary-border); background: var(--primary-light); }
-        .family-plan h4 { font-size: 1rem; }
-        .family-plan-price { font-size: 1.08rem; font-weight: 800; line-height: 1.4; }
+        .family-plan-featured { border: 2px solid var(--primary-ink); background: #fff5f7; }
+        .family-plan-badge { min-height: 24px; font-size: .72rem; font-weight: 700; color: var(--primary-ink); }
+        .family-plan-kicker { font-size: .75rem; font-weight: 600; color: var(--text-muted); }
+        .family-plan h4 { font-size: 1rem; line-height: 1.4; font-weight: 650; }
+        #family-onboarding .family-dialog-header h2 { font-size: 1.35rem; line-height: 1.35; }
+        #family-plans-title { font-size: 1.125rem; line-height: 1.4; }
+        .family-plan-price { font-size: clamp(1.5rem, 2.5vw, 1.9rem); font-weight: 750; letter-spacing: -.035em; line-height: 1.2; }
         .family-plan p { font-size: .8rem; line-height: 1.6; color: var(--text-muted); }
         .family-plan-benefits { padding-left: 18px; font-size: .78rem; line-height: 1.6; }
         .family-plan-benefits li + li { margin-top: 6px; }
         .family-plan .family-plan-unit { color: var(--primary-ink); font-weight: 700; }
         .family-plan-renewal { padding-top: 12px; border-top: 1px solid var(--border); }
-        .family-plan .btn { margin-top: auto; padding: 10px; }
+        .family-plan .btn { padding: 10px; }
+        .family-plan-renewal { margin-top: auto; }
+        .family-plan-benefits { list-style: none; padding-left: 0; }
+        .family-plan-benefits li { position: relative; padding-left: 18px; }
+        .family-plan-benefits li::before { content: "✓"; position: absolute; left: 0; color: var(--primary-ink); }
         .family-confirm-box { margin: 20px 0; padding: 18px; border-radius: var(--radius-md); border: 1px solid var(--primary-border); background: var(--primary-light); line-height: 1.7; }
         .family-consent { display: flex; align-items: flex-start; gap: 10px; min-height: 44px; margin: 18px 0; cursor: pointer; font-weight: 400; line-height: 1.6; }
         .family-consent input { margin-top: 3px; width: 20px; height: 20px; flex-shrink: 0; accent-color: var(--primary-ink); }
@@ -1379,19 +1387,20 @@
             <ol class="family-flow-steps" aria-label="Các bước thiết lập"><li data-flow-step="plans" aria-current="step">1. Chọn gói</li><li data-flow-step="activate">2. Kích hoạt cha mẹ</li><li data-flow-step="child">3. Tạo tài khoản con</li></ol>
             <section data-flow-panel="plans" aria-labelledby="family-plans-title">
                 <h3 id="family-plans-title" class="family-flow-title" tabindex="-1">Chọn thời gian đồng hành</h3>
-                <p class="family-intro">Cùng đầy đủ tính năng quản lý. Chọn kỳ hạn dài hơn để tiết kiệm hơn.</p>
+                <p class="family-intro">Từ những bước đầu đến đồng hành lâu dài — chọn mức hỗ trợ phù hợp với gia đình.</p>
                 <div class="family-plans">
-                    <article class="family-plan"><h4>Dùng thử 1 tháng</h4><div class="family-plan-price">0đ</div><p class="family-plan-unit">Tháng đầu miễn phí</p><p>Trải nghiệm đầy đủ trước khi đồng hành lâu dài.</p><ul class="family-plan-benefits"><li>Tài khoản riêng cho con</li><li>Hạn mức chơi mỗi ngày</li><li>Lọc game theo độ tuổi</li><li>Biểu đồ chơi 7 ngày</li></ul><p class="family-plan-renewal">Sau 1 tháng, tự gia hạn 30.000đ/tháng. Hủy trước kỳ gia hạn để không bị tính phí.</p><button type="button" class="btn btn-primary" data-family-plan="trial">Dùng thử 0đ</button></article>
-                    <article class="family-plan"><h4>Gói 3 tháng</h4><div class="family-plan-price">89.000đ</div><p class="family-plan-unit">≈ 29.667đ/tháng</p><p>Khởi đầu linh hoạt · Thanh toán một lần cho 3 tháng.</p><ul class="family-plan-benefits"><li>Tài khoản riêng cho con</li><li>Hạn mức chơi mỗi ngày</li><li>Lọc game theo độ tuổi</li><li>Biểu đồ chơi 7 ngày</li></ul><p class="family-plan-renewal">Hết 3 tháng, chọn mua tiếp nếu cần. Không tự gia hạn.</p><button type="button" class="btn btn-secondary" data-family-plan="quarter">Chọn 3 tháng</button></article>
-                    <article class="family-plan"><h4>Gói 6 tháng</h4><div class="family-plan-price">159.000đ</div><p class="family-plan-unit">26.500đ/tháng · Tiết kiệm 10,7%</p><p>Tiết kiệm 19.000đ so với 2 gói 3 tháng.</p><ul class="family-plan-benefits"><li>Tài khoản riêng cho con</li><li>Hạn mức chơi mỗi ngày</li><li>Lọc game theo độ tuổi</li><li>Biểu đồ chơi 7 ngày</li></ul><p class="family-plan-renewal">Thanh toán một lần cho 6 tháng. Không tự gia hạn.</p><button type="button" class="btn btn-secondary" data-family-plan="halfyear">Chọn 6 tháng</button></article>
-                    <article class="family-plan"><h4>Gói 1 năm</h4><div class="family-plan-price">269.000đ</div><p class="family-plan-unit">≈ 22.417đ/tháng · Tiết kiệm 24,4%</p><p>Tiết kiệm 87.000đ so với 4 gói 3 tháng.</p><ul class="family-plan-benefits"><li>Tài khoản riêng cho con</li><li>Hạn mức chơi mỗi ngày</li><li>Lọc game theo độ tuổi</li><li>Biểu đồ chơi 7 ngày</li></ul><p class="family-plan-renewal">Thanh toán một lần cho 12 tháng. Không tự gia hạn.</p><button type="button" class="btn btn-secondary" data-family-plan="year">Chọn 1 năm</button></article>
+                    <article class="family-plan"><div class="family-plan-badge"></div><span class="family-plan-kicker">Khám phá</span><h4>Dùng thử 1 tháng</h4><div class="family-plan-price">0đ</div><p class="family-plan-unit">Miễn phí tháng đầu</p><button type="button" class="btn btn-secondary" data-family-plan="trial">Dùng thử 0đ</button><p>Làm quen với cách đồng hành cùng con.</p><ul class="family-plan-benefits"><li>1 hồ sơ con*</li><li>Giới hạn thời gian mỗi ngày</li><li>Chọn mức tuổi game</li><li>Biểu đồ chơi 7 ngày</li></ul><p class="family-plan-renewal">Sau 1 tháng, tự gia hạn 30.000đ/tháng cho quyền lợi cơ bản của gói dùng thử. Hủy trước kỳ gia hạn để không bị tính phí.</p></article>
+                    <article class="family-plan"><div class="family-plan-badge"></div><span class="family-plan-kicker">Cơ bản</span><h4>Gói 3 tháng</h4><div class="family-plan-price">89.000đ</div><p class="family-plan-unit">Cho trọn 3 tháng</p><button type="button" class="btn btn-secondary" data-family-plan="quarter">Chọn 3 tháng</button><p>Thiết lập thói quen cho cả gia đình.</p><ul class="family-plan-benefits"><li>Mọi quyền lợi dùng thử</li><li>Nâng lên 2 hồ sơ con*</li><li>Lịch sử chơi 30 ngày*</li><li>Báo cáo tổng kết mỗi tháng*</li></ul><p class="family-plan-renewal">Thanh toán một lần. Không tự gia hạn.</p></article>
+                    <article class="family-plan family-plan-featured"><div class="family-plan-badge">Đề xuất</div><span class="family-plan-kicker">Nâng cao</span><h4>Gói 6 tháng</h4><div class="family-plan-price">159.000đ</div><p class="family-plan-unit">Tiết kiệm 10,7%</p><button type="button" class="btn btn-primary" data-family-plan="halfyear">Chọn 6 tháng</button><p>Hiểu thói quen, chủ động điều chỉnh.</p><ul class="family-plan-benefits"><li>Mọi quyền lợi gói 3 tháng</li><li>Nâng lên 3 hồ sơ con*</li><li>Lịch sử chơi 90 ngày*</li><li>Lịch chơi riêng từng ngày*</li><li>So sánh hoạt động theo tuần*</li></ul><p class="family-plan-renewal">Thanh toán một lần. Không tự gia hạn.</p></article>
+                    <article class="family-plan"><div class="family-plan-badge">Nhiều quyền lợi nhất</div><span class="family-plan-kicker">Toàn diện</span><h4>Gói 1 năm</h4><div class="family-plan-price">269.000đ</div><p class="family-plan-unit">Tiết kiệm 24,4%</p><button type="button" class="btn btn-secondary" data-family-plan="year">Chọn 1 năm</button><p>Theo sát hành trình của con cả năm.</p><ul class="family-plan-benefits"><li>Mọi quyền lợi gói 6 tháng</li><li>Nâng lên 5 hồ sơ con*</li><li>Lịch sử chơi 365 ngày*</li><li>Xuất báo cáo cho từng con*</li><li>Tổng kết xu hướng cả năm*</li></ul><p class="family-plan-renewal">Thanh toán một lần. Không tự gia hạn.</p></article>
                 </div>
+                <p class="family-note"><strong>* Quyền lợi đề xuất:</strong> hạn mức hồ sơ và các tính năng nâng cao đang được mô phỏng trên bảng gói, chưa áp dụng trong phần quản lý hiện tại.</p>
                 <p class="family-note">Giá mô phỏng. Mức tiết kiệm so với mua nối tiếp gói 3 tháng 89.000đ; tỷ lệ làm tròn 1 chữ số. Demo không thu tiền hoặc thực hiện gia hạn thật.</p>
             </section>
             <section data-flow-panel="activate" aria-labelledby="family-activate-title" hidden>
                 <h3 id="family-activate-title" class="family-flow-title" tabindex="-1">Kích hoạt tài khoản cha mẹ</h3>
                 <p class="family-intro">Mở khu vực quản lý từ hồ sơ hiện tại.</p>
-                <div class="family-confirm-box"><strong id="family-selected-plan"></strong><p id="family-selected-price"></p></div>
+                <div class="family-confirm-box"><strong id="family-selected-plan"></strong><p id="family-selected-price"></p><p id="family-selected-benefits"></p></div>
                 <form id="family-activate-form" novalidate>
                     <label class="family-consent" for="family-demo-consent"><input type="checkbox" id="family-demo-consent" required aria-describedby="family-activate-error"><span id="family-consent-text">Tôi đồng ý trải nghiệm bằng dữ liệu mẫu.</span></label>
                     <p id="family-activate-error" class="family-error" role="alert"></p>
@@ -2023,6 +2032,7 @@
             onboarding.querySelector('#family-plan-back').addEventListener('click', () => showStep('plans'));
             onboarding.querySelectorAll('[data-family-plan]').forEach(button => button.addEventListener('click', () => {
                 selectedPlan = button.dataset.familyPlan;
+                onboarding.querySelector('#family-selected-benefits').textContent = 'Quyền lợi đề xuất: ' + { trial: '1 hồ sơ con, biểu đồ 7 ngày.', quarter: '2 hồ sơ con, lịch sử 30 ngày và báo cáo tháng.', halfyear: '3 hồ sơ con, lịch sử 90 ngày, lịch chơi riêng và so sánh tuần.', year: '5 hồ sơ con, lịch sử 365 ngày, xuất báo cáo và tổng kết năm.' }[selectedPlan] + ' Hạn mức hồ sơ và tính năng nâng cao chưa áp dụng trong demo quản lý.';
                 onboarding.querySelector('#family-consent-text').textContent = selectedPlan === 'trial' ? 'Tôi đã đọc điều kiện mô phỏng: miễn phí tháng đầu, sau đó tự gia hạn 30.000đ/tháng; hủy trước kỳ gia hạn để không bị tính phí. Demo không thu tiền thật.' : 'Tôi đồng ý với giá và thời hạn mô phỏng đã chọn. Gói không tự gia hạn; demo không thu tiền thật.';
                 onboarding.querySelector('#family-selected-plan').textContent = plans[selectedPlan].name;
                 onboarding.querySelector('#family-selected-price').textContent = plans[selectedPlan].price;
