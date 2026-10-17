@@ -13,7 +13,7 @@ test('Free entitlement, bounded birth dates, legal age gates and multiple catego
     const page=await browser.newPage();
     await page.goto(url);
     await page.locator('#family-plans-open').click();
-    assert.deepEqual(await page.locator('.family-tier-grid .family-plan-price').allTextContents(),['0đ','49.000đ','79.000đ','109.000đ']);
+    assert.deepEqual(await page.locator('.family-tier-grid .family-plan-price').allTextContents(),['0đ','49.000đ','79.000đ']);
     await page.locator('[data-tier="free"]').click();
     assert.match(await page.locator('#family-selected-price').textContent(),/0đ/);
     await page.locator('#family-demo-consent').check();
@@ -42,7 +42,10 @@ test('Free entitlement, bounded birth dates, legal age gates and multiple catego
     assert.equal(await page.locator('#family-age option[value="12"]').isDisabled(),true);
     assert.equal(await page.locator('#family-age option[value="18"]').isDisabled(),true);
     assert.equal(await page.locator('#family-advanced').isVisible(),false);
-    assert.equal(await page.locator('[data-category="learning"]').isDisabled(),true);
+    assert.equal(await page.locator('#family-content-controls').isVisible(),false);
+    assert.equal(await page.locator('#family-manage-keywords').isVisible(),false);
+    assert.equal(await page.locator('#family-export').isVisible(),false);
+    assert.equal(await page.locator('#family-comparison').isVisible(),false);
     await page.locator('#family-preview-close').click();
     await page.locator('#family-plans-open').click();
     await page.locator('[data-tier="standard"]').click();
@@ -127,7 +130,7 @@ test('tiers are independent of terms; caps, downgrade protection, schedule and C
     const page = await browser.newPage({ acceptDownloads: true });
     await page.goto(url);
     await page.locator('#family-plans-open').click();
-    for (const [tier, prices] of [['standard',['49.000đ','132.300đ','249.900đ','441.000đ']],['pro',['79.000đ','213.300đ','402.900đ','711.000đ']],['plus',['109.000đ','294.300đ','555.900đ','981.000đ']]]) {
+    for (const [tier, prices] of [['standard',['49.000đ','132.300đ','249.900đ','441.000đ']],['pro',['79.000đ','213.300đ','402.900đ','711.000đ']]]) {
         await page.locator(`[data-tier="${tier}"]`).click();
         assert.deepEqual(await page.locator('[data-price]').allTextContents(), prices);
     }
@@ -174,7 +177,7 @@ test('tiers are independent of terms; caps, downgrade protection, schedule and C
     await page.locator('#family-activate-submit').click();
     assert.match(await page.locator('#family-activate-error').textContent(),/không xóa hồ sơ/);
     await page.locator('#family-onboarding-close').click();
-    assert.match(await page.locator('#family-parent-summary-text').textContent(),/Pro\+.*5\/5/);
+    assert.match(await page.locator('#family-parent-summary-text').textContent(),/Pro.*5\/5/);
     await page.close();
 });
 
@@ -351,7 +354,7 @@ test('plans, demo activation and child creation work end to end without network 
     await page.locator('#family-create-form button[type="submit"]').click();
     assert.equal(await page.locator('#family-created-username').textContent(), 'demo_gau');
     assert.equal(await page.locator('#family-new-password').inputValue(), '');
-    assert.match(await page.locator('#family-parent-summary-text').textContent(), /1\/1 tài khoản con/);
+    assert.match(await page.locator('#family-parent-summary-text').textContent(), /1\/3 tài khoản con/);
     await page.locator('#family-onboarding-close').click();
     await page.locator('#family-plans-open').click();
     await page.locator('[data-tier=\"pro\"]').click();
@@ -387,7 +390,7 @@ test('plans, demo activation and child creation work end to end without network 
     await page.locator('#family-demo-consent').check();
     await page.locator('#family-activate-submit').click();
     await page.locator('#family-create-later').click();
-    assert.match(await page.locator('#family-parent-summary-text').textContent(), /Pro · Gói 1 năm · 2\/3 tài khoản con/);
+    assert.match(await page.locator('#family-parent-summary-text').textContent(), /Pro · Gói 1 năm · 2\/5 tài khoản con/);
     assert.deepEqual(await page.evaluate(() => [localStorage.length, sessionStorage.length]), [0, 0]);
     assert.deepEqual(errors, []);
     assert.deepEqual(requests, []);
@@ -419,7 +422,7 @@ test('onboarding mobile, keyboard, cancel and activated empty state', async () =
     await page.screenshot({ path: path.join(output, 'create-child-390.png') });
     assert.equal(await page.locator('#family-onboarding').evaluate(e => e.scrollWidth <= e.clientWidth), true);
     await page.locator('#family-create-later').click();
-    assert.match(await page.locator('#family-parent-summary-text').textContent(), /0\/1 tài khoản con/);
+    assert.match(await page.locator('#family-parent-summary-text').textContent(), /0\/3 tài khoản con/);
     await page.locator('#family-preview-open').click();
     assert.equal(await page.locator('#family-create-form').isVisible(), true);
     assert.equal(await page.locator('#family-preview').evaluate(e => e.open), false);
@@ -516,7 +519,7 @@ test('password confirmation, compact active overview and zero history for new ch
         if (width === 390) await page.locator('#parent-section').screenshot({ path: path.join(output, 'active-family-390.png') });
     }
     await page.locator('#family-add-child').click();
-    assert.equal(await page.locator('[data-tier="free"]').isVisible(), true);
+    assert.equal(await page.locator('#family-create-form').isVisible(), true);
     await page.locator('#family-onboarding-close').click();
     await page.locator('#family-add-child').click();
     assert.equal(await page.locator('#family-new-password').inputValue(), '');

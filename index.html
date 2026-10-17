@@ -917,7 +917,7 @@
         .family-flow-title:focus { outline: none; }
         .family-flow-steps { display: flex; flex-wrap: wrap; gap: 8px 18px; list-style: none; font-size: .78rem; line-height: 1.6; color: var(--text-muted); padding-bottom: 14px; border-bottom: 1px solid var(--border); }
         .family-flow-steps [aria-current="step"] { color: var(--primary-ink); font-weight: 700; }
-        .family-tier-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:12px; margin:18px 0 24px; }
+        .family-tier-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:12px; margin:18px 0 24px; }
         .family-tier-grid article { border:1px solid var(--border); border-radius:12px; padding:16px; font-size:.82rem; line-height:1.7; }
         .family-tier-grid h4 { font-size:1rem; color:var(--primary-ink); }
         .family-tier-grid article { display:flex; flex-direction:column; gap:10px; }
@@ -1380,9 +1380,8 @@
                                 <div class="form-group"><label for="family-age">Game được hiển thị</label><select id="family-age" name="demoAge"><option value="0">00+ · Mọi lứa tuổi</option><option value="12">Thêm game 12+ · Từ 12 tuổi</option><option value="16">Thêm game 16+ · Từ 16 tuổi</option><option value="18" disabled>18+ · Không dành cho tài khoản con</option></select></div>
                                 <div class="form-group"><label for="family-limit">Hạn mức mỗi ngày (phút)</label><input id="family-limit" name="demoLimit" type="number" min="0" max="180" step="1" value="60" inputmode="numeric" aria-describedby="family-limit-hint family-limit-error"><span id="family-limit-hint" class="field-hint">0–180 phút/ngày trong demo.</span></div>
                             </div>
-                    <div class="form-grid"><div class="form-group"><span class="field-label">Danh mục được phép</span><div id="family-manage-categories" class="family-category-options" role="group" aria-label="Danh mục được phép"><label><input type="checkbox" data-category="learning">Học tập</label><label><input type="checkbox" data-category="coloring">Tô màu</label><label><input type="checkbox" data-category="jigsaw">Ghép hình</label><label><input type="checkbox" data-category="puzzle">Trí tuệ</label><label><input type="checkbox" data-category="creative">Sáng tạo</label><label><input type="checkbox" data-category="sports">Thể thao</label><label><input type="checkbox" data-category="strategy">Chiến thuật</label></div><span class="field-hint">Tích nhiều mục. Bỏ chọn tất cả nghĩa là không cho phép danh mục nào.</span></div><div class="form-group"><label for="family-manage-keywords">Từ khóa chặn</label><input id="family-manage-keywords" type="text" maxlength="200" placeholder="Ví dụ: kinh dị, bạo lực"><span class="field-hint">Phân tách bằng dấu phẩy. Demo chỉ lưu quy tắc, chưa lọc danh mục game thật.</span></div></div>
+                    <div id="family-content-controls" class="form-grid"><div class="form-group"><span class="field-label">Danh mục được phép</span><div id="family-manage-categories" class="family-category-options" role="group" aria-label="Danh mục được phép"><label><input type="checkbox" data-category="learning">Học tập</label><label><input type="checkbox" data-category="coloring">Tô màu</label><label><input type="checkbox" data-category="jigsaw">Ghép hình</label><label><input type="checkbox" data-category="puzzle">Trí tuệ</label><label><input type="checkbox" data-category="creative">Sáng tạo</label><label><input type="checkbox" data-category="sports">Thể thao</label><label><input type="checkbox" data-category="strategy">Chiến thuật</label></div><span class="field-hint">Tích nhiều mục. Bỏ chọn tất cả nghĩa là không cho phép danh mục nào.</span></div><div class="form-group"><label for="family-manage-keywords">Từ khóa chặn</label><input id="family-manage-keywords" type="text" maxlength="200" placeholder="Ví dụ: kinh dị, bạo lực"><span class="field-hint">Phân tách bằng dấu phẩy. Demo chỉ lưu quy tắc, chưa lọc danh mục game thật.</span></div></div>
                             <div id="family-advanced" class="family-notice" hidden><strong>Lịch tuần và giờ nghỉ · Standard trở lên</strong><p>Hạn mức riêng từng ngày (phút). Khung nghỉ qua đêm được hỗ trợ; chưa khóa game thật.</p><div id="family-schedule" class="family-schedule-grid"></div><div class="form-grid"><div class="form-group"><label for="family-rest-start">Bắt đầu nghỉ</label><input id="family-rest-start" type="time"></div><div class="form-group"><label for="family-rest-end">Kết thúc nghỉ</label><input id="family-rest-end" type="time"></div></div></div>
-                            <p id="family-category-tier-note" class="family-note" hidden>Free có giới hạn tuổi và thời gian/ngày. Nâng lên Standard để tùy biến lịch chơi, danh mục và từ khóa. Quy tắc trả phí đã lưu được giữ lại khi đổi gói.</p>
                             <p id="family-limit-error" class="family-error" aria-live="polite"></p>
                         </fieldset>
                         <div class="family-actions"><button type="submit" id="family-demo-save" class="btn btn-primary" disabled>Lưu cài đặt</button><button type="button" id="family-demo-reset" class="btn btn-secondary" disabled>Hủy thay đổi</button></div>
@@ -1405,12 +1404,11 @@
             <section data-flow-panel="plans" aria-labelledby="family-plans-title">
                 <h3 id="family-plans-title" class="family-flow-title" tabindex="-1">Chọn gói cho gia đình</h3>
                 <p class="family-intro">Chọn cấp tính năng, rồi chọn thời hạn. Mua lâu hơn chỉ giảm giá.</p>
-                <div class="form-group"><span class="field-label">1. Cấp gói</span><select id="family-tier" hidden><option value="free">Free · 0đ</option><option value="standard" selected>Standard · 49.000đ/tháng</option><option value="pro">Pro · 79.000đ/tháng (giá demo)</option><option value="plus">Pro+ · 109.000đ/tháng (giá demo)</option></select></div>
+                <div class="form-group"><span class="field-label">1. Cấp gói</span><select id="family-tier" hidden><option value="free">Free · 0đ</option><option value="standard" selected>Standard · 49.000đ/tháng</option><option value="pro">Pro · 79.000đ/tháng (giá demo)</option></select></div>
                 <div class="family-tier-grid" aria-label="Các cấp gói">
                     <article><h4>Free</h4><strong class="family-plan-price">0đ</strong><p>Không giới hạn thời hạn</p><ul><li>1 tài khoản con</li><li>Giới hạn tuổi game</li><li>Giới hạn thời gian mỗi ngày</li></ul><button type="button" class="btn btn-secondary" data-tier="free" aria-pressed="false">Dùng Free</button></article>
-                    <article><h4>Standard</h4><strong class="family-plan-price">49.000đ</strong><p>/ tháng</p><ul><li>Mọi quyền lợi Free</li><li>Tùy biến lịch chơi và giờ nghỉ</li><li>Chọn nhiều danh mục</li><li>Chặn từ khóa</li><li>Không quảng cáo*</li></ul><button type="button" class="btn btn-primary" data-tier="standard" aria-pressed="true">Chọn Standard</button></article>
-                    <article><h4>Pro</h4><strong class="family-plan-price">79.000đ</strong><p>/ tháng · Giá đề xuất</p><ul><li>Mọi quyền lợi Standard</li><li>Tối đa 3 tài khoản con</li><li>Xem báo cáo 30 ngày</li></ul><button type="button" class="btn btn-secondary" data-tier="pro" aria-pressed="false">Chọn Pro</button></article>
-                    <article><h4>Pro+</h4><strong class="family-plan-price">109.000đ</strong><p>/ tháng · Giá đề xuất</p><ul><li>Mọi quyền lợi Pro</li><li>Tối đa 5 tài khoản con</li><li>Xem báo cáo 90 ngày</li><li>So sánh tuần, xuất CSV</li></ul><button type="button" class="btn btn-secondary" data-tier="plus" aria-pressed="false">Chọn Pro+</button></article>
+                    <article><h4>Standard</h4><strong class="family-plan-price">49.000đ</strong><p>/ tháng</p><ul><li>Mọi quyền lợi Free</li><li>Tối đa 3 tài khoản con</li><li>Tùy biến lịch chơi và giờ nghỉ</li><li>Chọn nhiều danh mục</li><li>Chặn từ khóa</li><li>Không quảng cáo*</li></ul><button type="button" class="btn btn-primary" data-tier="standard" aria-pressed="true">Chọn Standard</button></article>
+                    <article><h4>Pro</h4><strong class="family-plan-price">79.000đ</strong><p>/ tháng · Giá đề xuất</p><ul><li>Mọi quyền lợi Standard</li><li>Tối đa 5 tài khoản con</li><li>Xem báo cáo 7, 30 và 90 ngày</li><li>So sánh tuần, xuất CSV</li></ul><button type="button" class="btn btn-secondary" data-tier="pro" aria-pressed="false">Chọn Pro</button></article>
                 </div>
                 <p class="family-note">* Không quảng cáo là quyền lợi cần tích hợp với hệ thống quảng cáo GameVui trước khi bán. Demo chưa xác nhận hoặc tắt quảng cáo bên trong game.</p>
                 <h4>2. Thời hạn thanh toán</h4>
@@ -1421,7 +1419,7 @@
                     <article class="family-plan"><h4>12 tháng</h4><div class="family-plan-price" data-price="year"></div><p>Tiết kiệm 25%</p><button type="button" class="btn btn-secondary" data-family-plan="year">Chọn 12 tháng</button></article>
                 </div>
                 <div class="family-notice"><strong>Dùng thử Standard 1 tháng · 0đ</strong><p>Sau đó tự gia hạn Standard 49.000đ/tháng. Hủy trước kỳ gia hạn để không bị tính phí.</p><button type="button" class="btn btn-primary" data-family-plan="trial">Dùng thử Standard 0đ</button></div>
-                <p class="family-note">Giá Pro/Pro+ và chiết khấu là đề xuất demo; so với giá tháng của cùng cấp gói. Gói trả trước không tự gia hạn. Demo không thu tiền; lịch chơi và bộ lọc chỉ lưu quy tắc, chưa thực thi trên game thật.</p>
+                <p class="family-note">Giá Pro và chiết khấu là đề xuất demo; so với giá tháng của cùng cấp gói. Gói trả trước không tự gia hạn. Demo không thu tiền; lịch chơi và bộ lọc chỉ lưu quy tắc, chưa thực thi trên game thật.</p>
             </section>
             <section data-flow-panel="activate" aria-labelledby="family-activate-title" hidden>
                 <h3 id="family-activate-title" class="family-flow-title" tabindex="-1">Kích hoạt tài khoản cha mẹ</h3>
@@ -1827,9 +1825,8 @@
                 renderHistory(child);
 
                 const allowed=normalizeCategories(child.categories);
-                categories.querySelectorAll('[data-category]').forEach(input=>{input.checked=allowed.includes(input.dataset.category);input.disabled=activeTier==='free';});
-                keywords.disabled=activeTier==='free';
-                dialog.querySelector('#family-category-tier-note').hidden=activeTier!=='free';
+                categories.querySelectorAll('[data-category]').forEach(input=>{input.checked=allowed.includes(input.dataset.category);});
+                dialog.querySelector('#family-content-controls').hidden=activeTier==='free';
                 keywords.value = child.keywords || '';
                 dialog.querySelector('#family-usage-text').textContent = child.used + ' / ' + child.limit + ' phút';
                 const progress = dialog.querySelector('#family-usage-progress');
@@ -1859,13 +1856,13 @@
             function renderHistory(child) {
                 const rows=historyRows(child), total=rows.reduce((sum,row)=>sum+row.minutes,0);
                 dialog.querySelector('#family-history-summary').textContent=rows.length+' ngày · '+total+' phút · '+(parentActivated ? 'Hồ sơ demo chưa có dữ liệu chơi thật.' : 'Dữ liệu mẫu, chỉ 7 ngày cuối có số liệu.');
-                const compare=dialog.querySelector('#family-comparison'); compare.hidden=activeTier!=='plus';
+                const compare=dialog.querySelector('#family-comparison'); compare.hidden=activeTier!=='pro';
                 compare.textContent='So sánh 2 tuần: '+(parentActivated ? '0 phút / 0 phút · Chưa có dữ liệu chơi thật.' : 'Không đủ dữ liệu tuần trước để so sánh.');
-                dialog.querySelector('#family-export').hidden=activeTier!=='plus';
+                dialog.querySelector('#family-export').hidden=activeTier!=='pro';
             }
             dialog.querySelector('#family-history-days').addEventListener('change',()=>renderHistory(children[selected]));
             dialog.querySelector('#family-export').addEventListener('click',()=>{
-                if (activeTier!=='plus' || !children[selected]) return;
+                if (activeTier!=='pro' || !children[selected]) return;
                 const csv='date,minutes,source\r\n'+historyRows(children[selected]).map(row=>row.date+','+row.minutes+',demo').join('\r\n');
                 const url=URL.createObjectURL(new Blob(['\ufeff'+csv],{type:'text/csv;charset=utf-8'}));
                 const link=document.createElement('a'); link.href=url; link.download='gamevui-demo-report.csv'; link.click(); setTimeout(()=>URL.revokeObjectURL(url),1000);
@@ -2009,9 +2006,8 @@
             const createError = onboarding.querySelector('#family-create-error');
             const tiers = {
                 free: { name:'Free', price:0, cap:1, days:7 },
-                standard: { name:'Standard', price:49000, cap:1, days:7 },
-                pro: { name:'Pro', price:79000, cap:3, days:30 },
-                plus: { name:'Pro+', price:109000, cap:5, days:90 }
+                standard: { name:'Standard', price:49000, cap:3, days:7 },
+                pro: { name:'Pro', price:79000, cap:5, days:90 }
             };
             const terms = { month:[1,0], quarter:[3,.10], halfyear:[6,.15], year:[12,.25] };
             const money = value => new Intl.NumberFormat('vi-VN').format(value) + 'đ';
@@ -2213,7 +2209,7 @@
             function previewPreset(key) {
                 chosenPreset = key;
                 onboarding.querySelectorAll('[data-preset]').forEach(button => button.setAttribute('aria-pressed', String(button.dataset.preset === key)));
-                onboarding.querySelector('#family-preset-content').textContent = presets[key].description;
+                onboarding.querySelector('#family-preset-content').textContent = activeTier === 'free' ? presets[key].description.split(' · ').slice(0,2).join(' · ') + '.' : presets[key].description;
                 onboarding.querySelector('#family-apply-preset').disabled = false;
             }
             dob.addEventListener('input', () => {
