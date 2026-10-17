@@ -4,7 +4,7 @@ Tài liệu này cập nhật và thay thế phần phân gói, ngày sinh, nhó
 
 ## Gói
 
-Giá hiện trực tiếp trên thẻ, chọn bằng nút; không cần mở dropdown. Free 0đ không hết hạn: 1 con, giới hạn tuổi và thời gian/ngày. Standard 49.000đ/tháng kế thừa Free, thêm lịch tuần/giờ nghỉ, chọn nhiều danh mục, từ khóa. Pro 79.000đ và Pro+ 109.000đ là giá đề xuất, kế thừa gói thấp và tăng số con/khả năng báo cáo. Kỳ dài chỉ giảm giá.
+Giá hiện trực tiếp trên thẻ, chọn bằng nút; không cần mở dropdown. Free 0đ không hết hạn: 1 con, giới hạn tuổi và thời gian/ngày. Standard 49.000đ/tháng có 3 tài khoản con, kế thừa Free, thêm lịch tuần/giờ nghỉ, chọn nhiều danh mục, từ khóa. Pro 79.000đ/tháng là giá đề xuất: 5 tài khoản con, toàn bộ Standard, báo cáo 7/30/90 ngày, so sánh tuần và xuất CSV. Chỉ còn ba gói Free, Standard, Pro. Chức năng ngoài quyền lợi được ẩn hoàn toàn trong quản lý và đề xuất, không hiển thị dạng khóa. Kỳ dài chỉ giảm giá.
 
 “Không quảng cáo” là quyền lợi sản phẩm Standard trở lên nhưng CHƯA được triển khai trong game: cần contract với hệ thống quảng cáo GameVui và từng SDK game. UI có dấu * và chú thích, không thông báo đang chặn quảng cáo. Không được mở bán dịch vụ thật dựa trên demo này.
 
