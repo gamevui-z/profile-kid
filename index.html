@@ -917,9 +917,15 @@
         .family-flow-title:focus { outline: none; }
         .family-flow-steps { display: flex; flex-wrap: wrap; gap: 8px 18px; list-style: none; font-size: .78rem; line-height: 1.6; color: var(--text-muted); padding-bottom: 14px; border-bottom: 1px solid var(--border); }
         .family-flow-steps [aria-current="step"] { color: var(--primary-ink); font-weight: 700; }
-        .family-tier-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:12px; margin:18px 0 24px; }
+        .family-tier-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:12px; margin:18px 0 24px; }
         .family-tier-grid article { border:1px solid var(--border); border-radius:12px; padding:16px; font-size:.82rem; line-height:1.7; }
         .family-tier-grid h4 { font-size:1rem; color:var(--primary-ink); }
+        .family-tier-grid article { display:flex; flex-direction:column; gap:10px; }
+        .family-tier-grid .btn { margin-top:auto; }
+        .family-tier-grid [aria-pressed="true"] { outline:2px solid var(--primary-ink); outline-offset:2px; }
+        .family-category-options { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:8px; border:1px solid var(--border); padding:12px; border-radius:12px; }
+        .family-category-options label { display:flex; align-items:center; gap:8px; min-height:44px; }
+        .family-category-options input { width:18px; height:18px; }
         .family-tier-grid ul { padding-left:18px; }
         .family-schedule-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:8px; }
         @media(max-width:640px) { .family-tier-grid { grid-template-columns:1fr; } }
@@ -1355,7 +1361,7 @@
                 </div>
                 <section id="family-detail" class="family-detail" aria-labelledby="family-child-name">
                     <h3 id="family-child-name">Mây Nhỏ</h3>
-                    <p class="family-note" style="margin-top: 0"><span id="family-current-policy">Chỉ game 0+</span> · Hôm nay</p>
+                    <p class="family-note" style="margin-top: 0"><span id="family-current-policy">Chỉ game 00+</span> · Hôm nay</p>
                     <div class="family-usage">
                         <div class="family-usage-row"><span>Thời gian đã chơi</span><strong id="family-usage-text">25 / 60 phút</strong></div>
                         <progress id="family-usage-progress" value="25" max="60" aria-label="Thời gian chơi minh họa"></progress>
@@ -1371,17 +1377,18 @@
                         <fieldset>
                             <legend>Cài đặt cho con</legend>
                             <div class="family-fields">
-                                <div class="form-group"><label for="family-age">Game được hiển thị</label><select id="family-age" name="demoAge"><option value="0">Chỉ game 0+</option><option value="12">Game ≤12 tuổi</option><option value="16">Game ≤16 tuổi</option><option value="none">Không giới hạn</option></select></div>
+                                <div class="form-group"><label for="family-age">Game được hiển thị</label><select id="family-age" name="demoAge"><option value="0">00+ · Mọi lứa tuổi</option><option value="12">Thêm game 12+ · Từ 12 tuổi</option><option value="16">Thêm game 16+ · Từ 16 tuổi</option><option value="18" disabled>18+ · Không dành cho tài khoản con</option></select></div>
                                 <div class="form-group"><label for="family-limit">Hạn mức mỗi ngày (phút)</label><input id="family-limit" name="demoLimit" type="number" min="0" max="180" step="1" value="60" inputmode="numeric" aria-describedby="family-limit-hint family-limit-error"><span id="family-limit-hint" class="field-hint">0–180 phút/ngày trong demo.</span></div>
                             </div>
-                    <div class="form-grid"><div class="form-group"><label for="family-manage-categories">Danh mục được phép</label><select id="family-manage-categories"><option value="all">Tất cả danh mục phù hợp tuổi</option><option value="learning">Học tập, tô màu, ghép hình</option><option value="puzzle">Trí tuệ, sáng tạo, thể thao</option><option value="strategy">Trí tuệ, chiến thuật, thể thao</option></select></div><div class="form-group"><label for="family-manage-keywords">Từ khóa chặn</label><input id="family-manage-keywords" type="text" maxlength="200" placeholder="Ví dụ: kinh dị, bạo lực"><span class="field-hint">Phân tách bằng dấu phẩy. Demo chỉ lưu quy tắc, chưa lọc danh mục game thật.</span></div></div>
-                            <div id="family-advanced" class="family-notice" hidden><strong>Lịch tuần và giờ nghỉ · Pro</strong><p>Hạn mức riêng từng ngày (phút). Khung nghỉ qua đêm được hỗ trợ; chưa khóa game thật.</p><div id="family-schedule" class="family-schedule-grid"></div><div class="form-grid"><div class="form-group"><label for="family-rest-start">Bắt đầu nghỉ</label><input id="family-rest-start" type="time"></div><div class="form-group"><label for="family-rest-end">Kết thúc nghỉ</label><input id="family-rest-end" type="time"></div></div></div>
+                    <div class="form-grid"><div class="form-group"><span class="field-label">Danh mục được phép</span><div id="family-manage-categories" class="family-category-options" role="group" aria-label="Danh mục được phép"><label><input type="checkbox" data-category="learning">Học tập</label><label><input type="checkbox" data-category="coloring">Tô màu</label><label><input type="checkbox" data-category="jigsaw">Ghép hình</label><label><input type="checkbox" data-category="puzzle">Trí tuệ</label><label><input type="checkbox" data-category="creative">Sáng tạo</label><label><input type="checkbox" data-category="sports">Thể thao</label><label><input type="checkbox" data-category="strategy">Chiến thuật</label></div><span class="field-hint">Tích nhiều mục. Bỏ chọn tất cả nghĩa là không cho phép danh mục nào.</span></div><div class="form-group"><label for="family-manage-keywords">Từ khóa chặn</label><input id="family-manage-keywords" type="text" maxlength="200" placeholder="Ví dụ: kinh dị, bạo lực"><span class="field-hint">Phân tách bằng dấu phẩy. Demo chỉ lưu quy tắc, chưa lọc danh mục game thật.</span></div></div>
+                            <div id="family-advanced" class="family-notice" hidden><strong>Lịch tuần và giờ nghỉ · Standard trở lên</strong><p>Hạn mức riêng từng ngày (phút). Khung nghỉ qua đêm được hỗ trợ; chưa khóa game thật.</p><div id="family-schedule" class="family-schedule-grid"></div><div class="form-grid"><div class="form-group"><label for="family-rest-start">Bắt đầu nghỉ</label><input id="family-rest-start" type="time"></div><div class="form-group"><label for="family-rest-end">Kết thúc nghỉ</label><input id="family-rest-end" type="time"></div></div></div>
+                            <p id="family-category-tier-note" class="family-note" hidden>Free có giới hạn tuổi và thời gian/ngày. Nâng lên Standard để tùy biến lịch chơi, danh mục và từ khóa. Quy tắc trả phí đã lưu được giữ lại khi đổi gói.</p>
                             <p id="family-limit-error" class="family-error" aria-live="polite"></p>
                         </fieldset>
                         <div class="family-actions"><button type="submit" id="family-demo-save" class="btn btn-primary" disabled>Lưu cài đặt</button><button type="button" id="family-demo-reset" class="btn btn-secondary" disabled>Hủy thay đổi</button></div>
                         <p id="family-feedback" class="family-feedback" role="status" aria-live="polite"></p>
                     </form>
-                    <div class="family-age-preview"><span>Nhãn game được hiển thị</span><div id="family-allowed-ratings" class="family-rating-list" aria-live="polite"></div></div>
+                    <div class="family-age-preview"><span>Nhãn tuổi được phép (tuổi tối thiểu)</span><div id="family-allowed-ratings" class="family-rating-list" aria-live="polite"></div></div>
                 </section>
             </div>
         </div>
@@ -1398,12 +1405,14 @@
             <section data-flow-panel="plans" aria-labelledby="family-plans-title">
                 <h3 id="family-plans-title" class="family-flow-title" tabindex="-1">Chọn gói cho gia đình</h3>
                 <p class="family-intro">Chọn cấp tính năng, rồi chọn thời hạn. Mua lâu hơn chỉ giảm giá.</p>
-                <div class="form-group"><label for="family-tier">1. Cấp gói</label><select id="family-tier"><option value="standard">Standard · 49.000đ/tháng</option><option value="pro">Pro · 79.000đ/tháng (giá demo)</option><option value="plus">Pro+ · 109.000đ/tháng (giá demo)</option></select></div>
-                <div class="family-tier-grid">
-                    <article><h4>Standard</h4><p>1 tài khoản con</p><ul><li>Giới hạn thời gian mỗi ngày</li><li>Lọc tuổi, danh mục và từ khóa</li><li>Xem hoạt động 7 ngày</li></ul></article>
-                    <article><h4>Pro</h4><p>Mọi quyền lợi Standard, thêm:</p><ul><li>Tối đa 3 tài khoản con</li><li>Lịch chơi từng ngày trong tuần</li><li>Khung giờ nghỉ</li><li>Xem hoạt động 30 ngày</li></ul></article>
-                    <article><h4>Pro+</h4><p>Mọi quyền lợi Pro, thêm:</p><ul><li>Tối đa 5 tài khoản con</li><li>Xem hoạt động 90 ngày</li><li>So sánh hai tuần gần nhất</li><li>Xuất báo cáo CSV</li></ul></article>
+                <div class="form-group"><span class="field-label">1. Cấp gói</span><select id="family-tier" hidden><option value="free">Free · 0đ</option><option value="standard" selected>Standard · 49.000đ/tháng</option><option value="pro">Pro · 79.000đ/tháng (giá demo)</option><option value="plus">Pro+ · 109.000đ/tháng (giá demo)</option></select></div>
+                <div class="family-tier-grid" aria-label="Các cấp gói">
+                    <article><h4>Free</h4><strong class="family-plan-price">0đ</strong><p>Không giới hạn thời hạn</p><ul><li>1 tài khoản con</li><li>Giới hạn tuổi game</li><li>Giới hạn thời gian mỗi ngày</li></ul><button type="button" class="btn btn-secondary" data-tier="free" aria-pressed="false">Dùng Free</button></article>
+                    <article><h4>Standard</h4><strong class="family-plan-price">49.000đ</strong><p>/ tháng</p><ul><li>Mọi quyền lợi Free</li><li>Tùy biến lịch chơi và giờ nghỉ</li><li>Chọn nhiều danh mục</li><li>Chặn từ khóa</li><li>Không quảng cáo*</li></ul><button type="button" class="btn btn-primary" data-tier="standard" aria-pressed="true">Chọn Standard</button></article>
+                    <article><h4>Pro</h4><strong class="family-plan-price">79.000đ</strong><p>/ tháng · Giá đề xuất</p><ul><li>Mọi quyền lợi Standard</li><li>Tối đa 3 tài khoản con</li><li>Xem báo cáo 30 ngày</li></ul><button type="button" class="btn btn-secondary" data-tier="pro" aria-pressed="false">Chọn Pro</button></article>
+                    <article><h4>Pro+</h4><strong class="family-plan-price">109.000đ</strong><p>/ tháng · Giá đề xuất</p><ul><li>Mọi quyền lợi Pro</li><li>Tối đa 5 tài khoản con</li><li>Xem báo cáo 90 ngày</li><li>So sánh tuần, xuất CSV</li></ul><button type="button" class="btn btn-secondary" data-tier="plus" aria-pressed="false">Chọn Pro+</button></article>
                 </div>
+                <p class="family-note">* Không quảng cáo là quyền lợi cần tích hợp với hệ thống quảng cáo GameVui trước khi bán. Demo chưa xác nhận hoặc tắt quảng cáo bên trong game.</p>
                 <h4>2. Thời hạn thanh toán</h4>
                 <div class="family-plans">
                     <article class="family-plan"><h4>1 tháng</h4><div class="family-plan-price" data-price="month"></div><p>Thanh toán từng tháng</p><button type="button" class="btn btn-secondary" data-family-plan="month">Chọn 1 tháng</button></article>
@@ -1433,7 +1442,7 @@
                         <div class="form-group"><label for="family-new-username">Tên đăng nhập demo</label><input id="family-new-username" type="text" maxlength="24" required spellcheck="false" autocapitalize="none" aria-describedby="family-username-hint family-create-error"><span id="family-username-hint" class="field-hint">4–24 ký tự: chữ không dấu, số hoặc dấu gạch dưới.</span></div>
                         <div class="form-group"><label for="family-new-password">Mật khẩu</label><div class="family-password-field"><input id="family-new-password" type="password" minlength="8" maxlength="64" autocomplete="new-password" required aria-describedby="family-password-hint family-create-error"><button type="button" id="family-password-toggle" class="family-password-toggle" aria-label="Hiện mật khẩu" aria-pressed="false" aria-controls="family-new-password family-confirm-password">Hiện</button></div><span id="family-password-hint" class="field-hint">8–64 ký tự. Dùng mật khẩu mẫu.</span></div>
                         <div class="form-group"><label for="family-confirm-password">Nhập lại mật khẩu</label><input id="family-confirm-password" type="password" minlength="8" maxlength="64" autocomplete="new-password" required aria-describedby="family-create-error"></div>
-                        <div class="form-group"><label for="family-new-dob">Ngày sinh</label><input id="family-new-dob" type="date" required aria-describedby="family-child-age family-create-error"><span id="family-child-age" class="field-hint" aria-live="polite">Nhập ngày sinh để tính tuổi.</span></div>
+                        <div class="form-group"><span class="field-label">Ngày sinh</span><input id="family-new-dob" type="hidden"><div class="dob-grid" role="group" aria-label="Ngày sinh của con"><select id="family-birth-day" aria-label="Ngày sinh của con" required></select><select id="family-birth-month" aria-label="Tháng sinh của con" required></select><select id="family-birth-year" aria-label="Năm sinh của con" required></select></div><span id="family-child-age" class="field-hint" aria-live="polite">Nhập ngày sinh để tính tuổi.</span></div>
                         <div class="form-group"><label for="family-new-gender">Giới tính</label><select id="family-new-gender" required><option value="">Chọn giới tính</option><option value="male">Nam</option><option value="female">Nữ</option><option value="other">Không tiết lộ</option></select></div>
                     </div>
                     
@@ -1444,8 +1453,8 @@
             <section data-flow-panel="success" aria-labelledby="family-created-title" hidden>
                 <h3 id="family-created-title" class="family-flow-title" tabindex="-1">Đã tạo tài khoản con · Demo</h3>
                 <p id="family-created-message" class="family-intro"></p>
-                        <div class="form-group form-group-full" id="family-recommendations"><span class="field-label">Chọn thiết lập theo độ tuổi</span><div class="family-actions"><button type="button" class="btn btn-secondary" data-preset="preschool" aria-pressed="false">Mẫu giáo · ≤5 tuổi</button><button type="button" class="btn btn-secondary" data-preset="young" aria-pressed="false">Trẻ nhỏ · 6–12 tuổi</button><button type="button" class="btn btn-secondary" data-preset="teen" aria-pressed="false">Trẻ lớn · 13–16 tuổi</button></div><p id="family-preset-content" class="family-notice" aria-live="polite">Chọn nhóm để xem nội dung gợi ý.</p><button type="button" class="btn btn-primary" id="family-apply-preset" disabled>Áp dụng và mở cài đặt</button><span class="field-hint">Thiết lập mẫu để cha mẹ cân nhắc; không phải khuyến nghị sức khỏe. Có thể chỉnh lại từng quy tắc trong cài đặt tài khoản con.</span></div>
-                <p id="family-pending-policy" class="family-note">Nếu để sau: chỉ game 0+, hạn mức 0 phút/ngày, tất cả danh mục phù hợp tuổi, chưa chặn từ khóa. Hãy hoàn tất thiết lập trước khi cho con chơi.</p>
+                        <div class="form-group form-group-full" id="family-recommendations"><span class="field-label">Chọn thiết lập theo nhãn tuổi game</span><p class="family-note">Nhãn 00+, 12+, 16+, 18+ theo khoản 1 Điều 38, Nghị định 147/2024/NĐ-CP. Tài khoản con không được chọn vượt tuổi thực; 18+ không áp dụng. Đây không phải chứng nhận phân loại cho từng game.</p><div class="family-actions"><button type="button" class="btn btn-secondary" data-preset="preschool" aria-pressed="false">00+ · Dưới 12 tuổi</button><button type="button" class="btn btn-secondary" data-preset="young" aria-pressed="false">12+ · Từ 12–15 tuổi</button><button type="button" class="btn btn-secondary" data-preset="teen" aria-pressed="false">16+ · Từ 16–17 tuổi</button></div><p id="family-preset-content" class="family-notice" aria-live="polite">Chọn nhóm để xem nội dung gợi ý.</p><button type="button" class="btn btn-primary" id="family-apply-preset" disabled>Áp dụng và mở cài đặt</button><span class="field-hint">Thiết lập mẫu để cha mẹ cân nhắc; không phải khuyến nghị sức khỏe. Có thể chỉnh lại từng quy tắc trong cài đặt tài khoản con.</span></div>
+                <p id="family-pending-policy" class="family-note">Nếu để sau: chỉ game 00+, hạn mức 0 phút/ngày, tất cả danh mục phù hợp tuổi, chưa chặn từ khóa. Hãy hoàn tất thiết lập trước khi cho con chơi.</p>
                 <dl class="family-created-credentials"><div><dt>Tên đăng nhập mẫu</dt><dd><code id="family-created-username"></code></dd></div></dl>
                 <p class="family-note">Mật khẩu đã được kiểm tra, không lưu trong demo. Hồ sơ mất khi tải lại trang.</p>
                 <div class="family-actions" style="margin-top: 20px"><button type="button" id="family-setup-later" class="btn btn-secondary">Thiết lập sau</button><button type="button" id="family-create-another" class="btn btn-secondary">Tạo thêm tài khoản con</button><button type="button" id="family-manage-created" class="btn btn-primary">Tự chỉnh trong cài đặt</button></div>
@@ -1727,8 +1736,8 @@
                 { name: 'Mây Nhỏ', age: '0', limit: 60, used: 25, week: [15, 35, 10, 45, 30, 20, 25] },
                 { name: 'Nắng Vàng', age: '12', limit: 45, used: 40, week: [20, 30, 25, 40, 15, 35, 40] }
             ];
-            const ageLabels = { '0': 'Chỉ game 0+', '12': 'Game ≤12 tuổi', '16': 'Game ≤16 tuổi', none: 'Không giới hạn' };
-            const gameRatings = [0, 6, 12, 16, 18];
+            const ageLabels = { '0':'00+ · Mọi lứa tuổi', '12':'00+ và 12+', '16':'00+, 12+ và 16+', '18':'00+, 12+, 16+ và 18+' };
+            const gameRatings = [0, 12, 16, 18];
             let children = [];
             let selected = 0;
             let previousOverflow = '';
@@ -1756,11 +1765,13 @@
                 limit.removeAttribute('aria-invalid');
             }
 
+            function normalizeCategories(value) { const all=['learning','coloring','jigsaw','puzzle','creative','sports','strategy']; if(Array.isArray(value)) return all.filter(key=>value.includes(key)); if(value==='learning')return all.slice(0,3); if(value==='puzzle')return ['puzzle','creative','sports']; if(value==='strategy')return ['puzzle','sports','strategy']; return all; }
+            function readCategories() { return Array.from(categories.querySelectorAll('[data-category]:checked'),input=>input.dataset.category); }
             function scheduleValue() { return Array.from(dialog.querySelectorAll('[data-weekday]'), input => Number(input.value)); }
-            function advancedDirty(child) { return activeTier !== 'standard' && (JSON.stringify(scheduleValue()) !== JSON.stringify(child.schedule || Array(7).fill(child.limit)) || dialog.querySelector('#family-rest-start').value !== (child.restStart || '') || dialog.querySelector('#family-rest-end').value !== (child.restEnd || '')); }
+            function advancedDirty(child) { return activeTier !== 'free' && (JSON.stringify(scheduleValue()) !== JSON.stringify(child.schedule || Array(7).fill(child.limit)) || dialog.querySelector('#family-rest-start').value !== (child.restStart || '') || dialog.querySelector('#family-rest-end').value !== (child.restEnd || '')); }
             function hasChanges() {
                 const child = children[selected];
-                return !!child && (age.value !== child.age || limit.value !== String(child.limit) || categories.value !== (child.categories || 'all') || keywords.value !== (child.keywords || '') || advancedDirty(child));
+                return !!child && (age.value !== child.age || limit.value !== String(child.limit) || JSON.stringify(readCategories()) !== JSON.stringify(normalizeCategories(child.categories)) || keywords.value !== (child.keywords || '') || advancedDirty(child));
             }
 
             function updateButtons() {
@@ -1794,9 +1805,12 @@
                 });
                 dialog.querySelector('#family-child-name').textContent = child.name;
                 dialog.querySelector('#family-current-policy').textContent = ageLabels[child.age];
+                const ceiling=child.dob ? ratingCeiling(ageFromDate(child.dob)) : 16;
+                Array.from(age.options).forEach(option=>option.disabled=Number(option.value)>ceiling);
+                child.age=String(Math.min(Number(child.age),ceiling));
                 age.value = child.age;
                 limit.value = child.limit;
-                dialog.querySelector('#family-advanced').hidden = activeTier === 'standard';
+                dialog.querySelector('#family-advanced').hidden = activeTier === 'free';
                 const schedule = dialog.querySelector('#family-schedule');
                 schedule.replaceChildren();
                 ['T2','T3','T4','T5','T6','T7','CN'].forEach((day,index) => {
@@ -1812,7 +1826,10 @@
                 if (Array.from(history.options).some(option => option.value === previous)) history.value = previous;
                 renderHistory(child);
 
-                categories.value = child.categories || 'all';
+                const allowed=normalizeCategories(child.categories);
+                categories.querySelectorAll('[data-category]').forEach(input=>{input.checked=allowed.includes(input.dataset.category);input.disabled=activeTier==='free';});
+                keywords.disabled=activeTier==='free';
+                dialog.querySelector('#family-category-tier-note').hidden=activeTier!=='free';
                 keywords.value = child.keywords || '';
                 dialog.querySelector('#family-usage-text').textContent = child.used + ' / ' + child.limit + ' phút';
                 const progress = dialog.querySelector('#family-usage-progress');
@@ -1826,9 +1843,9 @@
                 renderChart(child);
                 const ratings = dialog.querySelector('#family-allowed-ratings');
                 ratings.replaceChildren();
-                gameRatings.filter(rating => child.age === 'none' || rating <= Number(child.age)).forEach(rating => {
+                gameRatings.filter(rating => rating <= Number(child.age)).forEach(rating => {
                     const badge = document.createElement('span');
-                    badge.textContent = rating + '+';
+                    badge.textContent = (rating===0?'00':rating) + '+';
                     ratings.append(badge);
                 });
                 clearError();
@@ -1952,7 +1969,7 @@
                     limit.focus();
                     return;
                 }
-                if (activeTier !== 'standard') {
+                if (activeTier !== 'free') {
                     const inputs = Array.from(dialog.querySelectorAll('[data-weekday]'));
                     const invalid = inputs.find(input => input.value === '' || !input.validity.valid);
                     const start = dialog.querySelector('#family-rest-start'), end = dialog.querySelector('#family-rest-end');
@@ -1960,10 +1977,12 @@
                     if (!!start.value !== !!end.value || (start.value && start.value === end.value)) { error.textContent='Nhập cả hai giờ nghỉ khác nhau, hoặc để trống cả hai.'; start.focus(); return; }
                     children[selected].schedule=scheduleValue(); children[selected].restStart=start.value; children[selected].restEnd=end.value;
                 }
+                const ceiling=children[selected].dob ? ratingCeiling(ageFromDate(children[selected].dob)) : 16;
+                if(!['0','12','16'].includes(age.value) || Number(age.value)>ceiling) { error.textContent='Nhãn game vượt tuổi hiện tại của con.'; age.focus(); return; }
                 children[selected].age = age.value;
                 children[selected].limit = minutes;
-                children[selected].categories = categories.value;
-                children[selected].keywords = keywords.value.trim();
+                if(activeTier!=='free') children[selected].categories = readCategories();
+                if(activeTier!=='free') children[selected].keywords = keywords.value.trim();
                 renderChild();
                 if (parentActivated) updateParentSummary();
                 feedback.textContent = 'Đã lưu cài đặt demo.';
@@ -1989,17 +2008,20 @@
             const passwordToggle = onboarding.querySelector('#family-password-toggle');
             const createError = onboarding.querySelector('#family-create-error');
             const tiers = {
+                free: { name:'Free', price:0, cap:1, days:7 },
                 standard: { name:'Standard', price:49000, cap:1, days:7 },
                 pro: { name:'Pro', price:79000, cap:3, days:30 },
                 plus: { name:'Pro+', price:109000, cap:5, days:90 }
             };
             const terms = { month:[1,0], quarter:[3,.10], halfyear:[6,.15], year:[12,.25] };
             const money = value => new Intl.NumberFormat('vi-VN').format(value) + 'đ';
-            const plans = { trial:{name:'Dùng thử 1 tháng'}, month:{name:'Gói 1 tháng'}, quarter:{name:'Gói 3 tháng'}, halfyear:{name:'Gói 6 tháng'}, year:{name:'Gói 1 năm'} };
+            const plans = { free:{name:'Miễn phí',price:'0đ · Không thu tiền, không tự gia hạn.'}, trial:{name:'Dùng thử 1 tháng'}, month:{name:'Gói 1 tháng'}, quarter:{name:'Gói 3 tháng'}, halfyear:{name:'Gói 6 tháng'}, year:{name:'Gói 1 năm'} };
             const tierSelect = onboarding.querySelector('#family-tier');
             let selectedTier = 'standard';
             function refreshPrices() {
                 selectedTier = tierSelect.value;
+                onboarding.querySelectorAll('[data-tier]').forEach(button=>button.setAttribute('aria-pressed',String(button.dataset.tier===selectedTier)));
+                onboarding.querySelector('.family-plans').hidden=selectedTier==='free';
                 Object.entries(terms).forEach(([key,[months,discount]]) => {
                     const total = Math.round(tiers[selectedTier].price * months * (1-discount));
                     plans[key].price = money(total) + ' / ' + months + ' tháng · Không tự gia hạn. Demo không thu tiền.';
@@ -2008,6 +2030,7 @@
                 plans.trial.price = '0đ tháng đầu; sau đó tự gia hạn Standard 49.000đ/tháng. Hủy trước kỳ gia hạn. Demo không thu tiền.';
             }
             tierSelect.addEventListener('change', refreshPrices);
+            onboarding.querySelectorAll('[data-tier]').forEach(button => button.addEventListener('click', () => { tierSelect.value=button.dataset.tier; refreshPrices(); if(tierSelect.value==='free') choosePlan('free'); }));
             refreshPrices();
             let selectedPlan = 'trial';
             let onboardingTrigger = plansOpen;
@@ -2078,6 +2101,7 @@
 
             function prepareChildForm() {
                 createForm.reset();
+                syncBirth();
                 onboarding.querySelector('#family-recommendations').hidden = true;
                 onboarding.querySelector('#family-child-age').textContent = 'Nhập ngày sinh để tính tuổi.';
                 resetPasswordVisibility();
@@ -2118,8 +2142,8 @@
             onboarding.querySelector('#family-onboarding-close').addEventListener('click', () => onboarding.close());
             onboarding.querySelector('#family-create-later').addEventListener('click', () => onboarding.close());
             onboarding.querySelector('#family-plan-back').addEventListener('click', () => showStep('plans'));
-            onboarding.querySelectorAll('[data-family-plan]').forEach(button => button.addEventListener('click', () => {
-                selectedPlan = button.dataset.familyPlan;
+            function choosePlan(key) {
+                selectedPlan = key;
                 if (selectedPlan === 'trial') tierSelect.value = 'standard';
                 refreshPrices();
                 onboarding.querySelector('#family-selected-benefits').textContent = tiers[selectedTier].name + ': tối đa ' + tiers[selectedTier].cap + ' con, lịch sử ' + tiers[selectedTier].days + ' ngày. Quy tắc chỉ lưu trong phiên demo; chưa thực thi trên game thật.';
@@ -2131,7 +2155,8 @@
                 consent.removeAttribute('aria-invalid');
                 onboarding.querySelector('#family-activate-error').textContent = '';
                 showStep('activate');
-            }));
+            }
+            onboarding.querySelectorAll('[data-family-plan]').forEach(button => button.addEventListener('click', () => choosePlan(button.dataset.familyPlan)));
             consent.addEventListener('change', () => {
                 consent.removeAttribute('aria-invalid');
                 onboarding.querySelector('#family-activate-error').textContent = '';
@@ -2156,19 +2181,35 @@
             const gender = onboarding.querySelector('#family-new-gender');
             const recommendations = onboarding.querySelector('#family-recommendations');
             const presets = {
-                preschool: { label: 'Mẫu giáo', age: '0', limit: 20, categories: 'learning', keywords: 'kinh dị, bạo lực', description: 'Game 0+ · 20 phút/ngày · Học tập, tô màu, ghép hình · Chặn: kinh dị, bạo lực.' },
-                young: { label: 'Trẻ nhỏ', age: '12', limit: 45, categories: 'puzzle', keywords: 'kinh dị, bạo lực', description: 'Game ≤12 tuổi · 45 phút/ngày · Trí tuệ, sáng tạo, thể thao · Chặn: kinh dị, bạo lực.' },
-                teen: { label: 'Trẻ lớn', age: '16', limit: 60, categories: 'strategy', keywords: 'cờ bạc', description: 'Game ≤16 tuổi · 60 phút/ngày · Trí tuệ, chiến thuật, thể thao · Chặn: cờ bạc.' }
+                preschool: { label:'00+' , age: '0', limit: 20, categories: 'learning', keywords: 'kinh dị, bạo lực', description: 'Game 00+ · 20 phút/ngày · Học tập, tô màu, ghép hình · Chặn: kinh dị, bạo lực.' },
+                young: { label:'12+' , age: '12', limit: 45, categories: 'puzzle', keywords: 'kinh dị, bạo lực', description: 'Game 00+, 12+ · 45 phút/ngày · Trí tuệ, sáng tạo, thể thao · Chặn: kinh dị, bạo lực.' },
+                teen: { label:'16+' , age: '16', limit: 60, categories: 'strategy', keywords: 'cờ bạc', description: 'Game 00+, 12+, 16+ · 60 phút/ngày · Trí tuệ, chiến thuật, thể thao · Chặn: cờ bạc.' }
             };
             let chosenPreset = null;
-            function childAge() {
-                if (!/^\d{4}-\d{2}-\d{2}$/.test(dob.value)) return null;
-                const [y,m,d] = dob.value.split('-').map(Number);
-                const birth = new Date(y,m-1,d), today = new Date();
-                if (birth.getFullYear() !== y || birth.getMonth() !== m-1 || birth.getDate() !== d || birth > today) return null;
-                const years = today.getFullYear()-y-((today.getMonth()<m-1 || (today.getMonth()===m-1 && today.getDate()<d)) ? 1 : 0);
-                return years >= 0 && years < 18 ? years : null;
+            function ageFromDate(value) {
+                if (!/^\d{4}-\d{2}-\d{2}$/.test(value)) return null;
+                const [y,m,d]=value.split('-').map(Number), birth=new Date(y,m-1,d), today=new Date();
+                if(birth.getFullYear()!==y || birth.getMonth()!==m-1 || birth.getDate()!==d || birth>today)return null;
+                const years=today.getFullYear()-y-((today.getMonth()<m-1 || (today.getMonth()===m-1 && today.getDate()<d))?1:0);
+                return years>=0 && years<18 ? years : null;
             }
+            function childAge(){return ageFromDate(dob.value);}
+            function ratingCeiling(years){return years===null ? 0 : years>=16 ? 16 : years>=12 ? 12 : 0;}
+            const birthDay=onboarding.querySelector('#family-birth-day'), birthMonth=onboarding.querySelector('#family-birth-month'), birthYear=onboarding.querySelector('#family-birth-year');
+            function fillBirth(select, title, values) { const previous=select.value; select.replaceChildren(); const empty=new Option(title,''); select.add(empty); values.forEach(value=>select.add(new Option(String(value),String(value)))); if(values.map(String).includes(previous))select.value=previous; }
+            function syncBirth() {
+                const today=new Date(), y=Number(birthYear.value), m=Number(birthMonth.value);
+                fillBirth(birthMonth,'Tháng',Array.from({length:y===today.getFullYear()?today.getMonth()+1:12},(_,i)=>i+1));
+                const month=Number(birthMonth.value);
+                const maxDay=y && month ? (y===today.getFullYear() && month===today.getMonth()+1 ? today.getDate():new Date(y,month,0).getDate()) : 31;
+                fillBirth(birthDay,'Ngày',Array.from({length:maxDay},(_,i)=>i+1));
+                dob.value=birthYear.value && birthMonth.value && birthDay.value ? birthYear.value+'-'+birthMonth.value.padStart(2,'0')+'-'+birthDay.value.padStart(2,'0') : '';
+                dob.dispatchEvent(new Event('input',{bubbles:true}));
+            }
+            fillBirth(birthYear,'Năm',Array.from({length:19},(_,i)=>new Date().getFullYear()-i));
+            fillBirth(birthMonth,'Tháng',Array.from({length:12},(_,i)=>i+1));
+            fillBirth(birthDay,'Ngày',Array.from({length:31},(_,i)=>i+1));
+            [birthDay,birthMonth,birthYear].forEach(select=>select.addEventListener('change',syncBirth));
             function previewPreset(key) {
                 chosenPreset = key;
                 onboarding.querySelectorAll('[data-preset]').forEach(button => button.setAttribute('aria-pressed', String(button.dataset.preset === key)));
@@ -2179,7 +2220,8 @@
                 const years = childAge();
 
                 onboarding.querySelector('#family-child-age').textContent = years === null ? 'Nhập ngày sinh hợp lệ của trẻ dưới 18 tuổi.' : 'Tuổi hiện tại: ' + years + ' tuổi.';
-                if (years !== null && years <= 16) previewPreset(years <= 5 ? 'preschool' : years <= 12 ? 'young' : 'teen');
+                onboarding.querySelectorAll('[data-preset]').forEach(button=>button.disabled=years===null || Number(presets[button.dataset.preset].age)>ratingCeiling(years));
+                if (years !== null) previewPreset(years < 12 ? 'preschool' : years < 16 ? 'young' : 'teen');
                 else { chosenPreset = null; onboarding.querySelector('#family-apply-preset').disabled = true; onboarding.querySelector('#family-preset-content').textContent = '17 tuổi: cha mẹ tự chọn quy tắc hoặc xem một nhóm tham khảo.'; onboarding.querySelectorAll('[data-preset]').forEach(button => button.setAttribute('aria-pressed','false')); }
             });
             onboarding.querySelectorAll('[data-preset]').forEach(button => button.addEventListener('click', () => previewPreset(button.dataset.preset)));
@@ -2188,7 +2230,9 @@
                 const preset = presets[chosenPreset];
                 const child = createdChildren[createdChildren.length - 1];
                 if (!child || onboarding.querySelector('[data-flow-panel="success"]').hidden) return;
-                Object.assign(child, { age:preset.age, limit:preset.limit, categories:preset.categories, keywords:preset.keywords });
+                if(Number(preset.age)>ratingCeiling(ageFromDate(child.dob)))return;
+                Object.assign(child, { age:preset.age, limit:preset.limit });
+                if(activeTier!=='free')Object.assign(child,{ categories:normalizeCategories(preset.categories), keywords:preset.keywords });
                 updateParentSummary();
                 manageAfterClose = true;
                 onboarding.close();
@@ -2225,7 +2269,7 @@
                 if (createdChildren.some(child => child.username === username)) return reject(usernameInput, 'Tên đăng nhập này đã có trong phiên demo. Hãy chọn tên khác.');
                 if (password.value.length < 8 || password.value.length > 64 || !password.value.trim()) return reject(password, 'Mật khẩu cần từ 8 đến 64 ký tự.');
                 if (password.value !== confirmPassword.value) return reject(confirmPassword, 'Mật khẩu nhập lại chưa khớp.');
-                if (childAge() === null) return reject(dob, 'Nhập ngày sinh hợp lệ của trẻ dưới 18 tuổi.');
+                if (childAge() === null) return reject(birthYear, 'Nhập đủ ngày sinh hợp lệ của trẻ dưới 18 tuổi.');
                 if (!gender.value) return reject(gender, 'Chọn giới tính hoặc Không tiết lộ.');
                 createdChildren.push({ name, username, dob: dob.value, gender: gender.value, categories: 'all', keywords: '', age: '0', limit: 0, used: 0, week: [0, 0, 0, 0, 0, 0, 0] });
                 // Validate the creation UI without retaining a plaintext demo password.
