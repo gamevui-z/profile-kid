@@ -1,5 +1,7 @@
 # GameVui Profile · Family UI
 
+> Bản hiện hành: **docs/service-revision.md** bổ sung Free, giá trực tiếp, nhiều danh mục, ngày sinh có giới hạn và nhãn 00+/12+/16+/18+. Các mô tả gói/tuổi cũ bên dưới chỉ là lịch sử.
+
 > Cập nhật: xem **docs/unified-family.md** cho luồng hợp nhất Standard / Pro / Pro+, giá Standard 49.000đ và hồ sơ con. Mô tả chọn gói phía dưới là lịch sử bản cũ, đã được thay thế bởi tài liệu này.
 
 Trang hồ sơ HTML/CSS/JavaScript thuần, không cần bước build.

@@ -9,25 +9,82 @@ const output = path.join(__dirname, '..', 'test-results');
 
 let browser, server, url;
 
+test('Free entitlement, bounded birth dates, legal age gates and multiple categories', async () => {
+    const page=await browser.newPage();
+    await page.goto(url);
+    await page.locator('#family-plans-open').click();
+    assert.deepEqual(await page.locator('.family-tier-grid .family-plan-price').allTextContents(),['0đ','49.000đ','79.000đ','109.000đ']);
+    await page.locator('[data-tier="free"]').click();
+    assert.match(await page.locator('#family-selected-price').textContent(),/0đ/);
+    await page.locator('#family-demo-consent').check();
+    await page.locator('#family-activate-submit').click();
+    const today=new Date();
+    assert.equal(await page.locator('#family-birth-year option').evaluateAll(items=>Math.max(...items.map(i=>Number(i.value)))),today.getFullYear());
+    await fillBirth(page,'2020-02-29');
+    await page.locator('#family-birth-year').selectOption('2021');
+    assert.equal(await page.locator('#family-birth-day').inputValue(),'');
+    for (const [years,allowed12,allowed16] of [[11,false,false],[12,true,false],[15,true,false],[16,true,true]]) {
+        const now=new Date();
+        await fillBirth(page,`${now.getFullYear()-years}-${String(now.getMonth()+1).padStart(2,'0')}-${String(now.getDate()).padStart(2,'0')}`);
+        assert.equal(await page.locator('[data-preset="young"]').isDisabled(),!allowed12);
+        assert.equal(await page.locator('[data-preset="teen"]').isDisabled(),!allowed16);
+    }
+    await fillBirth(page,'2018-06-15');
+    await page.locator('#family-new-name').fill('Bé demo');
+    await page.locator('#family-new-password').fill('Example1234');
+    await page.locator('#family-confirm-password').fill('Example1234');
+    await page.locator('#family-new-gender').selectOption('other');
+    await page.locator('#family-create-form button[type="submit"]').click();
+    assert.equal(await page.locator('[data-preset="young"]').isDisabled(),true);
+    assert.equal(await page.locator('[data-preset="teen"]').isDisabled(),true);
+    await page.locator('#family-apply-preset').click();
+    await page.waitForFunction(()=>document.getElementById('family-preview').open);
+    assert.equal(await page.locator('#family-age option[value="12"]').isDisabled(),true);
+    assert.equal(await page.locator('#family-age option[value="18"]').isDisabled(),true);
+    assert.equal(await page.locator('#family-advanced').isVisible(),false);
+    assert.equal(await page.locator('[data-category="learning"]').isDisabled(),true);
+    await page.locator('#family-preview-close').click();
+    await page.locator('#family-plans-open').click();
+    await page.locator('[data-tier="standard"]').click();
+    await page.locator('[data-family-plan="month"]').click();
+    await page.locator('#family-demo-consent').check();
+    await page.locator('#family-activate-submit').click();
+    await page.locator('#family-create-later').click();
+    await page.locator('#family-preview-open').click();
+    assert.equal(await page.locator('#family-advanced').isVisible(),true);
+    for(const box of await page.locator('[data-category]').all())await box.uncheck();
+    await page.locator('[data-category="learning"]').check();
+    await page.locator('[data-category="sports"]').check();
+    await page.locator('#family-demo-save').click();
+    await page.locator('#family-preview-close').click();
+    await page.locator('#family-preview-open').click();
+    assert.deepEqual(await page.locator('[data-category]:checked').evaluateAll(items=>items.map(e=>e.dataset.category)),['learning','sports']);
+    await page.locator('[data-category="puzzle"]').check();
+    await page.locator('#family-demo-reset').click();
+    assert.equal(await page.locator('[data-category="puzzle"]').isChecked(),false);
+    await page.close();
+});
+async function fillBirth(page,value) { const [y,m,d]=value.split('-'); await page.locator('#family-birth-year').selectOption(y); await page.locator('#family-birth-month').selectOption(String(Number(m))); await page.locator('#family-birth-day').selectOption(String(Number(d))); }
+
 test('six-field account creation precedes age setup; apply, manual edit and defer', async () => {
     const page = await browser.newPage();
     await page.goto(url);
     await page.locator('#family-plans-open').click();
-    await page.locator('#family-tier').selectOption('pro');
+    await page.locator('[data-tier=\"pro\"]').click();
     await page.locator('[data-family-plan="month"]').click();
     await page.locator('#family-demo-consent').check();
     await page.locator('#family-activate-submit').click();
-    assert.equal(await page.locator('#family-create-form input, #family-create-form select').count(),6);
+    assert.equal(await page.locator('#family-create-form input:not([type=hidden]), #family-create-form select').count(),8);
     await page.locator('#family-new-name').fill('Con mẫu');
     await page.locator('#family-new-password').fill('Example1234');
     await page.locator('#family-confirm-password').fill('Example1234');
     await page.locator('#family-new-gender').selectOption('other');
     await page.locator('#family-create-form button[type="submit"]').click();
-    assert.equal(await page.locator('#family-new-dob').getAttribute('aria-invalid'),'true');
-    await page.locator('#family-new-dob').fill('2999-01-01');
+    assert.equal(await page.locator('#family-birth-year').getAttribute('aria-invalid'),'true');
+    assert.equal(await page.locator('#family-birth-year option[value="2999"]').count(),0);
     await page.locator('#family-create-form button[type="submit"]').click();
     assert.equal(await page.locator('[data-flow-panel="success"]').isVisible(),false);
-    await page.locator('#family-new-dob').fill('2018-06-15');
+    await fillBirth(page,'2012-06-15');
     assert.equal(await page.locator('#family-recommendations').isVisible(),false);
     await page.locator('#family-create-form button[type="submit"]').click();
     assert.equal(await page.locator('#family-recommendations').isVisible(),true);
@@ -45,7 +102,7 @@ test('six-field account creation precedes age setup; apply, manual edit and defe
     await page.waitForFunction(()=>document.getElementById('family-preview').open);
     assert.equal(await page.locator('#family-age').inputValue(),'12');
     assert.equal(await page.locator('#family-limit').inputValue(),'45');
-    assert.equal(await page.locator('#family-manage-categories').inputValue(),'puzzle');
+    assert.deepEqual(await page.locator('[data-category]:checked').evaluateAll(items=>items.map(e=>e.dataset.category)),['puzzle','creative','sports']);
     assert.equal(await page.locator('#family-manage-keywords').inputValue(),'kinh dị, bạo lực');
     await page.locator('#family-limit').fill('35');
     await page.locator('#family-demo-save').click();
@@ -54,7 +111,7 @@ test('six-field account creation precedes age setup; apply, manual edit and defe
     await page.locator('#family-new-name').fill('Con thứ hai');
     await page.locator('#family-new-password').fill('Example1234');
     await page.locator('#family-confirm-password').fill('Example1234');
-    await page.locator('#family-new-dob').fill('2022-01-01');
+    await fillBirth(page,'2022-01-01');
     await page.locator('#family-new-gender').selectOption('other');
     await page.locator('#family-create-form button[type="submit"]').click();
     await page.locator('#family-setup-later').click();
@@ -71,7 +128,7 @@ test('tiers are independent of terms; caps, downgrade protection, schedule and C
     await page.goto(url);
     await page.locator('#family-plans-open').click();
     for (const [tier, prices] of [['standard',['49.000đ','132.300đ','249.900đ','441.000đ']],['pro',['79.000đ','213.300đ','402.900đ','711.000đ']],['plus',['109.000đ','294.300đ','555.900đ','981.000đ']]]) {
-        await page.locator('#family-tier').selectOption(tier);
+        await page.locator(`[data-tier="${tier}"]`).click();
         assert.deepEqual(await page.locator('[data-price]').allTextContents(), prices);
     }
     await page.locator('[data-family-plan="month"]').click();
@@ -80,7 +137,7 @@ test('tiers are independent of terms; caps, downgrade protection, schedule and C
     for (let i=0;i<5;i++) {
         if(i) await page.locator('#family-create-another').click();
         await page.locator('#family-new-name').fill('Con mẫu '+i);
-        await page.locator('#family-new-dob').fill('2018-06-15');
+        await fillBirth(page,'2012-06-15');
         await page.locator('#family-new-gender').selectOption('other');
         await page.locator('#family-new-password').fill('Example1234');
         await page.locator('#family-confirm-password').fill('Example1234');
@@ -111,7 +168,7 @@ test('tiers are independent of terms; caps, downgrade protection, schedule and C
     assert.equal(await page.locator('[data-weekday="0"]').inputValue(),'35');
     await page.locator('#family-preview-close').click();
     await page.locator('#family-plans-open').click();
-    await page.locator('#family-tier').selectOption('standard');
+    await page.locator('[data-tier=\"standard\"]').click();
     await page.locator('[data-family-plan="year"]').click();
     await page.locator('#family-demo-consent').check();
     await page.locator('#family-activate-submit').click();
@@ -263,7 +320,7 @@ test('plans, demo activation and child creation work end to end without network 
     await page.goto(url);
     await page.locator('#family-plans-open').click();
     assert.equal(await page.locator('.family-plan').count(), 4);
-    assert.equal(await page.locator('.family-plan-price').first().textContent(), '49.000đ');
+    assert.equal(await page.locator('[data-price="month"]').textContent(), '49.000đ');
     await page.screenshot({ path: path.join(output, 'plans-1440.png') });
     for (const [key, name] of [['quarter', 'Gói 3 tháng'], ['halfyear', 'Gói 6 tháng'], ['year', 'Gói 1 năm'], ['trial', 'Dùng thử 1 tháng']]) {
         await page.locator(`[data-family-plan="${key}"]`).click();
@@ -283,7 +340,7 @@ test('plans, demo activation and child creation work end to end without network 
     await page.locator('#family-create-form button[type="submit"]').click();
     assert.equal(await page.locator('#family-new-name').getAttribute('aria-invalid'), 'true');
     await page.locator('#family-new-name').fill('Gấu Nhỏ');
-    await page.locator('#family-new-dob').fill('2018-06-15');
+    await fillBirth(page,'2012-06-15');
     await page.locator('#family-new-gender').selectOption('other');
     await page.locator('#family-new-password').fill('SamplePass123');
     await page.locator('#family-confirm-password').fill('SamplePass123');
@@ -297,12 +354,12 @@ test('plans, demo activation and child creation work end to end without network 
     assert.match(await page.locator('#family-parent-summary-text').textContent(), /1\/1 tài khoản con/);
     await page.locator('#family-onboarding-close').click();
     await page.locator('#family-plans-open').click();
-    await page.locator('#family-tier').selectOption('pro');
+    await page.locator('[data-tier=\"pro\"]').click();
     await page.locator('[data-family-plan="month"]').click();
     await page.locator('#family-demo-consent').check();
     await page.locator('#family-activate-submit').click();
     await page.locator('#family-new-name').fill('Cá Nhỏ');
-    await page.locator('#family-new-dob').fill('2018-06-15');
+    await fillBirth(page,'2012-06-15');
     await page.locator('#family-new-gender').selectOption('other');
     await page.locator('#family-new-password').fill('SamplePass456');
     await page.locator('#family-confirm-password').fill('SamplePass456');
@@ -367,7 +424,7 @@ test('onboarding mobile, keyboard, cancel and activated empty state', async () =
     assert.equal(await page.locator('#family-create-form').isVisible(), true);
     assert.equal(await page.locator('#family-preview').evaluate(e => e.open), false);
     await page.locator('#family-new-name').fill('<img src=x onerror=alert(1)>');
-    await page.locator('#family-new-dob').fill('2018-06-15');
+    await fillBirth(page,'2012-06-15');
     await page.locator('#family-new-gender').selectOption('other');
     await page.locator('#family-new-password').fill('SamplePass123');
     await page.locator('#family-confirm-password').fill('SamplePass123');
@@ -384,15 +441,15 @@ test('age ceilings and handwritten chart follow each child and saved settings', 
     const page = await browser.newPage({ viewport: { width: 1440, height: 1000 } });
     await page.goto(url);
     await page.locator('#family-preview-open').click();
-    assert.deepEqual(await page.locator('#family-age option').evaluateAll(options => options.map(o => o.value)), ['0', '12', '16', 'none']);
+    assert.deepEqual(await page.locator('#family-age option').evaluateAll(options => options.map(o => o.value)), ['0', '12', '16', '18']);
     assert.deepEqual(await page.locator('#family-week-chart li').evaluateAll(items => items.map(e => e.getAttribute('aria-label'))), ['T2: 15 phút', 'T3: 35 phút', 'T4: 10 phút', 'T5: 45 phút', 'T6: 30 phút', 'T7: 20 phút', 'CN: 25 phút']);
     await page.screenshot({ path: path.join(output, 'management-1440.png') });
-    for (const [value, ratings] of [['12', ['0+', '6+', '12+']], ['16', ['0+', '6+', '12+', '16+']], ['none', ['0+', '6+', '12+', '16+', '18+']], ['0', ['0+']]]) {
+    for (const [value, ratings] of [['12', ['00+', '12+']], ['16', ['00+', '12+', '16+']], ['0', ['00+']]]) {
         await page.locator('#family-age').selectOption(value);
         await page.locator('#family-demo-save').click();
         assert.deepEqual(await page.locator('#family-allowed-ratings span').allTextContents(), ratings);
     }
-    await page.locator('#family-age').selectOption('none');
+    await page.locator('#family-age').selectOption('16');
     await page.locator('#family-demo-reset').click();
     assert.equal(await page.locator('#family-age').inputValue(), '0');
     await page.locator('[data-family-child="1"]').click();
@@ -415,7 +472,7 @@ test('password confirmation, compact active overview and zero history for new ch
     await page.locator('#family-demo-consent').check();
     await page.locator('#family-activate-submit').click();
     await page.locator('#family-new-name').fill('Mèo Mướp');
-    await page.locator('#family-new-dob').fill('2018-06-15');
+    await fillBirth(page,'2012-06-15');
     await page.locator('#family-new-gender').selectOption('other');
     await page.locator('#family-create-form button[type="submit"]').click();
     assert.equal(await page.locator('#family-new-password').getAttribute('aria-invalid'), 'true');
@@ -452,14 +509,14 @@ test('password confirmation, compact active overview and zero history for new ch
     await page.locator('#family-limit').fill('45');
     await page.locator('#family-demo-save').click();
     await page.locator('#family-preview-close').click();
-    assert.match(await page.locator('[data-overview-child="0"]').textContent(), /≤12.*0\/45/);
+    assert.match(await page.locator('[data-overview-child="0"]').textContent(), /12\+.*0\/45/);
     for (const width of [320, 390, 640, 868, 869, 1440]) {
         await page.setViewportSize({ width, height: 900 });
         assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), true, `active page overflow ${width}`);
         if (width === 390) await page.locator('#parent-section').screenshot({ path: path.join(output, 'active-family-390.png') });
     }
     await page.locator('#family-add-child').click();
-    assert.equal(await page.locator('#family-tier').isVisible(), true);
+    assert.equal(await page.locator('[data-tier="free"]').isVisible(), true);
     await page.locator('#family-onboarding-close').click();
     await page.locator('#family-add-child').click();
     assert.equal(await page.locator('#family-new-password').inputValue(), '');
