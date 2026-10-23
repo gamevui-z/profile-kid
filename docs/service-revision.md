@@ -55,3 +55,12 @@ Theo xác nhận của chủ sản phẩm: GameVui không có game cờ bạc. �
 
 Dữ liệu cũ creative chuyển sang Thiết kế; jigsaw hiển thị Xếp hình. Các khóa cũ learning/puzzle/strategy được chuẩn hóa theo danh sách có thật.
 
+
+## Quản lý ưu tiên cài đặt
+
+Khi mở quản lý: chọn con, giới hạn tuổi và hạn mức phút/ngày xuất hiện trước. Danh mục & từ khóa, lịch riêng & giờ nghỉ, hoạt động/biểu đồ là ba phần mở rộng riêng, mặc định đóng mỗi lần mở quản lý. Tóm tắt số danh mục và lịch hiện tại giúp người dùng biết trạng thái trước khi mở. Quyền Free vẫn ẩn những phần không thuộc gói.
+
+Thanh lưu bám đáy hộp thoại, hiển thị trạng thái có thay đổi chưa lưu. Mở/đóng phần chi tiết không xóa bản sửa; lỗi lịch tự mở phần tương ứng để sửa. Khi chỉ chỉnh hạn mức chung mà chưa có lịch tuần, không tự tạo lịch tuần cũ ghi đè hạn mức mới. Lịch riêng đã thiết lập vẫn được giữ.
+
+Kiểm thử bổ sung mặc định thu gọn, cài đặt trước báo cáo, giữ bản sửa khi đóng mục, lưu đúng và hạn mức mặc định theo ngày. Nút Lưu dùng thuộc tính form để vẫn submit đúng dù nằm ngoài form trong thanh cố định.
+
