@@ -64,3 +64,10 @@ Thanh lưu bám đáy hộp thoại, hiển thị trạng thái có thay đổi 
 
 Kiểm thử bổ sung mặc định thu gọn, cài đặt trước báo cáo, giữ bản sửa khi đóng mục, lưu đúng và hạn mức mặc định theo ngày. Nút Lưu dùng thuộc tính form để vẫn submit đúng dù nằm ngoài form trong thanh cố định.
 
+
+## Căn chỉnh bố cục và giờ nghỉ 24 giờ
+
+Bỏ chip tuổi rời khỏi phần hiển thị vì mức tuổi đã nằm trong ô chọn. Căn khoảng cách nhóm 16px, thêm nút chọn nhanh 30/60/90 phút. Giờ nghỉ chọn giờ/phút 24 giờ, không dùng popup SA/CH native; kiểm tra thiếu một thành phần, hai giờ trùng nhau và giờ qua đêm. Đổi giờ nghỉ không tự tạo lịch tuần ghi đè hạn mức ngày vừa sửa.
+
+Toolbar danh mục hai dòng desktop: tìm kiếm + nhóm + chỉ đã chọn; dòng sau bộ đếm và thao tác hàng loạt. Mobile xếp lại theo chiều rộng, giữ vùng bấm tối thiểu 44px. Phần ngoài nhấn mạnh tạo tài khoản con; CTA tạo con chuyển lên cạnh phần giới thiệu. Ví dụ Mây Nhỏ có tuổi 6 và giới hạn 00+ thực sự trong UI, không chỉ là câu quảng bá; 12+/16+/18+ bị vô hiệu hóa. Enforcement trên game vẫn chưa kết nối backend.
+

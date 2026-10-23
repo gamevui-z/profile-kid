@@ -160,8 +160,10 @@ test('tiers are independent of terms; caps, downgrade protection, schedule and C
     await page.locator('#family-preview-open').click(); await expandManagement(page);
     assert.equal(await page.locator('#family-advanced').isVisible(),true);
     await page.locator('[data-weekday="0"]').fill('35');
-    await page.locator('#family-rest-start').fill('21:00');
-    await page.locator('#family-rest-end').fill('07:00');
+    await page.locator('#rest-start-hour').selectOption('21');
+    await page.locator('#rest-start-minute').selectOption('00');
+    await page.locator('#rest-end-hour').selectOption('07');
+    await page.locator('#rest-end-minute').selectOption('00');
     await page.locator('#family-demo-save').click();
     await page.locator('#family-history-days').selectOption('90');
     assert.match(await page.locator('#family-history-summary').textContent(),/90 ngày/);
@@ -455,7 +457,9 @@ test('age ceilings and handwritten chart follow each child and saved settings', 
     assert.deepEqual(await page.locator('#family-age option').evaluateAll(options => options.map(o => o.value)), ['0', '12', '16', '18']);
     assert.deepEqual(await page.locator('#family-week-chart li').evaluateAll(items => items.map(e => e.getAttribute('aria-label'))), ['T2: 15 phút', 'T3: 35 phút', 'T4: 10 phút', 'T5: 45 phút', 'T6: 30 phút', 'T7: 20 phút', 'CN: 25 phút']);
     await page.screenshot({ path: path.join(output, 'management-1440.png') });
-    for (const [value, ratings] of [['12', ['00+', '12+']], ['16', ['00+', '12+', '16+']], ['0', ['00+']]]) {
+    assert.equal(await page.locator('#family-age option[value="12"]').isDisabled(),true);
+    await page.locator('[data-family-child="1"]').click();
+    for (const [value, ratings] of [['0',['00+']], ['12', ['00+', '12+']], ['16', ['00+', '12+', '16+']], ['0', ['00+']]]) {
         await page.locator('#family-age').selectOption(value);
         await page.locator('#family-demo-save').click();
         assert.deepEqual(await page.locator('#family-allowed-ratings span').allTextContents(), ratings);
@@ -463,9 +467,9 @@ test('age ceilings and handwritten chart follow each child and saved settings', 
     await page.locator('#family-age').selectOption('16');
     await page.locator('#family-demo-reset').click();
     assert.equal(await page.locator('#family-age').inputValue(), '0');
-    await page.locator('[data-family-child="1"]').click();
-    assert.equal(await page.locator('#family-age').inputValue(), '12');
-    assert.equal(await page.locator('#family-week-chart li').last().getAttribute('aria-label'), 'CN: 40 phút');
+    await page.locator('[data-family-child="0"]').click();
+    assert.equal(await page.locator('#family-age').inputValue(), '0');
+    assert.equal(await page.locator('#family-week-chart li').last().getAttribute('aria-label'), 'CN: 25 phút');
     await page.setViewportSize({ width: 390, height: 900 });
     assert.equal(await page.locator('#family-preview').evaluate(e => e.scrollWidth <= e.clientWidth), true);
     await page.screenshot({ path: path.join(output, 'management-390.png') });
@@ -686,6 +690,39 @@ test('management opens with basic settings first and preserves edits across disc
     assert.equal(await page.locator('[data-weekday="0"]').inputValue(),'35');
     await page.locator('#family-reports > summary').click();
     assert.equal(await page.locator('#family-history-days').isVisible(),true);
+    await page.close();
+});
+
+
+test('24-hour rest picker validates partial times and basic layout groups age hints correctly', async () => {
+    const page=await browser.newPage();
+    await page.goto(url);
+    assert.match(await page.locator('#family-marketing').innerText(),/Tạo tài khoản riêng cho con/);
+    await page.locator('#family-preview-open').click();
+    assert.equal(await page.locator('#family-age').inputValue(),'0');
+    for(const value of ['12','16','18']) assert.equal(await page.locator('#family-age option[value="'+value+'"]').isDisabled(),true);
+    assert.equal(await page.locator('#family-age').evaluate(e=>e.parentElement.contains(document.getElementById('family-allowed-ratings'))),true);
+    await page.locator('[data-limit-minutes="30"]').click();
+    assert.equal(await page.locator('#family-limit').inputValue(),'30');
+    await page.locator('#family-advanced > summary').click();
+    await page.locator('#rest-start-hour').selectOption('21');
+    await page.locator('#family-demo-save').click();
+    assert.match(await page.locator('#family-limit-error').textContent(),/đủ giờ và phút/);
+    await page.locator('#rest-start-minute').selectOption('30');
+    await page.locator('#rest-end-hour').selectOption('07');
+    await page.locator('#rest-end-minute').selectOption('00');
+    await page.locator('#family-demo-save').click();
+    assert.equal(await page.locator('[data-weekday="0"]').inputValue(),'30');
+    assert.equal(await page.locator('.family-age-preview').isVisible(),false);
+    assert.equal(await page.locator('#family-rest-start').inputValue(),'21:30');
+    assert.equal(await page.locator('#family-rest-end').inputValue(),'07:00');
+    assert.equal(await page.locator('#family-demo-save').isDisabled(),true);
+    for(const width of [390,1440]) {
+        await page.setViewportSize({width,height:1000});
+        await page.locator('#rest-start-hour').scrollIntoViewIfNeeded();
+        assert.equal(await page.locator('#family-preview').evaluate(e=>e.scrollWidth<=e.clientWidth),true);
+        await page.screenshot({path:path.join(output,'rest-picker-'+width+'.png')});
+    }
     await page.close();
 });
 
