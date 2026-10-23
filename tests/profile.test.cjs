@@ -285,7 +285,8 @@ test('responsive layout, dialog overflow, touch targets and DOM references', asy
         const boxes = await page.evaluate(() => Array.from(document.querySelector('.main-grid').children, e => ({ x: e.getBoundingClientRect().x, width: e.getBoundingClientRect().width, top: e.getBoundingClientRect().top, bottom: e.getBoundingClientRect().bottom })));
         assert.equal(boxes[0].width, boxes[1].width, `wide parent ${width}`);
         assert.ok(boxes[1].top >= boxes[0].bottom, `parent position ${width}`);
-        assert.equal(boxes[2].top === boxes[3].top, width >= 869, `login/social columns ${width}`);
+        assert.equal(boxes.length,3);
+        assert.equal(boxes[2].width,boxes[1].width, `unified security width ${width}`);
         if ([390, 1440].includes(width)) await page.screenshot({ path: path.join(output, `profile-${width}.png`), fullPage: true });
         await page.locator('#family-preview-open').click();
         assert.equal(await page.locator('#family-preview').evaluate(e => e.scrollWidth <= e.clientWidth), true, `dialog overflow ${width}`);
@@ -545,6 +546,47 @@ test('runtime is self contained: no CDN, external libraries, fonts or network da
     await page.goto(url);
     assert.deepEqual(await page.locator('[src]').evaluateAll(elements => elements.map(e => e.getAttribute('src')).filter(src => !src.startsWith('data:'))), []);
     assert.deepEqual(requests, [url + '/']);
+    await page.close();
+});
+
+
+test('eligible account gets Free; direct upgrade preserves children and cancellation preserves tier', async () => {
+    const source = html.slice(html.indexOf('function qualifiesForFree('), html.indexOf('const freeEligible ='));
+    const eligible = new Function(source + '; return qualifiesForFree;')();
+    const today = new Date(2026,9,23);
+    for (const [account, expected] of [
+        [{loggedIn:true,phoneVerified:true,birthDate:'2008-10-23'},true],
+        [{loggedIn:true,phoneVerified:true,birthDate:'2008-10-24'},false],
+        [{loggedIn:false,phoneVerified:true,birthDate:'2000-01-01'},false],
+        [{loggedIn:true,phoneVerified:false,birthDate:'2000-01-01'},false],
+        [{loggedIn:true,phoneVerified:true,birthDate:'2000-02-30'},false],
+        [{loggedIn:true,phoneVerified:true,birthDate:'2030-01-01'},false],
+        [{loggedIn:true,phoneVerified:true},false]
+    ]) assert.equal(eligible(account,today),expected);
+    const page = await browser.newPage();
+    await page.goto(url);
+    assert.equal(await page.locator('#account-plan-badge').textContent(),'Free');
+    await page.locator('#account-upgrade').click();
+    assert.equal(await page.locator('#family-tier').inputValue(),'standard');
+    await page.locator('#family-onboarding-close').click();
+    assert.equal(await page.locator('#account-plan-badge').textContent(),'Free');
+    await page.locator('#family-start-free').click();
+    await page.locator('#family-new-name').fill('Con mẫu');
+    await fillBirth(page,'2018-06-15');
+    await page.locator('#family-new-gender').selectOption('other');
+    await page.locator('#family-new-password').fill('Example1234');
+    await page.locator('#family-confirm-password').fill('Example1234');
+    await page.locator('#family-create-form button[type="submit"]').click();
+    await page.locator('#family-onboarding-close').click();
+    await page.locator('#account-upgrade').click();
+    await page.locator('[data-family-plan="month"]').click();
+    await page.locator('#family-demo-consent').check();
+    await page.locator('#family-activate-submit').click();
+    assert.equal(await page.locator('#family-onboarding').isVisible(),false);
+    assert.equal(await page.locator('#account-plan-badge').textContent(),'Standard');
+    assert.match(await page.locator('#family-parent-summary-text').textContent(),/1\/3 tài khoản con/);
+    assert.match(await page.locator('#account-upgrade').textContent(),/Nâng lên Pro/);
+    assert.match(await page.locator('[data-overview-child="0"]').textContent(),/Con mẫu/);
     await page.close();
 });
 

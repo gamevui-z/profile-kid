@@ -26,3 +26,12 @@ Gợi ý thời gian 20/45/60 phút chỉ là giá trị demo cha mẹ chỉnh �
 
 Kiểm tra Free/upgrade, giá nhìn thấy, chọn nhiều/lưu/hủy danh mục, không năm tương lai, năm nhuận, các mốc 11/12/15/16 tuổi, nhãn bị khóa, hồi quy toàn bộ form/gói, responsive và keyboard. Chưa thực thi thanh toán, quảng cáo, lọc game hay đồng bộ máy thật. Các báo cáo vẫn là dữ liệu demo.
 
+
+## Gói tài khoản và nâng cấp trực tiếp
+
+Nhãn cạnh tên thay ID bằng Free / Standard / Pro, đồng bộ sau xác nhận gói. Tài khoản đủ cả ba điều kiện: đăng nhập, số điện thoại đã xác thực, đủ 18 tuổi tự có Free. Demo dùng fixture người lớn đã xác thực; production phải lấy từ phiên xác thực và kiểm tra server, không tin giá trị client. Gói tài khoản và việc bắt đầu quản lý gia đình là hai trạng thái riêng: Free có sẵn, tạo con không yêu cầu mua lại.
+
+Nâng lên Standard / Pro chọn sẵn cấp tiếp theo và đưa đến kỳ hạn; không thu tiền hay đổi gói trước xác nhận. Hủy giữ gói cũ. Nâng cấp từ nút cạnh tên khi đã có con quay về tổng quan, giữ nguyên hồ sơ. Các thao tác vẫn chỉ mô phỏng trong bộ nhớ, chưa có billing hay lưu tài khoản thật.
+
+Đăng nhập & bảo mật gom số điện thoại, mật khẩu và các liên kết thành một thẻ rộng, hai cột desktop/một cột mobile. Không thêm CDN.
+
