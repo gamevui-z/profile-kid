@@ -738,6 +738,15 @@ test('all four ratings are selectable with nonblocking age warnings and 180-minu
     await page.locator('#family-confirm-password').fill('Example1234');
     await page.locator('#family-create-form button[type="submit"]').click();
     assert.equal(await page.locator('[data-preset]').count(),4);
+    for(const width of [320,390,768,1440]) {
+        await page.setViewportSize({width,height:1000});
+        assert.equal(await page.locator('#family-onboarding').evaluate(e=>e.scrollWidth<=e.clientWidth),true);
+        assert.equal(await page.locator('[data-flow-panel="success"] .btn-primary').count(),1);
+        const boxes=await page.locator('[data-preset]').evaluateAll(items=>items.map(e=>({w:e.getBoundingClientRect().width,h:e.getBoundingClientRect().height})));
+        assert.ok(boxes.every(box=>box.w>=44 && box.h>=44 && Math.abs(box.h-boxes[0].h)<1));
+        if([390,1440].includes(width)) await page.screenshot({path:path.join(output,'success-layout-'+width+'.png')});
+    }
+
     assert.equal(await page.locator('[data-preset="preschool"]').count(),1);
     for(const key of ['young','teen','adult']) {
         await page.locator('[data-preset="'+key+'"]').click();

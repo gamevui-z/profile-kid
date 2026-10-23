@@ -80,3 +80,10 @@ Tài khoản con mới mặc định 180 phút/ngày (kể cả bỏ qua bước
 
 Kiểm thử cảnh báo ở tuổi 6 với 12+/16+/18+, áp dụng/lưu/mở lại, 00+ không cảnh báo, mặc định 180 và giữ thời gian 100 phút khi đổi mức. Backend vẫn chưa được tích hợp.
 
+
+## Màn hình thiết lập sau tạo con
+
+Phân cấp mới: xác nhận tài khoản → tên đăng nhập và mặc định 180 phút → bốn thẻ mức tuổi → kết quả/cảnh báo → một nút chính Áp dụng và mở cài đặt. Giải thích nhãn tuổi trong phần mở rộng. Để sau là nút phụ; tự thiết lập và tạo thêm là thao tác chữ. Không đổi logic cảnh báo hay giá trị mặc định. Tiêu đề ở bước cuối ngắn hơn, thẻ 4 cột desktop/2 cột mobile, dùng chung cỡ chữ và nhịp khoảng cách.
+
+Kiểm thử luồng sau tạo, chọn mức, cảnh báo, áp dụng/để sau/tự chỉnh, 320–1440px và một nút chính duy nhất.
+
