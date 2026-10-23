@@ -266,8 +266,8 @@ test('existing profile save, cancel, identity expansion and avatar still work', 
     await page.waitForFunction(() => document.getElementById('avatar-preview').src.startsWith('data:image/jpeg'));
     await page.locator('#btn-reset').click();
     assert.equal(await page.locator('#avatar-preview').getAttribute('src'), originalAvatar);
-    await page.locator('#link-change-email').click();
-    assert.match(await page.locator('#toast-message').textContent(), /liên kết xác thực/);
+    await page.locator('#link-change-phone').click();
+    assert.match(await page.locator('#toast-message').textContent(), /chưa kết nối xác thực để đổi số điện thoại/);
     await page.close();
 });
 

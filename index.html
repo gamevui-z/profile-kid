@@ -1275,10 +1275,10 @@
                 <div class="security-rows">
                     <div class="security-row-item">
                         <div class="security-info-group">
-                            <span class="security-title">Email đăng nhập</span>
-                            <span class="security-value">parent@example.com</span>
+                            <span class="security-title">Số điện thoại đăng nhập</span>
+                            <span class="security-value">09•• ••• 123 · Số mẫu</span>
                         </div>
-                        <a href="#" class="btn-link-action" id="link-change-email">Thay đổi Email</a>
+                        <a href="#" class="btn-link-action" id="link-change-phone">Đổi số điện thoại</a>
                     </div>
                     <div class="security-row-item">
                         <div class="security-info-group">
@@ -1705,7 +1705,7 @@
                 link.addEventListener('click', (e) => {
                     if (link.getAttribute('href') === '#') {
                         e.preventDefault();
-                        showToast('Hệ thống đang mở liên kết xác thực.');
+                        showToast(link.id === 'link-change-phone' ? 'Demo: chưa kết nối xác thực để đổi số điện thoại.' : 'Demo: chưa kết nối hệ thống xác thực.');
                     }
                 });
             });
