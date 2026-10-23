@@ -87,3 +87,11 @@ Phân cấp mới: xác nhận tài khoản → tên đăng nhập và mặc đ�
 
 Kiểm thử luồng sau tạo, chọn mức, cảnh báo, áp dụng/để sau/tự chỉnh, 320–1440px và một nút chính duy nhất.
 
+
+## Layout rhythm audit — 2026-10-23
+- Unified card headings, dialog header/body padding, forms, plan cards, activation actions, child settings, schedule, report and footer spacing using 8/16/24px rhythm (compact mobile padding).
+- Report toolbar groups date range and CSV export; summary and chart have explicit 16px separation, including when Pro-only controls are hidden.
+- Current-plan badge no longer shifts plan names/prices; buttons align along card bottoms.
+- Existing behavior, permissions, session-only data and 180-minute defaults unchanged.
+- Validation: full 18-test browser suite, responsive 320–1440px; report spacing assertions and desktop/mobile screenshots. No CDN added.
+
