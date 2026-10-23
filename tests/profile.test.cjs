@@ -228,7 +228,7 @@ test('family preview validates, isolates edits, restores focus and clears sample
     await page.locator('#family-demo-save').click();
     assert.match(await page.locator('#family-remaining').textContent(), /hết hạn mức/);
     assert.equal(await page.locator('#family-usage-progress').getAttribute('max'), '1');
-    assert.match(await page.locator('#family-feedback').textContent(), /Đã lưu cài đặt demo/);
+    assert.match(await page.locator('#family-feedback').textContent(), /Đã lưu cài đặt trong phiên này/);
     await page.locator('[data-family-child="1"]').click();
     assert.equal(await page.locator('#family-limit').inputValue(), '45');
     await page.locator('#family-limit').fill('90');
@@ -267,7 +267,7 @@ test('existing profile save, cancel, identity expansion and avatar still work', 
     await page.locator('#btn-reset').click();
     assert.equal(await page.locator('#avatar-preview').getAttribute('src'), originalAvatar);
     await page.locator('#link-change-phone').click();
-    assert.match(await page.locator('#toast-message').textContent(), /chưa kết nối xác thực để đổi số điện thoại/);
+    assert.match(await page.locator('#toast-message').textContent(), /Chưa kết nối xác thực để đổi số điện thoại/);
     await page.close();
 });
 
@@ -566,7 +566,7 @@ test('eligible account gets Free; direct upgrade preserves children and cancella
     const page = await browser.newPage();
     await page.goto(url);
     assert.equal(await page.locator('#account-plan-badge').textContent(),'Free');
-    await page.locator('#account-upgrade').click();
+    await page.locator('#family-plans-open').click();
     assert.equal(await page.locator('#family-tier').inputValue(),'standard');
     await page.locator('#family-onboarding-close').click();
     assert.equal(await page.locator('#account-plan-badge').textContent(),'Free');
@@ -585,8 +585,30 @@ test('eligible account gets Free; direct upgrade preserves children and cancella
     assert.equal(await page.locator('#family-onboarding').isVisible(),false);
     assert.equal(await page.locator('#account-plan-badge').textContent(),'Standard');
     assert.match(await page.locator('#family-parent-summary-text').textContent(),/1\/3 tài khoản con/);
-    assert.match(await page.locator('#account-upgrade').textContent(),/Nâng lên Pro/);
+    assert.match(await page.locator('#account-upgrade').textContent(),/Đổi gói/);
     assert.match(await page.locator('[data-overview-child="0"]').textContent(),/Con mẫu/);
+    await page.close();
+});
+
+
+test('discovery is interactive, opens selected limit and header has no upgrade action', async () => {
+    const page = await browser.newPage();
+    await page.goto(url);
+    assert.equal(await page.locator('.profile-header-card button#account-upgrade').count(),0);
+    assert.doesNotMatch(await page.locator('body').innerText(), /demo|mô phỏng|dữ liệu mẫu|tài khoản mẫu/i);
+    for (const value of [30,90,60]) {
+        await page.locator('[data-discovery-limit="'+value+'"]').click();
+        assert.equal(await page.locator('#discovery-remaining').textContent(),String(value-25));
+        assert.equal(await page.locator('[data-discovery-limit="'+value+'"]').getAttribute('aria-pressed'),'true');
+    }
+    await page.locator('[data-discovery-limit="30"]').click();
+    await page.locator('#discovery-open').click();
+    assert.equal(await page.locator('#family-limit').inputValue(),'30');
+    assert.doesNotMatch(await page.locator('#family-preview').innerText(), /demo|mô phỏng|dữ liệu mẫu/i);
+    await page.locator('#family-preview-close').click();
+    assert.equal(await page.locator('#discovery-open').evaluate(e=>e===document.activeElement),true);
+    await page.locator('#family-plans-open').click();
+    assert.doesNotMatch(await page.locator('#family-onboarding').innerText(), /demo|mô phỏng|dữ liệu mẫu/i);
     await page.close();
 });
 
