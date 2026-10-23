@@ -95,3 +95,10 @@ Kiểm thử luồng sau tạo, chọn mức, cảnh báo, áp dụng/để sau/
 - Existing behavior, permissions, session-only data and 180-minute defaults unchanged.
 - Validation: full 18-test browser suite, responsive 320–1440px; report spacing assertions and desktop/mobile screenshots. No CDN added.
 
+
+## Typography audit — 2026-10-23
+- Replaced fractional small text sizes with shared 13px metadata, 14px labels, 15px body/action and 16px input tokens. Headline and numeric display hierarchy retained.
+- Removed account-upgrade font override. All action buttons use 15px/600/1.5; compact utility buttons use 14px/600/1.5. Native form controls inherit the site font.
+- Reflowed category toolbar and chips for readable labels; rating captions may wrap instead of overflowing.
+- Validation: 18 existing browser groups passed, plus a new computed-style audit passed at 320/390/768/1440px for active family, plans and expanded management. Audit checks visible text minimum 13px, action button typography and horizontal button overflow. Desktop/mobile screenshots inspected.
+
