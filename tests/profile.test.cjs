@@ -32,8 +32,8 @@ test('Free entitlement, bounded birth dates, legal age gates and multiple catego
     for (const [years,allowed12,allowed16] of [[11,false,false],[12,true,false],[15,true,false],[16,true,true]]) {
         const now=new Date();
         await fillBirth(page,`${now.getFullYear()-years}-${String(now.getMonth()+1).padStart(2,'0')}-${String(now.getDate()).padStart(2,'0')}`);
-        assert.equal(await page.locator('[data-preset="young"]').isDisabled(),!allowed12);
-        assert.equal(await page.locator('[data-preset="teen"]').isDisabled(),!allowed16);
+        assert.equal(await page.locator('[data-preset="young"]').isDisabled(),false);
+        assert.equal(await page.locator('[data-preset="teen"]').isDisabled(),false);
     }
     await fillBirth(page,'2018-06-15');
     await page.locator('#family-new-name').fill('Bé demo');
@@ -41,12 +41,12 @@ test('Free entitlement, bounded birth dates, legal age gates and multiple catego
     await page.locator('#family-confirm-password').fill('Example1234');
     await page.locator('#family-new-gender').selectOption('other');
     await page.locator('#family-create-form button[type="submit"]').click();
-    assert.equal(await page.locator('[data-preset="young"]').isDisabled(),true);
-    assert.equal(await page.locator('[data-preset="teen"]').isDisabled(),true);
+    assert.equal(await page.locator('[data-preset="young"]').isDisabled(),false);
+    assert.equal(await page.locator('[data-preset="teen"]').isDisabled(),false);
     await page.locator('#family-apply-preset').click();
     await page.waitForFunction(()=>document.getElementById('family-preview').open); await expandManagement(page);
-    assert.equal(await page.locator('#family-age option[value="12"]').isDisabled(),true);
-    assert.equal(await page.locator('#family-age option[value="18"]').isDisabled(),true);
+    assert.equal(await page.locator('#family-age option[value="12"]').isDisabled(),false);
+    assert.equal(await page.locator('#family-age option[value="18"]').isDisabled(),false);
     assert.equal(await page.locator('#family-advanced').isVisible(),false);
     assert.equal(await page.locator('#family-content-controls').isVisible(),false);
     assert.equal(await page.locator('#family-manage-keywords').isVisible(),false);
@@ -99,8 +99,8 @@ test('six-field account creation precedes age setup; apply, manual edit and defe
     assert.equal(await page.locator('#family-recommendations').isVisible(),true);
     assert.equal(await page.locator('[data-preset="young"]').getAttribute('aria-pressed'),'true');
     await page.locator('[data-preset="preschool"]').click();
-    assert.match(await page.locator('#family-preset-content').textContent(),/20 phút/);
-    assert.match(await page.locator('[data-overview-child="0"]').textContent(),/0\/0/);
+    assert.match(await page.locator('#family-preset-content').textContent(),/00\+/);
+    assert.match(await page.locator('[data-overview-child="0"]').textContent(),/0\/180/);
     for (const width of [390,1440]) {
         await page.setViewportSize({width,height:900});
         assert.equal(await page.locator('#family-onboarding').evaluate(e=>e.scrollWidth<=e.clientWidth),true);
@@ -110,8 +110,8 @@ test('six-field account creation precedes age setup; apply, manual edit and defe
     await page.locator('#family-apply-preset').click();
     await page.waitForFunction(()=>document.getElementById('family-preview').open); await expandManagement(page);
     assert.equal(await page.locator('#family-age').inputValue(),'12');
-    assert.equal(await page.locator('#family-limit').inputValue(),'45');
-    assert.deepEqual(await page.locator('[data-category]:checked').evaluateAll(items=>items.map(e=>e.dataset.category)),['puzzle','iq','chess','learning','math','english','design','music','sports']);
+    assert.equal(await page.locator('#family-limit').inputValue(),'180');
+    assert.equal(await page.locator('[data-category]:checked').count(),75);
     assert.equal(await page.locator('#family-manage-keywords').inputValue(),'');
     await page.locator('#family-limit').fill('35');
     await page.locator('#family-demo-save').click();
@@ -128,7 +128,7 @@ test('six-field account creation precedes age setup; apply, manual edit and defe
     await page.locator('[data-overview-child="0"]').click();
     assert.equal(await page.locator('#family-limit').inputValue(),'35');
     await page.locator('[data-family-child="1"]').click();
-    assert.equal(await page.locator('#family-limit').inputValue(),'0');
+    assert.equal(await page.locator('#family-limit').inputValue(),'180');
     await page.close();
 });
 
@@ -386,7 +386,7 @@ test('plans, demo activation and child creation work end to end without network 
     assert.equal(await page.locator('#family-child-name').textContent(), 'Cá Nhỏ');
     assert.equal(await page.locator('[data-family-child]').count(), 2);
     await page.locator('[data-family-child="0"]').click();
-    assert.equal(await page.locator('#family-limit').inputValue(), '0');
+    assert.equal(await page.locator('#family-limit').inputValue(), '180');
     await page.locator('#family-limit').fill('15');
     await page.locator('#family-demo-save').click();
     await page.locator('#family-preview-close').click();
@@ -457,7 +457,7 @@ test('age ceilings and handwritten chart follow each child and saved settings', 
     assert.deepEqual(await page.locator('#family-age option').evaluateAll(options => options.map(o => o.value)), ['0', '12', '16', '18']);
     assert.deepEqual(await page.locator('#family-week-chart li').evaluateAll(items => items.map(e => e.getAttribute('aria-label'))), ['T2: 15 phút', 'T3: 35 phút', 'T4: 10 phút', 'T5: 45 phút', 'T6: 30 phút', 'T7: 20 phút', 'CN: 25 phút']);
     await page.screenshot({ path: path.join(output, 'management-1440.png') });
-    assert.equal(await page.locator('#family-age option[value="12"]').isDisabled(),true);
+    assert.equal(await page.locator('#family-age option[value="12"]').isDisabled(),false);
     await page.locator('[data-family-child="1"]').click();
     for (const [value, ratings] of [['0',['00+']], ['12', ['00+', '12+']], ['16', ['00+', '12+', '16+']], ['0', ['00+']]]) {
         await page.locator('#family-age').selectOption(value);
@@ -514,7 +514,7 @@ test('password confirmation, compact active overview and zero history for new ch
     assert.equal(await page.locator('#family-guide').isVisible(), false);
     assert.equal(await page.locator('#family-guide-toggle').isVisible(), false);
     assert.equal(await page.locator('#family-title').textContent(), 'Quản lý gia đình');
-    assert.match(await page.locator('[data-overview-child="0"]').textContent(), /Mèo Mướp.*0\+.*0\/0/);
+    assert.match(await page.locator('[data-overview-child="0"]').textContent(), /Mèo Mướp.*0\+.*0\/180/);
     await page.locator('#parent-section').screenshot({ path: path.join(output, 'active-family-1440.png') });
     await page.locator('[data-overview-child="0"]').click();
     assert.equal(await page.locator('#family-child-name').textContent(), 'Mèo Mướp');
@@ -700,7 +700,7 @@ test('24-hour rest picker validates partial times and basic layout groups age hi
     assert.match(await page.locator('#family-marketing').innerText(),/Tạo tài khoản riêng cho con/);
     await page.locator('#family-preview-open').click();
     assert.equal(await page.locator('#family-age').inputValue(),'0');
-    for(const value of ['12','16','18']) assert.equal(await page.locator('#family-age option[value="'+value+'"]').isDisabled(),true);
+    for(const value of ['12','16','18']) assert.equal(await page.locator('#family-age option[value="'+value+'"]').isDisabled(),false);
     assert.equal(await page.locator('#family-age').evaluate(e=>e.parentElement.contains(document.getElementById('family-allowed-ratings'))),true);
     await page.locator('[data-limit-minutes="30"]').click();
     assert.equal(await page.locator('#family-limit').inputValue(),'30');
@@ -722,6 +722,48 @@ test('24-hour rest picker validates partial times and basic layout groups age hi
         await page.locator('#rest-start-hour').scrollIntoViewIfNeeded();
         assert.equal(await page.locator('#family-preview').evaluate(e=>e.scrollWidth<=e.clientWidth),true);
         await page.screenshot({path:path.join(output,'rest-picker-'+width+'.png')});
+    }
+    await page.close();
+});
+
+
+test('all four ratings are selectable with nonblocking age warnings and 180-minute default', async () => {
+    const page=await browser.newPage();
+    await page.goto(url);
+    await page.locator('#family-start-free').click();
+    await page.locator('#family-new-name').fill('Bé Sáu');
+    await fillBirth(page,(new Date().getFullYear()-6)+'-01-01');
+    await page.locator('#family-new-gender').selectOption('other');
+    await page.locator('#family-new-password').fill('Example1234');
+    await page.locator('#family-confirm-password').fill('Example1234');
+    await page.locator('#family-create-form button[type="submit"]').click();
+    assert.equal(await page.locator('[data-preset]').count(),4);
+    assert.equal(await page.locator('[data-preset="preschool"]').count(),1);
+    for(const key of ['young','teen','adult']) {
+        await page.locator('[data-preset="'+key+'"]').click();
+        assert.equal(await page.locator('#family-preset-warning').isVisible(),true);
+        assert.doesNotMatch(await page.locator('#family-preset-content').textContent(),/phút/);
+    }
+    await page.locator('#family-apply-preset').click();
+    await page.waitForFunction(()=>document.getElementById('family-preview').open);
+    assert.equal(await page.locator('#family-age').inputValue(),'18');
+    assert.equal(await page.locator('#family-limit').inputValue(),'180');
+    assert.match(await page.locator('#family-rating-warning').textContent(),/con 6 tuổi.*18\+/);
+    await page.locator('#family-age').selectOption('0');
+    assert.equal(await page.locator('#family-rating-warning').isVisible(),false);
+    await page.locator('#family-limit').fill('100');
+    await page.locator('#family-demo-save').click();
+    await page.locator('#family-age').selectOption('12');
+    assert.equal(await page.locator('#family-rating-warning').isVisible(),true);
+    await page.locator('#family-demo-save').click();
+    await page.locator('#family-preview-close').click();
+    await page.locator('#family-preview-open').click();
+    assert.equal(await page.locator('#family-age').inputValue(),'12');
+    assert.equal(await page.locator('#family-limit').inputValue(),'100');
+    assert.equal(await page.locator('#family-rating-warning').isVisible(),true);
+    for(const width of [390,1440]) {
+        await page.setViewportSize({width,height:1000});
+        await page.screenshot({path:path.join(output,'age-warning-'+width+'.png')});
     }
     await page.close();
 });
