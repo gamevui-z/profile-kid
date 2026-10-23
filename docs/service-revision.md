@@ -44,3 +44,14 @@ Gỡ các nhãn demo/mẫu/mô phỏng trên giao diện; thông báo ở bướ
 
 Kiểm thử 14 nhóm: có kiểm tra nội dung hiển thị, tương tác hạn mức và trả focus về nút mở.
 
+
+## Danh mục đầy đủ và gợi ý tuổi
+
+Đối chiếu 75 mục từ ảnh menu do người dùng cung cấp, bỏ nút Đóng; giữ tên các bộ sưu tập như Game Hot, Game Hay, Game Mới, Game Y8 cùng các danh mục. Bảy nhóm chỉ phục vụ trình bày, không thay đổi tên taxonomy. Chưa có ID/API taxonomy production: ID hiện là khóa nội bộ giao diện, cần ánh xạ trước khi tích hợp.
+
+Bộ chọn có tìm không dấu, lọc nhóm, chỉ mục đã chọn, bộ đếm, chọn tất cả mục đang hiện và bỏ chọn tất cả. Bộ lọc không xóa lựa chọn; lưu/hủy theo từng con. Không có lựa chọn nghĩa là không cho phép danh mục nào. Danh mục là một điều kiện cùng với tuổi, không thay thế phân loại game. Game nhiều nhãn và danh mục tuyển chọn rộng cần backend áp dụng giao của danh mục cho phép với mức tuổi; chưa có lọc thư viện thật.
+
+Theo xác nhận của chủ sản phẩm: GameVui không có game cờ bạc. Đã bỏ mặc định từ khóa cờ bạc và mọi từ khóa mặc định khác. Gợi ý dưới 6 tuổi: 20 phút, học tập/tô màu/luyện trí nhớ/xếp hình; 6–11: 30 phút thêm toán/tiếng Anh/giải đố/âm nhạc; 12–15: 45 phút thêm thể thao/chơi cờ/thiết kế; 16–17: 60 phút thêm chiến thuật/phiêu lưu/đua xe/Minecraft. Mức thời gian để cha mẹ cân nhắc, không phải chuẩn sức khỏe hay luật định. Nhãn game vẫn là 00+/12+/16+, 18+ bị chặn với trẻ. Trạng thái Free vẫn ẩn bộ chọn và từ khóa theo quyền lợi.
+
+Dữ liệu cũ creative chuyển sang Thiết kế; jigsaw hiển thị Xếp hình. Các khóa cũ learning/puzzle/strategy được chuẩn hóa theo danh sách có thật.
+

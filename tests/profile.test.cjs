@@ -55,7 +55,7 @@ test('Free entitlement, bounded birth dates, legal age gates and multiple catego
     await page.locator('#family-create-later').click();
     await page.locator('#family-preview-open').click();
     assert.equal(await page.locator('#family-advanced').isVisible(),true);
-    for(const box of await page.locator('[data-category]').all())await box.uncheck();
+    await page.locator('#category-clear').click();
     await page.locator('[data-category="learning"]').check();
     await page.locator('[data-category="sports"]').check();
     await page.locator('#family-demo-save').click();
@@ -105,8 +105,8 @@ test('six-field account creation precedes age setup; apply, manual edit and defe
     await page.waitForFunction(()=>document.getElementById('family-preview').open);
     assert.equal(await page.locator('#family-age').inputValue(),'12');
     assert.equal(await page.locator('#family-limit').inputValue(),'45');
-    assert.deepEqual(await page.locator('[data-category]:checked').evaluateAll(items=>items.map(e=>e.dataset.category)),['puzzle','creative','sports']);
-    assert.equal(await page.locator('#family-manage-keywords').inputValue(),'kinh dị, bạo lực');
+    assert.deepEqual(await page.locator('[data-category]:checked').evaluateAll(items=>items.map(e=>e.dataset.category)),['puzzle','iq','chess','learning','math','english','design','music','sports']);
+    assert.equal(await page.locator('#family-manage-keywords').inputValue(),'');
     await page.locator('#family-limit').fill('35');
     await page.locator('#family-demo-save').click();
     await page.locator('#family-preview-close').click();
@@ -609,6 +609,45 @@ test('discovery is interactive, opens selected limit and header has no upgrade a
     assert.equal(await page.locator('#discovery-open').evaluate(e=>e===document.activeElement),true);
     await page.locator('#family-plans-open').click();
     assert.doesNotMatch(await page.locator('#family-onboarding').innerText(), /demo|mô phỏng|dữ liệu mẫu/i);
+    await page.close();
+});
+
+
+test('full category catalog supports accentless search, groups, bulk selection and saved state', async () => {
+    const page = await browser.newPage();
+    await page.goto(url);
+    await page.locator('#family-preview-open').click();
+    assert.equal(await page.locator('[data-category]').count(),75);
+    const labels = await page.locator('.category-chip-grid label span').allTextContents();
+    assert.equal(new Set(labels).size,75);
+    for(const label of ['Game Hot','Game Mới','Xếp hình','Game Halloween','Lego','Không chiến','Trang Trí']) assert.ok(labels.includes(label));
+    await page.locator('#category-clear').click();
+    await page.locator('#category-search').fill('hoc');
+    assert.equal(await page.locator('.category-chip-grid label:visible').count(),4);
+    await page.locator('#category-select-visible').click();
+    assert.deepEqual(await page.locator('[data-category]:checked').evaluateAll(items=>items.map(e=>e.dataset.category)),['learning','math','english','prank']);
+    await page.locator('#category-search').fill('DAO VANG');
+    assert.equal(await page.locator('.category-chip-grid label:visible').innerText(),'Đào vàng');
+    await page.locator('#category-search').fill('khong ton tai');
+    assert.equal(await page.locator('#category-empty').isVisible(),true);
+    assert.equal(await page.locator('#category-select-visible').isDisabled(),true);
+    await page.locator('#category-search').fill('');
+    await page.locator('#category-group').selectOption('6');
+    assert.equal(await page.locator('.category-chip-grid label:visible').count(),4);
+    await page.locator('#category-select-visible').click();
+    await page.locator('#category-group').selectOption('all');
+    await page.locator('#category-selected-only').click();
+    assert.equal(await page.locator('.category-chip-grid label:visible').count(),8);
+    await page.locator('#family-demo-save').click();
+    await page.locator('#category-clear').click();
+    await page.locator('#family-demo-reset').click();
+    assert.equal(await page.locator('[data-category]:checked').count(),8);
+    for(const width of [320,390,768,1440]) {
+        await page.setViewportSize({width,height:900});
+        assert.equal(await page.locator('#family-preview').evaluate(e=>e.scrollWidth<=e.clientWidth),true);
+        await page.locator('#category-search').scrollIntoViewIfNeeded();
+        if([390,1440].includes(width)) await page.screenshot({path:path.join(output,'categories-'+width+'.png')});
+    }
     await page.close();
 });
 
