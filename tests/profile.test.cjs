@@ -789,3 +789,52 @@ test('all four ratings are selectable with nonblocking age warnings and 180-minu
     await page.close();
 });
 
+
+test('typography roles stay consistent across active family, plans and management', async () => {
+    const page=await browser.newPage();
+    async function audit() {
+        const issues=await page.evaluate(()=>{
+            const visible=e=>e.getClientRects().length && getComputedStyle(e).visibility!=='hidden';
+            const issues=[];
+            document.querySelectorAll('.btn,.btn-link-action,.btn-social-connect').forEach(e=>{
+                if(!visible(e))return;
+                const c=getComputedStyle(e);
+                if(c.fontSize!=='15px'||c.fontWeight!=='600'||c.lineHeight!=='22.5px')issues.push([e.id||e.textContent.trim(),c.fontSize,c.fontWeight,c.lineHeight]);
+                if(e.scrollWidth>e.clientWidth+1)issues.push(['button overflow',e.textContent]);
+            });
+            document.querySelectorAll('body *').forEach(e=>{
+                if(!visible(e)||['SCRIPT','STYLE','OPTION','SVG','PATH'].includes(e.tagName))return;
+                if([...e.childNodes].some(n=>n.nodeType===3&&n.textContent.trim()) && parseFloat(getComputedStyle(e).fontSize)<13)issues.push(['small text',e.id||e.className,getComputedStyle(e).fontSize]);
+            });
+            return issues;
+        });
+        assert.deepEqual(issues,[]);
+    }
+    await page.goto(url);
+    await page.locator('#family-start-free').click();
+    await page.locator('#family-new-name').fill('Con kiểm tra');
+    await fillBirth(page,'2018-06-15');
+    await page.locator('#family-new-gender').selectOption('other');
+    await page.locator('#family-new-password').fill('Example1234');
+    await page.locator('#family-confirm-password').fill('Example1234');
+    await page.locator('#family-create-form button[type="submit"]').click();
+    await page.locator('#family-onboarding-close').click();
+    for(const width of [320,390,768,1440]) {
+        await page.setViewportSize({width,height:1000});
+        await audit();
+        assert.equal(await page.locator('#account-upgrade').evaluate(e=>getComputedStyle(e).fontSize),'15px');
+        if([390,1440].includes(width))await page.locator('#parent-section').screenshot({path:path.join(output,`typography-active-${width}.png`)});
+        await page.locator('#family-plans-open').click();
+        await audit();
+        await page.locator('#family-onboarding-close').click();
+    }
+    await page.goto(url);
+    await page.locator('#family-preview-open').click();
+    await expandManagement(page);
+    for(const width of [320,390,768,1440]) {
+        await page.setViewportSize({width,height:1000});
+        await audit();
+    }
+    await page.close();
+});
+
