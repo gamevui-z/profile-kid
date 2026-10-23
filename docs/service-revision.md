@@ -71,3 +71,12 @@ Bỏ chip tuổi rời khỏi phần hiển thị vì mức tuổi đã nằm tr
 
 Toolbar danh mục hai dòng desktop: tìm kiếm + nhóm + chỉ đã chọn; dòng sau bộ đếm và thao tác hàng loạt. Mobile xếp lại theo chiều rộng, giữ vùng bấm tối thiểu 44px. Phần ngoài nhấn mạnh tạo tài khoản con; CTA tạo con chuyển lên cạnh phần giới thiệu. Ví dụ Mây Nhỏ có tuổi 6 và giới hạn 00+ thực sự trong UI, không chỉ là câu quảng bá; 12+/16+/18+ bị vô hiệu hóa. Enforcement trên game vẫn chưa kết nối backend.
 
+
+## Thay đổi mới nhất: quyền chọn mức tuổi và mặc định thời gian
+
+Yêu cầu mới thay thế chính sách khóa mức tuổi và preset ở các mục trước: chỉ còn 4 lựa chọn 00+, 12+, 16+, 18+. Tất cả chọn được; mức vượt tuổi thực hiển thị cảnh báo không chặn, cả bước sau tạo con lẫn quản lý/lần mở lại. Lưu 18+ không bị tự hạ khi render. Đây là hành vi giao diện theo yêu cầu sản phẩm, không phải kết luận pháp lý về cung cấp game cho trẻ.
+
+Tài khoản con mới mặc định 180 phút/ngày (kể cả bỏ qua bước chọn mức). Chọn mức chỉ thay đổi mức tuổi, không ghi đè thời gian/danh mục/từ khóa. Bỏ các gợi ý phút theo tuổi và hai nút 00+ trùng nhau. Hồ sơ đã có thiết lập riêng giữ nguyên. Cha mẹ tự chỉnh trong cài đặt; không thêm bước xác nhận ngoài cảnh báo.
+
+Kiểm thử cảnh báo ở tuổi 6 với 12+/16+/18+, áp dụng/lưu/mở lại, 00+ không cảnh báo, mặc định 180 và giữ thời gian 100 phút khi đổi mức. Backend vẫn chưa được tích hợp.
+
