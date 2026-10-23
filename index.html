@@ -1228,6 +1228,74 @@
         .child-secondary-actions button { background:none; border:0; padding:8px 0; min-height:44px; font:inherit; font-size:.78rem; color:var(--primary-ink); cursor:pointer; text-align:left; }
         .child-session-note { margin:8px 0 0; font-size:.72rem; line-height:1.6; color:var(--text-muted); }
         @media(max-width:480px) { .child-rating-options { grid-template-columns:repeat(2,minmax(0,1fr)); gap:8px; } .child-rating-options button { min-height:76px; padding:12px; } .child-account-line { gap:12px; padding:12px; } .child-setup-footer { flex-direction:column; align-items:stretch; } .child-success-heading { align-items:flex-start; } }
+
+        /* Shared layout rhythm: related items 8px, groups 16px, sections 24px. */
+        .card-header { gap:16px; margin-bottom:24px; }
+        .card-title { line-height:1.4; }
+        .card-desc, .field-hint { line-height:1.6; }
+        .form-grid { gap:24px; }
+        .account-security-layout { gap:24px; }
+        .security-section-title { margin-bottom:16px; line-height:1.5; }
+        .family-dialog-header { padding:24px; gap:16px; border-bottom:1px solid var(--border); }
+        .family-dialog-header h2, #family-onboarding .family-dialog-header h2 { font-size:1.35rem; line-height:1.4; margin-top:8px; text-wrap:balance; }
+        .family-dialog-body { padding:24px; }
+        .family-dialog-body > .family-notice { margin:0 0 24px; }
+        .family-dialog-body p, .family-dialog-body label { line-height:1.6; }
+        .family-flow-steps { gap:8px 16px; padding-bottom:16px; }
+        .family-flow-title { margin:24px 0 8px; }
+        #family-onboarding .family-fields { gap:24px; align-items:start; }
+        #family-create-form > .family-actions, #family-activate-form > .family-actions { margin-top:24px; padding-top:16px; border-top:1px solid var(--border); justify-content:flex-end; gap:12px; }
+        .family-tier-grid { gap:16px; margin:16px 0; }
+        .family-tier-grid article { padding:20px; gap:12px; }
+        .family-tier-grid li + li { margin-top:6px; }
+        .family-tier-grid .btn { margin-top:auto; }
+        [data-flow-panel="plans"] > .family-note { margin:16px 0 24px; }
+        .family-plans { gap:12px; margin:16px 0 24px; }
+        .family-plan { gap:12px; padding:16px; }
+        .family-plan .btn { margin-top:auto; }
+        [data-flow-panel="plans"] > .family-notice { display:grid; justify-items:start; gap:12px; margin:24px 0; }
+        .family-confirm-box { display:grid; gap:8px; margin:24px 0; padding:20px; }
+        #family-preview .family-dashboard { gap:24px; }
+        #family-demo-form > fieldset > legend { margin:16px 0; }
+        .settings-disclosure > summary { padding:16px; line-height:1.5; }
+        .settings-disclosure > summary small { margin-top:4px; }
+        .settings-disclosure-body { padding:16px; }
+        #family-advanced > .settings-disclosure-body, #family-reports > .settings-disclosure-body { display:grid; gap:16px; }
+        #family-advanced > .settings-disclosure-body > *, #family-reports > .settings-disclosure-body > * { margin:0; min-width:0; }
+        #family-advanced > .settings-disclosure-body > p { font-size:.8rem; color:var(--text-muted); }
+        #family-schedule { gap:12px; }
+        .report-toolbar { display:flex; align-items:flex-end; flex-wrap:wrap; gap:12px 16px; }
+        .report-toolbar .form-group { flex:1 1 200px; }
+        .report-toolbar .btn { min-height:44px; flex:0 0 auto; }
+        .report-summary { display:grid; gap:8px; }
+        .report-summary .family-note { margin:0; }
+        .family-chart { padding:16px; }
+        .family-chart-heading { line-height:1.5; }
+        .family-chart-caption { margin-top:16px; line-height:1.6; }
+        .settings-save-bar { padding:16px 24px; gap:12px 16px; }
+        .settings-save-actions { gap:12px; }
+        #family-content-controls .form-group-full { grid-column:1/-1; }
+        #family-content-controls .form-group:last-child { grid-column:1/-1; }
+        .family-parent-summary { margin-top:24px; padding-top:24px; }
+        .family-summary-heading { gap:16px; margin-bottom:16px; }
+        @media(max-width:640px) {
+            .card-header { margin-bottom:20px; }
+            .form-grid, #family-onboarding .family-fields { gap:20px; }
+            .family-dialog-header { padding:20px 16px 16px; }
+            .family-dialog-body { padding:20px 16px; }
+            .family-dialog-header h2, #family-onboarding .family-dialog-header h2 { font-size:1.2rem; }
+            #family-preview .family-dashboard { gap:24px; }
+            .settings-disclosure > summary, .settings-disclosure-body { padding:12px; }
+            .settings-save-bar { padding:12px 16px; }
+            .family-tier-grid article { padding:16px; }
+            .report-toolbar .btn { width:100%; }
+            .report-toolbar .form-group { flex-basis:100%; }
+            .family-chart { padding:12px; }
+        }
+        .family-tier-grid article { position:relative; padding-top:48px; }
+        .family-tier-grid .current-plan-label { position:absolute; top:16px; left:20px; margin:0; font-size:.72rem; line-height:1.5; }
+        [data-flow-panel="plans"] > .family-intro { margin-bottom:16px; }
+        @media(max-width:640px) { .family-tier-grid article { padding-top:44px; } .family-tier-grid .current-plan-label { left:16px; top:12px; } }
     </style>
 </head>
 <body>
@@ -1483,7 +1551,8 @@
                         <progress id="family-usage-progress" value="25" max="60" aria-label="Thời gian chơi minh họa"></progress>
                         <p id="family-remaining" class="family-note" style="margin-top: 0">Còn 35 phút trong ví dụ này</p>
                     </div>
-                    <div class="form-group"><label for="family-history-days">Khoảng thời gian báo cáo</label><select id="family-history-days"><option value="7">7 ngày</option></select></div><p id="family-history-summary" class="family-note" aria-live="polite"></p><p id="family-comparison" class="family-note" hidden></p><button type="button" id="family-export" class="btn btn-secondary" hidden>Xuất báo cáo CSV</button>
+                    <div class="report-toolbar"><div class="form-group"><label for="family-history-days">Khoảng thời gian báo cáo</label><select id="family-history-days"><option value="7">7 ngày</option></select></div><button type="button" id="family-export" class="btn btn-secondary" hidden>Xuất báo cáo CSV</button></div>
+                    <div class="report-summary"><p id="family-history-summary" class="family-note" aria-live="polite"></p><p id="family-comparison" class="family-note" hidden></p></div>
                     <figure class="family-chart" aria-labelledby="family-chart-title">
                         <div class="family-chart-heading"><figcaption id="family-chart-title">Thời gian chơi · 7 ngày</figcaption><span>Phút</span></div>
                         <ol id="family-week-chart" class="family-week-chart" aria-label="Số phút chơi từng ngày"></ol>

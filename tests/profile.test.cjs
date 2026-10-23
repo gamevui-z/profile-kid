@@ -168,6 +168,18 @@ test('tiers are independent of terms; caps, downgrade protection, schedule and C
     await page.locator('#family-history-days').selectOption('90');
     assert.match(await page.locator('#family-history-summary').textContent(),/90 ngày/);
     assert.equal(await page.locator('#family-comparison').isVisible(),true);
+    for (const width of [320,390,768,1440]) {
+        await page.setViewportSize({width,height:1000});
+        await page.locator('#family-reports').scrollIntoViewIfNeeded();
+        const layout=await page.evaluate(()=>{
+            const box=s=>document.querySelector(s).getBoundingClientRect();
+            const chart=box('#family-reports .family-chart'), summary=box('.report-summary'), toolbar=box('.report-toolbar');
+            return {chartGap:chart.top-summary.bottom,summaryGap:summary.top-toolbar.bottom,overflow:document.querySelector('#family-preview').scrollWidth>document.querySelector('#family-preview').clientWidth};
+        });
+        assert.ok(layout.chartGap>=15 && layout.summaryGap>=15,JSON.stringify(layout));
+        assert.equal(layout.overflow,false);
+        if([390,1440].includes(width)) await page.screenshot({path:path.join(output,`report-layout-${width}.png`)});
+    }
     const downloadEvent=page.waitForEvent('download');
     await page.locator('#family-export').click();
     const download=await downloadEvent;
