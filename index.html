@@ -1072,6 +1072,22 @@
                 transition-duration: 0.01ms !important;
             }
         }
+
+        .account-plan-detail { color:var(--text-muted); font-size:.82rem; line-height:1.6; margin-top:10px; max-width:560px; }
+        #account-upgrade { min-height:44px; padding:10px 16px; font-size:.82rem; }
+        #account-plan-badge[data-account-tier="standard"], #account-plan-badge[data-account-tier="pro"] { background:#fff0f5; color:var(--primary-ink); }
+        .account-security-layout { display:grid; grid-template-columns:1fr 1fr; gap:32px; }
+        .security-section-title { font-size:.92rem; margin-bottom:14px; }
+        .linked-account-list { border:1px solid var(--border); border-radius:14px; overflow:hidden; }
+        .linked-account-row { display:flex; align-items:center; gap:12px; padding:14px 16px; min-height:80px; flex-wrap:wrap; }
+        .linked-account-row + .linked-account-row { border-top:1px solid var(--border); }
+        .linked-account-row > div { flex:1; min-width:95px; }
+        .linked-account-row strong { font-size:.9rem; }
+        .linked-account-row p { color:var(--text-muted); font-size:.78rem; margin-top:4px; }
+        .linked-account-row .btn-social-connect { min-height:44px; display:inline-flex; align-items:center; }
+        .connection-badge { color:#28634a; background:#eef8f1; border-radius:20px; padding:6px 10px; font-size:.75rem; }
+        .current-plan-label { color:#28634a; font-size:.78rem; font-weight:700; }
+        @media(max-width:868px) { .account-security-layout { grid-template-columns:1fr; gap:24px; } }
     </style>
 </head>
 <body>
@@ -1100,8 +1116,10 @@
                     <div class="user-details">
                         <div class="user-name-row">
                             <h1 class="user-name" id="main-display-name">GameVui</h1>
-                            <span class="user-badge">id: demo-parent</span>
+                            <span class="user-badge" id="account-plan-badge" aria-live="polite">Chưa xác định gói</span>
+                            <button type="button" id="account-upgrade" class="btn btn-primary" aria-haspopup="dialog" aria-controls="family-onboarding" hidden>Nâng lên Standard</button>
                         </div>
+                        <p id="account-plan-detail" class="account-plan-detail">Gói tài khoản được xác định sau khi kiểm tra điều kiện.</p>
                     </div>
                 </div>
 
@@ -1137,7 +1155,7 @@
                         <li><span class="family-benefit-icon" aria-hidden="true">✓</span><div><strong>Game phù hợp lứa tuổi</strong><span>Chọn mức tuổi hiển thị theo nhu cầu của con.</span></div></li>
                     </ul>
                 </div>
-                <div class="family-actions">
+                <div class="family-actions"><button type="button" id="family-start-free" class="btn btn-primary" aria-haspopup="dialog" aria-controls="family-onboarding" hidden>Tạo con với Free</button>
                     <button type="button" id="family-plans-open" class="btn btn-primary" aria-haspopup="dialog" aria-controls="family-onboarding" hidden>Xem các gói</button>
                     <button type="button" id="family-preview-open" class="btn btn-secondary" aria-haspopup="dialog" aria-controls="family-preview" hidden>Xem thử quản lý</button>
                     <button type="button" id="family-guide-toggle" class="family-text-button" aria-expanded="false" aria-controls="family-guide" hidden>Cách hoạt động</button>
@@ -1259,19 +1277,9 @@
 
 
 
-            <div class="card">
-                <div class="card-header">
-                    <div class="card-title-group">
-                        <div class="card-icon">
-                            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg>
-                        </div>
-                        <div>
-                            <h2 class="card-title">Đăng nhập</h2>
-                            <p class="card-desc">Quản lý phương thức đăng nhập và bảo mật tài khoản</p>
-                        </div>
-                    </div>
-                </div>
-
+            <section id="account-security" class="card card-wide" aria-labelledby="security-heading">
+                <div class="card-header"><div><h2 id="security-heading" class="card-title">Đăng nhập &amp; bảo mật</h2><p class="card-desc">Thông tin đăng nhập và các tài khoản liên kết của bạn.</p></div></div>
+                <div class="account-security-layout"><div><h3 class="security-section-title">Thông tin đăng nhập</h3>
                 <div class="security-rows">
                     <div class="security-row-item">
                         <div class="security-info-group">
@@ -1291,56 +1299,13 @@
                         <a href="#" class="btn-link-action" id="link-change-pwd">Cập nhật</a>
                     </div>
                 </div>
-            </div>
-
-            <div class="card">
-                <div class="card-header">
-                    <div class="card-title-group">
-                        <div class="card-icon">
-                            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76 0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71 0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71 0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76 0 5-2.24 5-5s-2.24-5-5-5z"/></svg>
-                        </div>
-                        <div>
-                            <h2 class="card-title">Mạng xã hội</h2>
-                            <p class="card-desc">Liên kết các nền tảng mạng xã hội để đăng nhập nhanh</p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="social-grid">
-                    <div class="social-card">
-                        <div class="social-header-info">
-                            <div class="social-brand-icon icon-facebook" aria-hidden="true">f</div>
-                            <div>
-                                <div class="social-name">Facebook</div>
-                                <div class="social-status">Chưa kết nối</div>
-                            </div>
-                        </div>
-                        <a href="#" class="btn-social-connect status-unlinked" id="social-fb-action">Kết nối với Facebook</a>
-                    </div>
-
-                    <div class="social-card">
-                        <div class="social-header-info">
-                            <div class="social-brand-icon icon-google" aria-hidden="true">G</div>
-                            <div>
-                                <div class="social-name">Google</div>
-                                <div class="social-status social-status-linked">Đã kết nối</div>
-                            </div>
-                        </div>
-                        <span class="btn-social-connect status-linked" id="social-gg-action">Đã kết nối Google</span>
-                    </div>
-
-                    <div class="social-card">
-                        <div class="social-header-info">
-                            <div class="social-brand-icon icon-zalo" aria-hidden="true">Z</div>
-                            <div>
-                                <div class="social-name">Zalo</div>
-                                <div class="social-status">Chưa kết nối</div>
-                            </div>
-                        </div>
-                        <a href="#" class="btn-social-connect status-unlinked" id="social-zalo-action">Đăng nhập qua Zalo</a>
-                    </div>
-                </div>
-            </div>
+                </div><div><h3 class="security-section-title">Tài khoản liên kết</h3>
+                <div class="linked-account-list">
+                    <div class="linked-account-row"><span class="social-brand-icon icon-facebook" aria-hidden="true">f</span><div><strong>Facebook</strong><p>Chưa kết nối</p></div><a href="#" id="social-fb-action" class="btn-social-connect status-unlinked" aria-label="Kết nối Facebook">Kết nối</a></div>
+                    <div class="linked-account-row"><span class="social-brand-icon icon-google" aria-hidden="true">G</span><div><strong>Google</strong><p>Đã kết nối · Mẫu</p></div><span id="social-gg-action" class="connection-badge">Đã liên kết</span></div>
+                    <div class="linked-account-row"><span class="social-brand-icon icon-zalo" aria-hidden="true">Z</span><div><strong>Zalo</strong><p>Chưa kết nối</p></div><a href="#" id="social-zalo-action" class="btn-social-connect status-unlinked" aria-label="Kết nối Zalo">Kết nối</a></div>
+                </div></div></div>
+            </section>
 
         </div>
 
@@ -1740,6 +1705,17 @@
             let selected = 0;
             let previousOverflow = '';
             let managerTrigger = openButton;
+            // Fixture only: production eligibility must come from the authenticated server session.
+            const demoAccount = { loggedIn:true, phoneVerified:true, birthDate:'2000-01-01' };
+            function qualifiesForFree(account, today = new Date()) {
+                if (!account.loggedIn || !account.phoneVerified || !/^\d{4}-\d{2}-\d{2}$/.test(account.birthDate || '')) return false;
+                const [y,m,d] = account.birthDate.split('-').map(Number), birth = new Date(y,m-1,d);
+                if (birth.getFullYear() !== y || birth.getMonth() !== m-1 || birth.getDate() !== d || birth > today) return false;
+                return today.getFullYear()-y-((today.getMonth()<m-1 || (today.getMonth()===m-1 && today.getDate()<d)) ? 1 : 0) >= 18;
+            }
+            const freeEligible = qualifiesForFree(demoAccount);
+            let accountTier = freeEligible ? 'free' : null;
+            let shortcutUpgrade = false;
             let parentActivated = false;
             let activePlan = null;
             let activeTier = 'standard';
@@ -2034,7 +2010,34 @@
             let manageAfterClose = false;
             plansOpen.hidden = activateOpen.hidden = false;
 
+            const accountBadge = document.getElementById('account-plan-badge');
+            const upgradeButton = document.getElementById('account-upgrade');
+            const startFree = document.getElementById('family-start-free');
+            function renderAccountPlan() {
+                accountBadge.textContent = accountTier ? tiers[accountTier].name : 'Chưa đủ điều kiện';
+                accountBadge.dataset.accountTier = accountTier || '';
+                upgradeButton.hidden = !accountTier;
+                upgradeButton.textContent = accountTier === 'free' ? 'Nâng lên Standard' : accountTier === 'standard' ? 'Nâng lên Pro' : 'Quản lý gói';
+                document.getElementById('account-plan-detail').textContent = accountTier ? (accountTier === 'free' ? 'Free · 1 tài khoản con · Không giới hạn thời hạn.' : tiers[accountTier].name + ' · ' + tiers[accountTier].cap + ' tài khoản con · ' + plans[activePlan].name) + ' Tài khoản mẫu · Demo.' : 'Cần đăng nhập, xác thực số điện thoại và đủ 18 tuổi.';
+                startFree.hidden = !freeEligible || parentActivated || accountTier !== 'free';
+                if (freeEligible && !parentActivated) {
+                    plansOpen.className = 'btn btn-secondary';
+                    root.querySelector('#family-parent-status').textContent = 'Free đã sẵn sàng · Demo';
+                    root.querySelector('.family-trial > span').textContent = 'GÓI HIỆN TẠI';
+                    root.querySelector('.family-trial > strong').textContent = 'Free · 0đ';
+                    root.querySelector('.family-trial > small').textContent = '1 tài khoản con · Miễn phí không giới hạn thời hạn';
+                }
+                onboarding.querySelectorAll('[data-tier]').forEach(button => {
+                    const card = button.closest('article');
+                    let label = card.querySelector('.current-plan-label');
+                    if (!label) { label = document.createElement('p'); label.className = 'current-plan-label'; card.insertBefore(label, card.firstChild); }
+                    label.textContent = button.dataset.tier === accountTier ? 'Gói hiện tại' : '';
+                    label.hidden = button.dataset.tier !== accountTier;
+                });
+            }
             function updateParentSummary() {
+                accountTier = activeTier;
+                renderAccountPlan();
                 root.querySelector('#family-title').textContent = 'Quản lý gia đình';
                 root.querySelector('#family-parent-status').textContent = 'Đã kích hoạt · Demo';
                 root.querySelector('#family-parent-status').dataset.active = 'true';
@@ -2119,6 +2122,7 @@
             }
 
             function openOnboarding(step, trigger) {
+                shortcutUpgrade = false;
                 onboardingTrigger = trigger;
                 manageAfterClose = false;
                 consent.checked = false;
@@ -2132,6 +2136,19 @@
                 showStep(step);
             }
 
+            upgradeButton.addEventListener('click', () => {
+                openOnboarding('plans', upgradeButton);
+                shortcutUpgrade = true;
+                tierSelect.value = accountTier === 'free' ? 'standard' : 'pro';
+                refreshPrices();
+                if (accountTier !== 'pro') onboarding.querySelector('.family-plans').scrollIntoView({block:'start'});
+            });
+            startFree.addEventListener('click', () => {
+                if (!freeEligible) return;
+                activeTier = 'free'; activePlan = 'free'; parentActivated = true;
+                updateParentSummary();
+                openOnboarding('child', startFree);
+            });
             plansOpen.addEventListener('click', () => openOnboarding('plans', plansOpen));
             activateOpen.addEventListener('click', () => openOnboarding('plans', activateOpen));
             addChild.addEventListener('click', () => openOnboarding('child', addChild));
@@ -2170,6 +2187,7 @@
                 parentActivated = true;
                 activePlan = selectedPlan;
                 updateParentSummary();
+                if (shortcutUpgrade && createdChildren.length) { onboarding.close(); return; }
                 prepareChildForm();
                 showStep('child');
             });
@@ -2290,6 +2308,7 @@
                 (onboardingTrigger.getClientRects().length ? onboardingTrigger : openButton).focus();
                 if (manageAfterClose) { manageAfterClose = false; openButton.click(); }
             });
+            renderAccountPlan();
             onboarding.addEventListener('keydown', event => {
                 if (event.key !== 'Tab') return;
                 const controls = Array.from(onboarding.querySelectorAll('button:not(:disabled), input:not(:disabled), select:not(:disabled)')).filter(element => element.getClientRects().length);
