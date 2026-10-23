@@ -8,6 +8,12 @@ const html = fs.readFileSync(path.join(__dirname, '..', 'index.html'), 'utf8');
 const output = path.join(__dirname, '..', 'test-results');
 
 let browser, server, url;
+async function expandManagement(page) {
+    for (const id of ['family-content-controls','family-advanced','family-reports']) {
+        const section=page.locator('#'+id);
+        if(await section.isVisible() && !(await section.getAttribute('open') !== null)) await section.locator('summary').click();
+    }
+}
 
 test('Free entitlement, bounded birth dates, legal age gates and multiple categories', async () => {
     const page=await browser.newPage();
@@ -38,7 +44,7 @@ test('Free entitlement, bounded birth dates, legal age gates and multiple catego
     assert.equal(await page.locator('[data-preset="young"]').isDisabled(),true);
     assert.equal(await page.locator('[data-preset="teen"]').isDisabled(),true);
     await page.locator('#family-apply-preset').click();
-    await page.waitForFunction(()=>document.getElementById('family-preview').open);
+    await page.waitForFunction(()=>document.getElementById('family-preview').open); await expandManagement(page);
     assert.equal(await page.locator('#family-age option[value="12"]').isDisabled(),true);
     assert.equal(await page.locator('#family-age option[value="18"]').isDisabled(),true);
     assert.equal(await page.locator('#family-advanced').isVisible(),false);
@@ -53,14 +59,14 @@ test('Free entitlement, bounded birth dates, legal age gates and multiple catego
     await page.locator('#family-demo-consent').check();
     await page.locator('#family-activate-submit').click();
     await page.locator('#family-create-later').click();
-    await page.locator('#family-preview-open').click();
+    await page.locator('#family-preview-open').click(); await expandManagement(page);
     assert.equal(await page.locator('#family-advanced').isVisible(),true);
     await page.locator('#category-clear').click();
     await page.locator('[data-category="learning"]').check();
     await page.locator('[data-category="sports"]').check();
     await page.locator('#family-demo-save').click();
     await page.locator('#family-preview-close').click();
-    await page.locator('#family-preview-open').click();
+    await page.locator('#family-preview-open').click(); await expandManagement(page);
     assert.deepEqual(await page.locator('[data-category]:checked').evaluateAll(items=>items.map(e=>e.dataset.category)),['learning','sports']);
     await page.locator('[data-category="puzzle"]').check();
     await page.locator('#family-demo-reset').click();
@@ -102,7 +108,7 @@ test('six-field account creation precedes age setup; apply, manual edit and defe
     }
     await page.locator('[data-preset="young"]').click();
     await page.locator('#family-apply-preset').click();
-    await page.waitForFunction(()=>document.getElementById('family-preview').open);
+    await page.waitForFunction(()=>document.getElementById('family-preview').open); await expandManagement(page);
     assert.equal(await page.locator('#family-age').inputValue(),'12');
     assert.equal(await page.locator('#family-limit').inputValue(),'45');
     assert.deepEqual(await page.locator('[data-category]:checked').evaluateAll(items=>items.map(e=>e.dataset.category)),['puzzle','iq','chess','learning','math','english','design','music','sports']);
@@ -151,7 +157,7 @@ test('tiers are independent of terms; caps, downgrade protection, schedule and C
     await page.locator('#family-create-form button[type="submit"]').click();
     assert.match(await page.locator('#family-create-error').textContent(),/Đã đủ 5/);
     await page.locator('#family-onboarding-close').click();
-    await page.locator('#family-preview-open').click();
+    await page.locator('#family-preview-open').click(); await expandManagement(page);
     assert.equal(await page.locator('#family-advanced').isVisible(),true);
     await page.locator('[data-weekday="0"]').fill('35');
     await page.locator('#family-rest-start').fill('21:00');
@@ -167,7 +173,7 @@ test('tiers are independent of terms; caps, downgrade protection, schedule and C
     assert.equal(csv.trim().split('\r\n').length,91);
     assert.match(csv,/date,minutes,source/);
     await page.locator('#family-preview-close').click();
-    await page.locator('#family-preview-open').click();
+    await page.locator('#family-preview-open').click(); await expandManagement(page);
     assert.equal(await page.locator('[data-weekday="0"]').inputValue(),'35');
     await page.locator('#family-preview-close').click();
     await page.locator('#family-plans-open').click();
@@ -211,6 +217,7 @@ test('family preview validates, isolates edits, restores focus and clears sample
     await page.locator('#family-preview-open').click();
     assert.equal(await page.locator('#family-preview').evaluate(e => e.open), true);
     assert.equal(await page.locator('#family-preview-close').evaluate(e => e === document.activeElement), true);
+    await expandManagement(page);
     for (let i = 0; i < 18; i++) {
         await page.keyboard.press('Tab');
         assert.equal(await page.evaluate(() => !!document.activeElement.closest('#family-preview')), true);
@@ -238,7 +245,7 @@ test('family preview validates, isolates edits, restores focus and clears sample
     assert.equal(await page.locator('#family-preview').evaluate(e => e.open), false);
     assert.equal(await page.locator('#family-preview-open').evaluate(e => e === document.activeElement), true);
     assert.equal(await page.locator('#btn-save').isDisabled(), true);
-    await page.locator('#family-preview-open').click();
+    await page.locator('#family-preview-open').click(); await expandManagement(page);
     assert.equal(await page.locator('#family-limit').inputValue(), '60');
     await page.locator('#family-preview-close').click();
     assert.deepEqual(await page.evaluate(() => [localStorage.length, sessionStorage.length]), [0, 0]);
@@ -288,7 +295,7 @@ test('responsive layout, dialog overflow, touch targets and DOM references', asy
         assert.equal(boxes.length,3);
         assert.equal(boxes[2].width,boxes[1].width, `unified security width ${width}`);
         if ([390, 1440].includes(width)) await page.screenshot({ path: path.join(output, `profile-${width}.png`), fullPage: true });
-        await page.locator('#family-preview-open').click();
+        await page.locator('#family-preview-open').click(); await expandManagement(page);
         assert.equal(await page.locator('#family-preview').evaluate(e => e.scrollWidth <= e.clientWidth), true, `dialog overflow ${width}`);
         const targets = await page.locator('#family-preview button:visible').evaluateAll(elements => elements.map(e => ({ width: e.getBoundingClientRect().width, height: e.getBoundingClientRect().height })));
         assert.ok(targets.every(e => e.width >= 44 && e.height >= 44), `touch targets ${width}`);
@@ -298,7 +305,7 @@ test('responsive layout, dialog overflow, touch targets and DOM references', asy
     await page.emulateMedia({ reducedMotion: 'reduce' });
     assert.equal(await page.locator('#family-preview-open').evaluate(e => getComputedStyle(e).transitionDuration), '1e-05s');
     await page.setViewportSize({ width: 320, height: 600 });
-    await page.locator('#family-preview-open').click();
+    await page.locator('#family-preview-open').click(); await expandManagement(page);
     await page.locator('#family-child-name').evaluate(e => { e.textContent = 'Tên hồ sơ rất dài '.repeat(8); });
     assert.equal(await page.locator('#family-preview').evaluate(e => e.scrollWidth <= e.clientWidth), true);
     await page.locator('#family-preview').evaluate(e => { e.scrollTop = e.scrollHeight; });
@@ -381,7 +388,7 @@ test('plans, demo activation and child creation work end to end without network 
     await page.locator('#family-limit').fill('15');
     await page.locator('#family-demo-save').click();
     await page.locator('#family-preview-close').click();
-    await page.locator('#family-preview-open').click();
+    await page.locator('#family-preview-open').click(); await expandManagement(page);
     await page.locator('[data-family-child="0"]').click();
     assert.equal(await page.locator('#family-limit').inputValue(), '15');
     await page.locator('#family-preview-close').click();
@@ -424,7 +431,7 @@ test('onboarding mobile, keyboard, cancel and activated empty state', async () =
     assert.equal(await page.locator('#family-onboarding').evaluate(e => e.scrollWidth <= e.clientWidth), true);
     await page.locator('#family-create-later').click();
     assert.match(await page.locator('#family-parent-summary-text').textContent(), /0\/3 tài khoản con/);
-    await page.locator('#family-preview-open').click();
+    await page.locator('#family-preview-open').click(); await expandManagement(page);
     assert.equal(await page.locator('#family-create-form').isVisible(), true);
     assert.equal(await page.locator('#family-preview').evaluate(e => e.open), false);
     await page.locator('#family-new-name').fill('<img src=x onerror=alert(1)>');
@@ -444,7 +451,7 @@ test('onboarding mobile, keyboard, cancel and activated empty state', async () =
 test('age ceilings and handwritten chart follow each child and saved settings', async () => {
     const page = await browser.newPage({ viewport: { width: 1440, height: 1000 } });
     await page.goto(url);
-    await page.locator('#family-preview-open').click();
+    await page.locator('#family-preview-open').click(); await expandManagement(page);
     assert.deepEqual(await page.locator('#family-age option').evaluateAll(options => options.map(o => o.value)), ['0', '12', '16', '18']);
     assert.deepEqual(await page.locator('#family-week-chart li').evaluateAll(items => items.map(e => e.getAttribute('aria-label'))), ['T2: 15 phút', 'T3: 35 phút', 'T4: 10 phút', 'T5: 45 phút', 'T6: 30 phút', 'T7: 20 phút', 'CN: 25 phút']);
     await page.screenshot({ path: path.join(output, 'management-1440.png') });
@@ -616,7 +623,7 @@ test('discovery is interactive, opens selected limit and header has no upgrade a
 test('full category catalog supports accentless search, groups, bulk selection and saved state', async () => {
     const page = await browser.newPage();
     await page.goto(url);
-    await page.locator('#family-preview-open').click();
+    await page.locator('#family-preview-open').click(); await expandManagement(page);
     assert.equal(await page.locator('[data-category]').count(),75);
     const labels = await page.locator('.category-chip-grid label span').allTextContents();
     assert.equal(new Set(labels).size,75);
@@ -648,6 +655,37 @@ test('full category catalog supports accentless search, groups, bulk selection a
         await page.locator('#category-search').scrollIntoViewIfNeeded();
         if([390,1440].includes(width)) await page.screenshot({path:path.join(output,'categories-'+width+'.png')});
     }
+    await page.close();
+});
+
+
+test('management opens with basic settings first and preserves edits across disclosures', async () => {
+    const page = await browser.newPage();
+    await page.goto(url);
+    await page.locator('#family-preview-open').click();
+    for(const id of ['family-reports','family-content-controls','family-advanced']) assert.equal(await page.locator('#'+id).getAttribute('open'),null);
+    assert.equal(await page.locator('#family-age').isVisible(),true);
+    assert.equal(await page.locator('#family-history-days').isVisible(),false);
+    await page.locator('#family-limit').fill('35');
+    assert.match(await page.locator('#settings-save-state').textContent(),/chưa lưu/);
+    await page.locator('#family-content-controls > summary').click();
+    await page.locator('#category-clear').click();
+    await page.locator('[data-category="learning"]').check();
+    await page.locator('#family-content-controls > summary').click();
+    assert.match(await page.locator('#settings-content-summary').textContent(),/1 \/ 75/);
+    assert.equal(await page.locator('#family-limit').inputValue(),'35');
+    await page.locator('#family-demo-save').click();
+    assert.equal(await page.locator('#family-demo-save').isDisabled(),true);
+    for(const width of [390,1440]) {
+        await page.setViewportSize({width,height:900});
+        await page.locator('#family-age').scrollIntoViewIfNeeded();
+        assert.equal(await page.locator('#family-preview').evaluate(e=>e.scrollWidth<=e.clientWidth),true);
+        await page.screenshot({path:path.join(output,'settings-first-'+width+'.png')});
+    }
+    await page.locator('#family-advanced > summary').click();
+    assert.equal(await page.locator('[data-weekday="0"]').inputValue(),'35');
+    await page.locator('#family-reports > summary').click();
+    assert.equal(await page.locator('#family-history-days').isVisible(),true);
     await page.close();
 });
 
