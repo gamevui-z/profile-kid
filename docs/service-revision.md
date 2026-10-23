@@ -35,3 +35,12 @@ Nâng lên Standard / Pro chọn sẵn cấp tiếp theo và đưa đến kỳ h
 
 Đăng nhập & bảo mật gom số điện thoại, mật khẩu và các liên kết thành một thẻ rộng, hai cột desktop/một cột mobile. Không thêm CDN.
 
+
+## Cảm nhận ban đầu và nội dung giao diện
+
+Bỏ nút nâng cấp trong header; tên và nhãn gói nằm trên nền trắng cạnh avatar, quyền lợi một dòng. Đổi gói nằm trong quản lý gia đình khi đã bắt đầu. Bảng khám phá tương tác dùng tình huống 25 phút: chọn 30/60/90 phút cập nhật thời gian còn lại và mở cài đặt với hạn mức vừa chọn. Phần này ẩn sau khi bắt đầu quản lý con.
+
+Gỡ các nhãn demo/mẫu/mô phỏng trên giao diện; thông báo ở bước xác nhận vẫn nói rõ chưa kết nối thanh toán và dữ liệu chỉ tồn tại trong phiên. Các liên kết mạng xã hội đều hiển thị chưa kết nối vì chưa có OAuth thật. Các ID cũ được giữ cho tương thích. Không thay đổi giới hạn kỹ thuật về lưu trữ/backend.
+
+Kiểm thử 14 nhóm: có kiểm tra nội dung hiển thị, tương tác hạn mức và trả focus về nút mở.
+
