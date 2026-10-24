@@ -1215,7 +1215,7 @@
         .child-rating-section { display:grid; gap:12px; }
         .child-section-heading h4 { margin:0 0 5px; font-size:1rem; line-height:1.5; }
         .child-section-heading p { margin:0; font-size: var(--text-label); line-height:1.6; color:var(--text-muted); }
-        .child-rating-options { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:10px; }
+        .child-rating-options { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); grid-auto-rows:1fr; gap:10px; }
         .child-rating-options button { display:flex; flex-direction:column; align-items:flex-start; justify-content:center; gap:5px; min-height:84px; padding:14px; border:1px solid var(--border); border-radius:12px; background:#fff; color:var(--text-main); cursor:pointer; font:inherit; text-align:left; }
         .child-rating-options strong { font-size:1.15rem; line-height:1.3; }
         .child-rating-options span { font-size: var(--text-caption); line-height:1.5; white-space:nowrap; }
@@ -1562,7 +1562,7 @@
                         <fieldset>
                             <legend>Hai thiết lập chính</legend>
                             <div class="family-fields">
-                                <div class="form-group"><label for="family-age">Game được hiển thị</label><select id="family-age" name="demoAge" aria-describedby="family-rating-warning"><option value="0">00+ · Mọi lứa tuổi</option><option value="12">Thêm game 12+ · Từ 12 tuổi</option><option value="16">Thêm game 16+ · Từ 16 tuổi</option><option value="18">Thêm game 18+ · Từ 18 tuổi</option></select><p id="family-rating-warning" class="rating-warning" role="status" hidden></p><div class="family-age-preview" hidden><span>Nhãn tuổi được phép (tuổi tối thiểu)</span><div id="family-allowed-ratings" class="family-rating-list" aria-live="polite"></div></div></div>
+                                <div class="form-group"><label for="family-age">Game được hiển thị</label><select id="family-age" name="demoAge" aria-describedby="family-rating-warning"><option value="0">00+ · Mọi lứa tuổi</option><option value="12">Thêm game 12+ · Từ 12 tuổi</option><option value="16">Thêm game 16+ · Từ 16 tuổi</option><option value="18">Tất cả game · 00+, 12+, 16+, 18+</option></select><p id="family-rating-warning" class="rating-warning" role="status" hidden></p><div class="family-age-preview" hidden><span>Nhãn tuổi được phép (tuổi tối thiểu)</span><div id="family-allowed-ratings" class="family-rating-list" aria-live="polite"></div></div></div>
                                 <div class="form-group"><label for="family-limit">Hạn mức mỗi ngày (phút)</label><input id="family-limit" name="demoLimit" type="number" min="0" max="180" step="1" value="60" inputmode="numeric" aria-describedby="family-limit-hint family-limit-error"><div class="limit-shortcuts" aria-label="Chọn nhanh hạn mức"><button type="button" data-limit-minutes="30">30 phút</button><button type="button" data-limit-minutes="60">60 phút</button><button type="button" data-limit-minutes="90">90 phút</button></div><span id="family-limit-hint" class="field-hint">Tự nhập từ 0 đến 180 phút.</span></div>
                             </div>
 
@@ -1657,7 +1657,7 @@
                         <button type="button" data-preset="preschool" aria-pressed="false"><strong>00+</strong><span>Mọi lứa tuổi</span></button>
                         <button type="button" data-preset="young" aria-pressed="false"><strong>12+</strong><span>Từ 12 tuổi</span></button>
                         <button type="button" data-preset="teen" aria-pressed="false"><strong>16+</strong><span>Từ 16 tuổi</span></button>
-                        <button type="button" data-preset="adult" aria-pressed="false"><strong>18+</strong><span>Từ 18 tuổi</span></button>
+                        <button type="button" data-preset="adult" aria-pressed="false"><strong>Tất cả game</strong><span>00+, 12+, 16+, 18+</span></button>
                     </div>
                     <p id="family-preset-content" class="child-selection-summary" aria-live="polite">Chọn mức tuổi game cho con.</p>
                     <p id="family-preset-warning" class="rating-warning" role="status" hidden></p>
@@ -1945,7 +1945,7 @@
                 { name: 'Mây Nhỏ', dob: (new Date().getFullYear()-6)+'-01-01', age: '0', limit: 60, used: 25, week: [15, 35, 10, 45, 30, 20, 25] },
                 { name: 'Nắng Vàng', dob: (new Date().getFullYear()-16)+'-01-01', age: '12', limit: 45, used: 40, week: [20, 30, 25, 40, 15, 35, 40] }
             ];
-            const ageLabels = { '0':'00+ · Mọi lứa tuổi', '12':'00+ và 12+', '16':'00+, 12+ và 16+', '18':'00+, 12+, 16+ và 18+' };
+            const ageLabels = { '0':'00+ · Mọi lứa tuổi', '12':'00+ và 12+', '16':'00+, 12+ và 16+', '18':'Tất cả game (00+, 12+, 16+, 18+)' };
             const gameRatings = [0, 12, 16, 18];
             let children = [];
             let selected = 0;
@@ -2063,9 +2063,10 @@
 
             function updateButtons() {
                 if(children[selected]) showRatingWarning(dialog.querySelector('#family-rating-warning'), ageFromDate(children[selected].dob || ''), age.value);
-                save.disabled = reset.disabled = !hasChanges();
+                save.disabled = !children[selected];
+                reset.disabled = !hasChanges();
                 dialog.querySelectorAll('[data-limit-minutes]').forEach(button => button.setAttribute('aria-pressed',String(button.dataset.limitMinutes === limit.value)));
-                dialog.querySelector('#settings-save-state').textContent = hasChanges() ? 'Có thay đổi chưa lưu' : 'Chưa có thay đổi';
+                dialog.querySelector('#settings-save-state').textContent = hasChanges() ? 'Có thay đổi chưa lưu' : 'Cài đặt hiện tại · Có thể lưu lại';
                 const selectedCount = readCategories().length;
                 dialog.querySelector('#settings-content-summary').textContent = selectedCount + ' / 75 danh mục · ' + (keywords.value.trim() ? 'Có từ khóa chặn' : 'Chưa chặn từ khóa');
                 dialog.querySelector('#settings-schedule-summary').textContent = (children[selected]?.schedule ? 'Có lịch riêng theo ngày' : 'Theo hạn mức mỗi ngày') + (dialog.querySelector('#family-rest-start').value ? ' · Có giờ nghỉ' : ' · Chưa đặt giờ nghỉ');
@@ -2258,7 +2259,7 @@
             form.addEventListener('change', updateButtons);
             form.addEventListener('submit', event => {
                 event.preventDefault();
-                if (!hasChanges()) return;
+                if (!children[selected]) return;
                 const minutes = Number(limit.value);
                 if (limit.value.trim() === '' || !Number.isInteger(minutes) || minutes < 0 || minutes > 180 || !limit.validity.valid) {
                     error.textContent = 'Nhập số phút nguyên từ 0 đến 180 để xem thử.';
@@ -2528,7 +2529,7 @@
                 preschool: { label:'00+', age:'0' },
                 young: { label:'12+', age:'12' },
                 teen: { label:'16+', age:'16' },
-                adult: { label:'18+', age:'18' }
+                adult: { label:'Tất cả game', age:'18' }
             };
             Object.values(presets).forEach(preset => {
                 preset.description = 'Game được hiển thị: ' + ageLabels[preset.age] + '.';

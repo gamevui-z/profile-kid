@@ -691,7 +691,7 @@ test('management opens with basic settings first and preserves edits across disc
     assert.match(await page.locator('#settings-content-summary').textContent(),/1 \/ 75/);
     assert.equal(await page.locator('#family-limit').inputValue(),'35');
     await page.locator('#family-demo-save').click();
-    assert.equal(await page.locator('#family-demo-save').isDisabled(),true);
+    assert.equal(await page.locator('#family-demo-save').isDisabled(),false);
     for(const width of [390,1440]) {
         await page.setViewportSize({width,height:900});
         await page.locator('#family-age').scrollIntoViewIfNeeded();
@@ -728,7 +728,7 @@ test('24-hour rest picker validates partial times and basic layout groups age hi
     assert.equal(await page.locator('.family-age-preview').isVisible(),false);
     assert.equal(await page.locator('#family-rest-start').inputValue(),'21:30');
     assert.equal(await page.locator('#family-rest-end').inputValue(),'07:00');
-    assert.equal(await page.locator('#family-demo-save').isDisabled(),true);
+    assert.equal(await page.locator('#family-demo-save').isDisabled(),false);
     for(const width of [390,1440]) {
         await page.setViewportSize({width,height:1000});
         await page.locator('#rest-start-hour').scrollIntoViewIfNeeded();
@@ -836,5 +836,20 @@ test('typography roles stay consistent across active family, plans and managemen
         await audit();
     }
     await page.close();
+});
+
+
+test('180-minute limit can be saved and saved again; all-games label includes every rating', async()=>{
+ const page=await browser.newPage();await page.goto(url);await page.locator('#family-preview-open').click();
+ await page.locator('#family-limit').fill('180');await page.locator('#family-demo-save').click();
+ assert.match(await page.locator('#family-feedback').textContent(),/Đã lưu/);
+ assert.equal(await page.locator('#family-limit').inputValue(),'180');
+ await page.locator('#family-demo-save').click();assert.match(await page.locator('#family-feedback').textContent(),/Đã lưu/);
+ await page.locator('#family-age').selectOption('18');await page.locator('#family-demo-save').click();
+ assert.match(await page.locator('#family-current-policy').textContent(),/Tất cả game/);
+ assert.equal(await page.locator('#family-rating-warning').isVisible(),true);
+ await page.locator('#family-limit').fill('181');await page.locator('#family-demo-save').click();
+ assert.equal(await page.locator('#family-limit').getAttribute('aria-invalid'),'true');
+ await page.locator('#family-demo-reset').click();assert.equal(await page.locator('#family-limit').inputValue(),'180');await page.close();
 });
 
