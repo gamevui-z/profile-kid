@@ -15,8 +15,15 @@ test('edit child identity and explicitly confirm independent conversion', async 
     await page.locator('#family-settings-consent').check();
     await page.locator('#family-activate-submit').click();
     await fillBirth(page,'2018-06-15');
+    assert.equal(await page.locator('#family-name-hint').isVisible(),false);
+    await page.locator('#family-new-name').focus();
+    assert.equal(await page.locator('#family-name-hint').isVisible(),true);
     await page.locator('#family-new-name').fill('Minh Anh');
     await page.locator('#family-new-password').fill('Example1234');
+    await page.locator('#family-confirm-password').fill('Mismatch123');
+    assert.equal(await page.locator('#family-confirm-password-mismatch').textContent(),'');
+    await page.locator('#family-new-gender').focus();
+    assert.match(await page.locator('#family-confirm-password-mismatch').textContent(),/chưa khớp/);
     await page.locator('#family-confirm-password').fill('Example1234');
     await page.locator('#family-new-gender').selectOption('other');
     await page.locator('#family-create-form button[type="submit"]').click();
