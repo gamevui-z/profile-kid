@@ -311,3 +311,25 @@ test('two-tier launch has Free only activation and Standard coming soon',async()
  assert.equal(await page.locator('#family-manage-categories h4').count(),0);
  assert.deepEqual(errors,[]);await page.close();
 });
+
+test('compact dialogs align close and footer actions at desktop and mobile sizes',async()=>{
+ const page=await browser.newPage();await page.goto(url);
+ for(const width of [320,390,768,1440]) {
+  await page.setViewportSize({width,height:900});await page.locator('#family-preview-open').click();
+  const header=await page.locator('#family-preview .family-dialog-header').boundingBox();
+  const close=await page.locator('#family-preview-close').boundingBox();
+  if(width<=640) assert.ok((await page.locator(".family-children").boundingBox()).height<130);
+  assert.ok(header.height<=80);assert.ok(Math.abs(close.y+close.height/2-header.y-header.height/2)<2);
+  assert.equal(await page.locator('#family-preview-description').count(),0);
+  assert.equal(await page.locator('#family-preview').evaluate(e=>e.scrollWidth<=e.clientWidth),true);
+  const save=await page.locator('#family-settings-save').boundingBox(),reset=await page.locator('#family-settings-reset').boundingBox();
+  assert.ok(Math.abs(save.y-reset.y)<2);assert.ok(save.height>=44 && reset.height>=44);
+  await page.locator('#child-profile-settings summary').click();
+  await page.screenshot({path:path.join(output,'compact-manager-'+width+'.png')});
+  await page.locator('#family-preview-close').click();
+  await page.locator('#family-plans-open').click();
+  assert.equal(await page.locator('#family-onboarding').evaluate(e=>e.scrollWidth<=e.clientWidth),true);
+  await page.locator('#family-onboarding-close').click();
+ }
+ await page.close();
+});
