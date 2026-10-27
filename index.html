@@ -1340,11 +1340,12 @@
         #child-transfer-dialog input[type=tel],#child-transfer-dialog input[type=text] { min-height:44px; width:100%; }
         #child-transfer-dialog .transfer-note { padding:12px; margin:16px 0; background:var(--bg-muted); border-radius:12px; font-size:var(--text-label); }
 /* Contextual input guidance: keep errors and permanent notices visible. */
-        .form-group .input-guidance { visibility:hidden; }
-        .form-group:focus-within .input-guidance { visibility:visible; }
+        .form-group .input-guidance { display:none; }
+        .form-group:focus-within .input-guidance { display:block; }
+        .guidance-pointer .input-guidance { display:none !important; }
+        .guidance-pointer .input-guidance.guidance-visible { display:block !important; }
         .confirmation-error { display:block; color:#b42318; font-size:14px; line-height:1.5; margin-top:8px; }
-        .confirmation-error { min-height:21px; }
-        .confirmation-error:empty { visibility:hidden; }
+        .confirmation-error:empty { display:none; }
     </style>
 </head>
 <body>
@@ -2126,12 +2127,28 @@
                 if(first.value!==second.value){status.textContent='Hai mật khẩu chưa khớp.';second.focus();return;}
                 clearChildPassword();status.textContent='Mật khẩu hợp lệ. Chưa thay đổi mật khẩu thật vì chưa kết nối hệ thống đăng nhập.';
             });
+            // Freeze only during a pointer gesture so blur reflow cannot move its click target.
+            let guidancePointer=false, pendingBlurChecks=[];
+            document.addEventListener('pointerdown',event=>{
+                if(!event.target.closest('#family-create-form, #family-settings-form'))return;
+                guidancePointer=true;
+                document.querySelectorAll('.input-guidance').forEach(el=>el.classList.toggle('guidance-visible',getComputedStyle(el).display!=='none'));
+                document.body.classList.add('guidance-pointer');
+            });
+            const releaseGuidance=()=>setTimeout(()=>{
+                guidancePointer=false;document.body.classList.remove('guidance-pointer');
+                const checks=pendingBlurChecks;pendingBlurChecks=[];checks.forEach(check=>check());
+            },0);
+            document.addEventListener('pointerup',releaseGuidance);
+            document.addEventListener('pointercancel',releaseGuidance);
+            window.addEventListener('blur',releaseGuidance);
             function installConfirmation(first, second) {
                 const message=document.createElement('span');message.id=second.id+'-mismatch';message.className='confirmation-error';message.setAttribute('role','status');second.after(message);
                 second.setAttribute('aria-describedby',((second.getAttribute('aria-describedby')||'')+' '+message.id).trim());
                 const clear=()=>{message.textContent='';second.removeAttribute('aria-invalid');};
                 const check=()=>{const mismatch=!!second.value && first.value!==second.value;message.textContent=mismatch?'Mật khẩu nhập lại chưa khớp.': '';if(mismatch)second.setAttribute('aria-invalid','true');else second.removeAttribute('aria-invalid');};
-                second.addEventListener('blur',check);first.addEventListener('blur',()=>{if(second.value)check();});
+                const afterBlur=()=>{if(guidancePointer)pendingBlurChecks.push(check);else check();};
+                second.addEventListener('blur',afterBlur);first.addEventListener('blur',()=>{if(second.value)afterBlur();});
                 second.addEventListener('input',clear);first.addEventListener('input',clear);
                 first.closest('dialog').addEventListener('close',clear);
                 first.form?.addEventListener('reset',clear);
