@@ -907,7 +907,7 @@
             .family-fields { grid-template-columns: 1fr; }
         }
 
-        /* ---------- Family plans and account creation demo ---------- */
+        /* ---------- Family plans and account creation preview ---------- */
         #family-onboarding { width: min(880px, calc(100% - 32px)); max-height: calc(100dvh - 32px); margin: auto; padding: 0; border: 1px solid var(--border); border-radius: var(--radius-lg); background: var(--bg-card); color: var(--text-main); overflow-y: auto; overscroll-behavior: contain; }
         #family-onboarding::backdrop { background: rgba(27, 27, 20, .55); }
         #family-onboarding [hidden] { display: none !important; }
@@ -1151,7 +1151,7 @@
 
         #family-preview .family-dialog-body > .family-notice { padding:0; border:0; background:none; font-size: var(--text-caption); margin-bottom:16px; }
         #family-preview .family-dashboard { grid-template-columns:160px minmax(0,1fr); gap:20px; }
-        #family-demo-form > fieldset > legend { font-size: var(--text-label); color:var(--text-muted); margin:12px 0; }
+        #family-settings-form > fieldset > legend { font-size: var(--text-label); color:var(--text-muted); margin:12px 0; }
         #family-preview .family-age-preview { margin:0 0 16px; padding:0; border:0; background:none; font-size: var(--text-caption); }
         #family-preview .family-age-preview > span { display:none; }
         .settings-disclosure { border:1px solid var(--border); border-radius:12px; margin:12px 0; background:#fff; overflow:clip; }
@@ -1170,8 +1170,8 @@
         #family-reports .family-chart { margin-bottom:0; }
         @media(max-width:640px) { #family-preview .family-dashboard { grid-template-columns:1fr; gap:14px; } .settings-save-bar { padding:10px 18px; } .settings-save-actions { flex:1; flex-wrap:nowrap; } .settings-save-actions .btn { flex:1; padding:10px 12px; } #settings-save-state { flex-basis:100%; } }
 
-        #family-demo-form fieldset { display:grid; gap:16px; }
-        #family-demo-form > fieldset > legend { margin:8px 0 14px; }
+        #family-settings-form fieldset { display:grid; gap:16px; }
+        #family-settings-form > fieldset > legend { margin:8px 0 14px; }
         #family-preview .settings-disclosure { margin:0; }
         #family-reports { margin-top:16px !important; }
         #family-preview .family-age-preview { margin:8px 0 0; min-height:24px; }
@@ -1260,7 +1260,7 @@
         [data-flow-panel="plans"] > .family-notice { display:grid; justify-items:start; gap:12px; margin:24px 0; }
         .family-confirm-box { display:grid; gap:8px; margin:24px 0; padding:20px; }
         #family-preview .family-dashboard { gap:24px; }
-        #family-demo-form > fieldset > legend { margin:16px 0; }
+        #family-settings-form > fieldset > legend { margin:16px 0; }
         .settings-disclosure > summary { padding:16px; line-height:1.5; }
         .settings-disclosure > summary small { margin-top:4px; }
         .settings-disclosure-body { padding:16px; }
@@ -1384,7 +1384,7 @@
                 </div>
                 <section id="family-discovery" class="family-discovery" aria-labelledby="discovery-title">
                     <div class="discovery-copy"><span class="discovery-eyebrow">CÀI ĐẶT RIÊNG CHO TỪNG CON</span><h3 id="discovery-title">Con chơi gì?<br>Cha mẹ quyết định.</h3><p>Chọn mức tuổi game cho con. Nếu chọn mức cao hơn tuổi của bé, hệ thống sẽ cảnh báo để cha mẹ cân nhắc. Thời gian mặc định 180 phút/ngày, có thể tự chỉnh.</p><div class="discovery-tags"><span>✓ Giới hạn tuổi</span><span>✓ Hạn mức mỗi ngày</span><span>✓ Biểu đồ hoạt động</span></div></div>
-                    <div class="discovery-panel"><div class="discovery-child"><span class="family-child-avatar" aria-hidden="true">M</span><div><strong>Mây Nhỏ · 6 tuổi</strong><p>Tình huống: đã chơi 25 phút</p></div><span class="discovery-rating">00+</span></div><div class="discovery-time"><strong id="discovery-remaining">35</strong><span>phút còn lại<br>trong hạn mức hôm nay</span></div><div class="discovery-track" aria-hidden="true"><span id="discovery-fill"></span></div><fieldset class="discovery-options"><legend>Thử chọn hạn mức mỗi ngày</legend><button type="button" data-discovery-limit="30" aria-pressed="false">30 phút</button><button type="button" data-discovery-limit="60" aria-pressed="true">60 phút</button><button type="button" data-discovery-limit="90" aria-pressed="false">90 phút</button></fieldset><p id="discovery-result" role="status">25 / 60 phút · Còn thời gian để khám phá</p><button type="button" id="discovery-open" class="btn btn-primary" aria-haspopup="dialog" aria-controls="family-preview">Khám phá bảng quản lý →</button></div>
+                    <div class="discovery-panel"><div class="discovery-child"><span class="family-child-avatar" aria-hidden="true">M</span><div><strong>Mây Nhỏ · 6 tuổi</strong><p>Tình huống: đã chơi 25 phút</p></div><span class="discovery-rating">0+</span></div><div class="discovery-time"><strong id="discovery-remaining">35</strong><span>phút còn lại<br>trong hạn mức hôm nay</span></div><div class="discovery-track" aria-hidden="true"><span id="discovery-fill"></span></div><fieldset class="discovery-options"><legend>Thử chọn hạn mức mỗi ngày</legend><button type="button" data-discovery-limit="30" aria-pressed="false">30 phút</button><button type="button" data-discovery-limit="60" aria-pressed="true">60 phút</button><button type="button" data-discovery-limit="90" aria-pressed="false">90 phút</button></fieldset><p id="discovery-result" role="status">25 / 60 phút · Còn thời gian để khám phá</p><button type="button" id="discovery-open" class="btn btn-primary" aria-haspopup="dialog" aria-controls="family-preview">Khám phá bảng quản lý →</button></div>
                 </section>
                 <div class="family-actions"><button type="button" id="account-upgrade" class="btn btn-primary" aria-haspopup="dialog" aria-controls="family-onboarding" hidden>Đổi gói</button>
                     <button type="button" id="family-plans-open" class="btn btn-primary" aria-haspopup="dialog" aria-controls="family-onboarding" hidden>Xem các gói</button>
@@ -1557,13 +1557,13 @@
                 </div>
                 <section id="family-detail" class="family-detail" aria-labelledby="family-child-name">
                     <h3 id="family-child-name">Mây Nhỏ</h3>
-                    <p class="family-note" style="margin-top: 0"><span id="family-current-policy">Chỉ game 00+</span></p>
-                    <form id="family-demo-form" novalidate>
+                    <p class="family-note" style="margin-top: 0"><span id="family-current-policy">Chỉ game 0+</span></p>
+                    <form id="family-settings-form" novalidate>
                         <fieldset>
                             <legend>Hai thiết lập chính</legend>
                             <div class="family-fields">
-                                <div class="form-group"><label for="family-age">Game được hiển thị</label><select id="family-age" name="demoAge" aria-describedby="family-rating-warning"><option value="0">00+ · Mọi lứa tuổi</option><option value="12">Thêm game 12+ · Từ 12 tuổi</option><option value="16">Thêm game 16+ · Từ 16 tuổi</option><option value="18">Tất cả game · 00+, 12+, 16+, 18+</option></select><p id="family-rating-warning" class="rating-warning" role="status" hidden></p><div class="family-age-preview" hidden><span>Nhãn tuổi được phép (tuổi tối thiểu)</span><div id="family-allowed-ratings" class="family-rating-list" aria-live="polite"></div></div></div>
-                                <div class="form-group"><label for="family-limit">Hạn mức mỗi ngày (phút)</label><input id="family-limit" name="demoLimit" type="number" min="0" max="180" step="1" value="60" inputmode="numeric" aria-describedby="family-limit-hint family-limit-error"><div class="limit-shortcuts" aria-label="Chọn nhanh hạn mức"><button type="button" data-limit-minutes="30">30 phút</button><button type="button" data-limit-minutes="60">60 phút</button><button type="button" data-limit-minutes="90">90 phút</button></div><span id="family-limit-hint" class="field-hint">Tự nhập từ 0 đến 180 phút.</span></div>
+                                <div class="form-group"><label for="family-age">Game được hiển thị</label><select id="family-age" name="gameAge" aria-describedby="family-rating-warning"><option value="0">0+ · Mọi lứa tuổi</option><option value="12">Thêm game 12+ · Từ 12 tuổi</option><option value="16">Thêm game 16+ · Từ 16 tuổi</option><option value="18">Tất cả game · 0+, 12+, 16+, 18+</option></select><p id="family-rating-warning" class="rating-warning" role="status" hidden></p><div class="family-age-preview" hidden><span>Nhãn tuổi được phép (tuổi tối thiểu)</span><div id="family-allowed-ratings" class="family-rating-list" aria-live="polite"></div></div></div>
+                                <div class="form-group"><label for="family-limit">Hạn mức mỗi ngày (phút)</label><input id="family-limit" name="dailyLimit" type="number" min="0" max="180" step="1" value="60" inputmode="numeric" aria-describedby="family-limit-hint family-limit-error"><div class="limit-shortcuts" aria-label="Chọn nhanh hạn mức"><button type="button" data-limit-minutes="30">30 phút</button><button type="button" data-limit-minutes="60">60 phút</button><button type="button" data-limit-minutes="90">90 phút</button></div><span id="family-limit-hint" class="field-hint">Tự nhập từ 0 đến 180 phút.</span></div>
                             </div>
 
                     <details id="family-content-controls" class="settings-disclosure"><summary><span>Danh mục &amp; từ khóa<small id="settings-content-summary">Chọn nội dung con được khám phá</small></span><span aria-hidden="true">＋</span></summary><div class="settings-disclosure-body form-grid"><div class="form-group form-group-full"><span class="field-label">Danh mục được phép</span><div class="category-picker"><div class="category-toolbar"><label class="category-search-label compact-sr-label" for="category-search">Tìm danh mục</label><input id="category-search" type="search" placeholder="Tìm danh mục…" autocomplete="off"><div class="category-filter-row"><label for="category-group" class="compact-sr-label">Nhóm danh mục</label><select id="category-group"><option value="all">Tất cả nhóm</option><option value="0">Khám phá</option><option value="1">Học tập & tư duy</option><option value="2">Sáng tạo & đời sống</option><option value="3">Thể thao & tốc độ</option><option value="4">Hành động & chiến thuật</option><option value="5">Nhân vật & trò chơi quen thuộc</option><option value="6">Ngày lễ</option></select><button type="button" id="category-selected-only" aria-pressed="false">Đã chọn</button></div><div class="category-selection-row"><span id="category-count" role="status"></span><button type="button" id="category-select-visible">Chọn kết quả</button><button type="button" id="category-clear">Bỏ tất cả</button></div></div><div id="family-manage-categories" class="family-category-options" role="group" aria-label="Danh mục được phép"><section class="category-section" data-category-group="0" aria-labelledby="category-heading-0"><h4 id="category-heading-0">Khám phá</h4><div class="category-chip-grid"><label><input type="checkbox" data-category="hot"><span>Game Hot</span></label><label><input type="checkbox" data-category="best"><span>Game Hay</span></label><label><input type="checkbox" data-category="new"><span>Game Mới</span></label><label><input type="checkbox" data-category="entertainment"><span>Giải trí</span></label><label><input type="checkbox" data-category="fun"><span>Game Vui</span></label><label><input type="checkbox" data-category="office"><span>Văn phòng</span></label><label><input type="checkbox" data-category="y8"><span>Game Y8</span></label><label><input type="checkbox" data-category="two"><span>2 người</span></label><label><input type="checkbox" data-category="y8two"><span>Y8 2 người</span></label><label><input type="checkbox" data-category="classic"><span>Kinh điển</span></label><label><input type="checkbox" data-category="threeD"><span>Game 3D</span></label></div></section><section class="category-section" data-category-group="1" aria-labelledby="category-heading-1"><h4 id="category-heading-1">Học tập & tư duy</h4><div class="category-chip-grid"><label><input type="checkbox" data-category="puzzle"><span>Trí tuệ</span></label><label><input type="checkbox" data-category="children"><span>Trẻ em</span></label><label><input type="checkbox" data-category="iq"><span>Giải đố IQ</span></label><label><input type="checkbox" data-category="escape"><span>Tìm lối thoát</span></label><label><input type="checkbox" data-category="chess"><span>Chơi cờ</span></label><label><input type="checkbox" data-category="jigsaw"><span>Xếp hình</span></label><label><input type="checkbox" data-category="quiz"><span>Trắc nghiệm</span></label><label><input type="checkbox" data-category="memory"><span>Luyện trí nhớ</span></label><label><input type="checkbox" data-category="learning"><span>Học tập</span></label><label><input type="checkbox" data-category="math"><span>Toán học</span></label><label><input type="checkbox" data-category="english"><span>Học tiếng Anh</span></label><label><input type="checkbox" data-category="lego"><span>Lego</span></label></div></section><section class="category-section" data-category-group="2" aria-labelledby="category-heading-2"><h4 id="category-heading-2">Sáng tạo & đời sống</h4><div class="category-chip-grid"><label><input type="checkbox" data-category="girls"><span>Con gái</span></label><label><input type="checkbox" data-category="fashion"><span>Thời trang</span></label><label><input type="checkbox" data-category="princess"><span>Công chúa</span></label><label><input type="checkbox" data-category="selling"><span>Bán hàng</span></label><label><input type="checkbox" data-category="cooking"><span>Nấu ăn</span></label><label><input type="checkbox" data-category="makeup"><span>Trang điểm</span></label><label><input type="checkbox" data-category="design"><span>Thiết kế</span></label><label><input type="checkbox" data-category="farm"><span>Nông trại</span></label><label><input type="checkbox" data-category="hair"><span>Làm tóc</span></label><label><input type="checkbox" data-category="music"><span>Âm nhạc</span></label><label><input type="checkbox" data-category="love"><span>Tình yêu</span></label><label><input type="checkbox" data-category="decor"><span>Trang Trí</span></label><label><input type="checkbox" data-category="baking"><span>Làm bánh</span></label><label><input type="checkbox" data-category="coloring"><span>Tô màu</span></label><label><input type="checkbox" data-category="nails"><span>Làm móng</span></label></div></section><section class="category-section" data-category-group="3" aria-labelledby="category-heading-3"><h4 id="category-heading-3">Thể thao & tốc độ</h4><div class="category-chip-grid"><label><input type="checkbox" data-category="sports"><span>Thể thao</span></label><label><input type="checkbox" data-category="football"><span>Bóng đá</span></label><label><input type="checkbox" data-category="racing"><span>Đua xe</span></label><label><input type="checkbox" data-category="billiards"><span>Game Bida</span></label><label><input type="checkbox" data-category="basketball"><span>Bóng rổ</span></label><label><input type="checkbox" data-category="fishing"><span>Câu cá</span></label></div></section><section class="category-section" data-category-group="4" aria-labelledby="category-heading-4"><h4 id="category-heading-4">Hành động & chiến thuật</h4><div class="category-chip-grid"><label><input type="checkbox" data-category="action"><span>Hành động</span></label><label><input type="checkbox" data-category="adventure"><span>Phiêu lưu</span></label><label><input type="checkbox" data-category="strategy"><span>Chiến thuật</span></label><label><input type="checkbox" data-category="defense"><span>Phòng thủ</span></label><label><input type="checkbox" data-category="zombie"><span>Diệt Zombie</span></label><label><input type="checkbox" data-category="shooter"><span>Xạ thủ</span></label><label><input type="checkbox" data-category="fighting"><span>Đối kháng</span></label><label><input type="checkbox" data-category="horror"><span>Kinh dị</span></label><label><input type="checkbox" data-category="raid"><span>Đột kích</span></label><label><input type="checkbox" data-category="sniper"><span>Bắn tỉa</span></label><label><input type="checkbox" data-category="hunting"><span>Săn bắn</span></label><label><input type="checkbox" data-category="warrior"><span>Chiến binh</span></label><label><input type="checkbox" data-category="prank"><span>Chọc phá</span></label><label><input type="checkbox" data-category="empire"><span>Đế chế</span></label><label><input type="checkbox" data-category="tank"><span>Bắn Xe Tăng</span></label><label><input type="checkbox" data-category="airwar"><span>Không chiến</span></label><label><input type="checkbox" data-category="archery"><span>Bắn cung</span></label></div></section><section class="category-section" data-category-group="5" aria-labelledby="category-heading-5"><h4 id="category-heading-5">Nhân vật & trò chơi quen thuộc</h4><div class="category-chip-grid"><label><input type="checkbox" data-category="pikachu"><span>Game Pikachu</span></label><label><input type="checkbox" data-category="anime"><span>Game Anime</span></label><label><input type="checkbox" data-category="monkey"><span>Chú khỉ buồn</span></label><label><input type="checkbox" data-category="gold"><span>Đào vàng</span></label><label><input type="checkbox" data-category="stickman"><span>Người que</span></label><label><input type="checkbox" data-category="minecraft"><span>Game Minecraft</span></label><label><input type="checkbox" data-category="bombit"><span>Bom IT</span></label><label><input type="checkbox" data-category="pokemon"><span>Game Pokemon</span></label><label><input type="checkbox" data-category="naruto"><span>Game Naruto</span></label><label><input type="checkbox" data-category="diamond"><span>Kim cương</span></label></div></section><section class="category-section" data-category-group="6" aria-labelledby="category-heading-6"><h4 id="category-heading-6">Ngày lễ</h4><div class="category-chip-grid"><label><input type="checkbox" data-category="tet"><span>Game Tết</span></label><label><input type="checkbox" data-category="valentine"><span>Valentine</span></label><label><input type="checkbox" data-category="halloween"><span>Game Halloween</span></label><label><input type="checkbox" data-category="noel"><span>Noel</span></label></div></section></div><p id="category-empty" hidden>Không tìm thấy danh mục phù hợp. Thử từ khóa khác hoặc bỏ bộ lọc.</p></div><span class="field-hint">Chọn nhiều danh mục. Bỏ chọn tất cả nghĩa là không cho phép danh mục nào. Game vẫn phải đáp ứng giới hạn tuổi đã chọn; game được hiển thị theo mức tuổi cha mẹ đã chọn.</span></div><div class="form-group"><label for="family-manage-keywords">Từ khóa chặn</label><input id="family-manage-keywords" type="text" maxlength="200" placeholder="Ví dụ: kinh dị, bạo lực"><span class="field-hint">Phân tách bằng dấu phẩy. Quy tắc chưa kết nối với thư viện trò chơi.</span></div></div></details>
@@ -1588,7 +1588,7 @@
                 </section>
             </div>
         </div>
-        <div class="settings-save-bar"><span id="settings-save-state" role="status">Chưa có thay đổi</span>                        <div class="family-actions settings-save-actions"><button type="submit" form="family-demo-form" id="family-demo-save" class="btn btn-primary" disabled>Lưu cài đặt</button><button type="button" id="family-demo-reset" class="btn btn-secondary" disabled>Hủy thay đổi</button></div>
+        <div class="settings-save-bar"><span id="settings-save-state" role="status">Chưa có thay đổi</span>                        <div class="family-actions settings-save-actions"><button type="submit" form="family-settings-form" id="family-settings-save" class="btn btn-primary" disabled>Lưu cài đặt</button><button type="button" id="family-settings-reset" class="btn btn-secondary" disabled>Hủy thay đổi</button></div>
                         <p id="family-feedback" class="family-feedback" role="status" aria-live="polite"></p>
 </div>
     </dialog>
@@ -1626,7 +1626,7 @@
                 <p class="family-intro">Mở khu vực quản lý từ hồ sơ hiện tại.</p>
                 <div class="family-confirm-box"><strong id="family-selected-plan"></strong><p id="family-selected-price"></p><p id="family-selected-benefits"></p></div>
                 <form id="family-activate-form" novalidate>
-                    <label class="family-consent" for="family-demo-consent"><input type="checkbox" id="family-demo-consent" required aria-describedby="family-activate-error"><span id="family-consent-text">Tôi hiểu thông tin chỉ được giữ trong phiên này.</span></label>
+                    <label class="family-consent" for="family-settings-consent"><input type="checkbox" id="family-settings-consent" required aria-describedby="family-activate-error"><span id="family-consent-text">Tôi hiểu thông tin chỉ được giữ trong phiên này.</span></label>
                     <p id="family-activate-error" class="family-error" role="alert"></p>
                     <div class="family-actions"><button type="button" id="family-plan-back" class="btn btn-secondary">Chọn lại gói</button><button type="submit" id="family-activate-submit" class="btn btn-primary">Kích hoạt cha mẹ</button></div>
                 </form>
@@ -1654,17 +1654,17 @@
                 <div id="family-recommendations" class="child-rating-section">
                     <div class="child-section-heading"><h4>Con được chơi game ở mức tuổi nào?</h4><p>Chọn mức cao nhất được hiển thị. Có thể đổi lại bất cứ lúc nào.</p></div>
                     <div class="child-rating-options" role="group" aria-label="Mức tuổi game cho con">
-                        <button type="button" data-preset="preschool" aria-pressed="false"><strong>00+</strong><span>Mọi lứa tuổi</span></button>
+                        <button type="button" data-preset="preschool" aria-pressed="false"><strong>0+</strong><span>Mọi lứa tuổi</span></button>
                         <button type="button" data-preset="young" aria-pressed="false"><strong>12+</strong><span>Từ 12 tuổi</span></button>
                         <button type="button" data-preset="teen" aria-pressed="false"><strong>16+</strong><span>Từ 16 tuổi</span></button>
-                        <button type="button" data-preset="adult" aria-pressed="false"><strong>Tất cả game</strong><span>00+, 12+, 16+, 18+</span></button>
+                        <button type="button" data-preset="adult" aria-pressed="false"><strong>Tất cả game</strong><span>0+, 12+, 16+, 18+</span></button>
                     </div>
                     <p id="family-preset-content" class="child-selection-summary" aria-live="polite">Chọn mức tuổi game cho con.</p>
                     <p id="family-preset-warning" class="rating-warning" role="status" hidden></p>
-                    <details class="child-rating-help"><summary>Cách áp dụng mức tuổi</summary><p>Nhãn 00+, 12+, 16+, 18+ theo khoản 1 Điều 38, Nghị định 147/2024/NĐ-CP. Cha mẹ có thể chọn mọi mức; lựa chọn vượt tuổi con sẽ có cảnh báo. Danh mục và thời gian không thay đổi khi chọn mức tuổi. Đây không phải chứng nhận phân loại cho từng game.</p></details>
+                    <details class="child-rating-help"><summary>Cách áp dụng mức tuổi</summary><p>Nhãn 0+, 12+, 16+, 18+ theo khoản 1 Điều 38, Nghị định 147/2024/NĐ-CP. Cha mẹ có thể chọn mọi mức; lựa chọn vượt tuổi con sẽ có cảnh báo. Danh mục và thời gian không thay đổi khi chọn mức tuổi. Đây không phải chứng nhận phân loại cho từng game.</p></details>
                 </div>
                 <div class="child-setup-footer"><button type="button" class="btn btn-primary" id="family-apply-preset" disabled>Áp dụng và mở cài đặt</button><button type="button" id="family-setup-later" class="btn btn-secondary">Để sau</button></div>
-                <p id="family-pending-policy" class="child-setup-hint">Nếu để sau, giữ mức 00+ và 180 phút/ngày. Bạn tự chỉnh thời gian, danh mục và từ khóa trong cài đặt.</p>
+                <p id="family-pending-policy" class="child-setup-hint">Nếu để sau, giữ mức 0+ và 180 phút/ngày. Bạn tự chỉnh thời gian, danh mục và từ khóa trong cài đặt.</p>
                 <div class="child-secondary-actions"><button type="button" id="family-manage-created">Tự thiết lập từ đầu</button><button type="button" id="family-create-another">+ Thêm tài khoản con</button></div>
                 <p class="child-session-note">Mật khẩu không được lưu.</p>
             </section>
@@ -1733,7 +1733,7 @@
                 return { value: String(y), label: String(y) };
             });
 
-            // Synthetic date of birth for the demo profile.
+            // Synthetic date of birth for the preview profile.
             [
                 [document.getElementById('dob-day'), dayItems, '1'],
                 [document.getElementById('dob-month'), monthItems, '1'],
@@ -1923,7 +1923,7 @@
         });
     </script>
     <script>
-        // Handwritten Family demo: in-memory profiles, no production API or storage.
+        // Handwritten Family preview: in-memory profiles, no production API or storage.
         document.addEventListener('DOMContentLoaded', () => {
             const root = document.getElementById('parent-section');
             const guideToggle = root.querySelector('#family-guide-toggle');
@@ -1931,21 +1931,21 @@
             const openButton = root.querySelector('#family-preview-open');
             const dialog = document.getElementById('family-preview');
             const closeButton = dialog.querySelector('#family-preview-close');
-            const form = dialog.querySelector('#family-demo-form');
+            const form = dialog.querySelector('#family-settings-form');
             const childList = dialog.querySelector('.family-children');
             const age = dialog.querySelector('#family-age');
             const limit = dialog.querySelector('#family-limit');
             const categories = dialog.querySelector('#family-manage-categories');
             const keywords = dialog.querySelector('#family-manage-keywords');
-            const save = dialog.querySelector('#family-demo-save');
-            const reset = dialog.querySelector('#family-demo-reset');
+            const save = dialog.querySelector('#family-settings-save');
+            const reset = dialog.querySelector('#family-settings-reset');
             const feedback = dialog.querySelector('#family-feedback');
             const error = dialog.querySelector('#family-limit-error');
             const sampleChildren = [
                 { name: 'Mây Nhỏ', dob: (new Date().getFullYear()-6)+'-01-01', age: '0', limit: 60, used: 25, week: [15, 35, 10, 45, 30, 20, 25] },
                 { name: 'Nắng Vàng', dob: (new Date().getFullYear()-16)+'-01-01', age: '12', limit: 45, used: 40, week: [20, 30, 25, 40, 15, 35, 40] }
             ];
-            const ageLabels = { '0':'00+ · Mọi lứa tuổi', '12':'00+ và 12+', '16':'00+, 12+ và 16+', '18':'Tất cả game (00+, 12+, 16+, 18+)' };
+            const ageLabels = { '0':'0+ · Mọi lứa tuổi', '12':'0+ và 12+', '16':'0+, 12+ và 16+', '18':'Tất cả game (0+, 12+, 16+, 18+)' };
             const gameRatings = [0, 12, 16, 18];
             let children = [];
             let selected = 0;
@@ -1966,14 +1966,14 @@
             let previousOverflow = '';
             let managerTrigger = openButton;
             // Fixture only: production eligibility must come from the authenticated server session.
-            const demoAccount = { loggedIn:true, phoneVerified:true, birthDate:'2000-01-01' };
+            const previewAccount = { loggedIn:true, phoneVerified:true, birthDate:'2000-01-01' };
             function qualifiesForFree(account, today = new Date()) {
                 if (!account.loggedIn || !account.phoneVerified || !/^\d{4}-\d{2}-\d{2}$/.test(account.birthDate || '')) return false;
                 const [y,m,d] = account.birthDate.split('-').map(Number), birth = new Date(y,m-1,d);
                 if (birth.getFullYear() !== y || birth.getMonth() !== m-1 || birth.getDate() !== d || birth > today) return false;
                 return today.getFullYear()-y-((today.getMonth()<m-1 || (today.getMonth()===m-1 && today.getDate()<d)) ? 1 : 0) >= 18;
             }
-            const freeEligible = qualifiesForFree(demoAccount);
+            const freeEligible = qualifiesForFree(previewAccount);
             let accountTier = freeEligible ? 'free' : null;
             let shortcutUpgrade = false;
             let parentActivated = false;
@@ -2142,7 +2142,7 @@
                 ratings.replaceChildren();
                 gameRatings.filter(rating => rating <= Number(child.age)).forEach(rating => {
                     const badge = document.createElement('span');
-                    badge.textContent = (rating===0?'00':rating) + '+';
+                    badge.textContent = rating + '+';
                     ratings.append(badge);
                 });
                 clearError();
@@ -2292,14 +2292,14 @@
                 feedback.textContent = 'Đã hủy thay đổi.';
             });
 
-            // Demo onboarding stays in memory. It never verifies identity or charges money.
+            // preview onboarding stays in memory. It never verifies identity or charges money.
             const onboarding = document.getElementById('family-onboarding');
             const plansOpen = root.querySelector('#family-plans-open');
             const activateOpen = root.querySelector('#family-activate-open');
             const addChild = root.querySelector('#family-add-child');
             const activateForm = onboarding.querySelector('#family-activate-form');
             const createForm = onboarding.querySelector('#family-create-form');
-            const consent = onboarding.querySelector('#family-demo-consent');
+            const consent = onboarding.querySelector('#family-settings-consent');
             const nameInput = onboarding.querySelector('#family-new-name');
             const usernameInput = onboarding.querySelector('#family-new-username');
 
@@ -2526,7 +2526,7 @@
             const gender = onboarding.querySelector('#family-new-gender');
             const recommendations = onboarding.querySelector('#family-recommendations');
             const presets = {
-                preschool: { label:'00+', age:'0' },
+                preschool: { label:'0+', age:'0' },
                 young: { label:'12+', age:'12' },
                 teen: { label:'16+', age:'16' },
                 adult: { label:'Tất cả game', age:'18' }
@@ -2624,7 +2624,7 @@
                 if (childAge() === null) return reject(birthYear, 'Nhập đủ ngày sinh hợp lệ của trẻ dưới 18 tuổi.');
                 if (!gender.value) return reject(gender, 'Chọn giới tính hoặc Không tiết lộ.');
                 createdChildren.push({ name, username, dob: dob.value, gender: gender.value, categories: 'all', keywords: '', age: '0', limit: 180, used: 0, week: [0, 0, 0, 0, 0, 0, 0] });
-                // Validate the creation UI without retaining a plaintext demo password.
+                // Validate the creation UI without retaining a plaintext preview password.
                 password.value = confirmPassword.value = '';
                 resetPasswordVisibility();
                 updateParentSummary();
