@@ -23,10 +23,16 @@ test('edit child identity and explicitly confirm independent conversion', async 
     await page.locator('#family-apply-preset').click();
     await page.locator('#child-profile-settings summary').click();
     await page.locator('#child-edit-name').fill('Minh Anh mới');
-    await page.locator('#child-edit-dob').fill('2099-01-01');
+    await page.locator('#edit-birth-year').selectOption('');
     await page.locator('#family-settings-save').click();
     assert.match(await page.locator('#family-limit-error').textContent(),/tương lai/);
-    await page.locator('#child-edit-dob').fill('2000-01-01');
+    await page.locator('#edit-birth-year').selectOption('2000'); await page.locator('#edit-birth-month').selectOption('1'); await page.locator('#edit-birth-day').selectOption('1');
+    assert.equal(await page.locator('#child-edit-username').getAttribute('readonly'),'');
+    await page.locator('#child-password-settings summary').click();
+    await page.locator('#child-new-password').fill('Example1234'); await page.locator('#child-confirm-password').fill('different');
+    await page.locator('#child-change-password').click(); assert.match(await page.locator('#child-password-status').textContent(),/chưa khớp/);
+    await page.locator('#child-confirm-password').fill('Example1234'); await page.locator('#child-change-password').click();
+    assert.equal(await page.locator('#child-new-password').inputValue(),'');
     await page.locator('#family-settings-save').click();
     assert.equal(await page.locator('#family-child-name').textContent(),'Minh Anh mới');
     assert.equal(await page.locator('#child-independent-offer').isVisible(),true);
