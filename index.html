@@ -1579,12 +1579,13 @@
                     <form id="family-settings-form" novalidate>
                         <details id="child-profile-settings" class="settings-disclosure"><summary><span>Thông tin tài khoản<small>Tên, ngày sinh và giới tính</small></span><span aria-hidden="true">＋</span></summary><div class="settings-disclosure-body family-fields">
                         <div class="form-group"><label for="child-edit-name">Tên hiển thị</label><input id="child-edit-name" type="text" maxlength="30" required></div>
-                        <div class="form-group"><label for="child-edit-username">Tên đăng nhập</label><input id="child-edit-username" type="text" maxlength="24" required spellcheck="false" autocapitalize="none"><span class="field-hint">4–24 ký tự: chữ không dấu, số, dấu gạch dưới.</span></div>
-                        <div class="form-group"><label for="child-edit-dob">Ngày sinh</label><input id="child-edit-dob" type="date" required><span id="child-edit-age" class="field-hint" role="status"></span></div>
+                        <div class="form-group"><label for="child-edit-username">Tên đăng nhập</label><input id="child-edit-username" type="text" readonly aria-describedby="child-username-note" spellcheck="false" autocapitalize="none"><span id="child-username-note" class="field-hint">Tên đăng nhập không thể thay đổi sau khi tạo.</span></div>
+                        <div class="form-group"><span class="field-label">Ngày sinh</span><input id="child-edit-dob" type="hidden"><div class="dob-grid" role="group" aria-label="Ngày sinh"><select id="edit-birth-day" aria-label="Ngày sinh" required></select><select id="edit-birth-month" aria-label="Tháng sinh" required></select><select id="edit-birth-year" aria-label="Năm sinh" required></select></div><span id="child-edit-age" class="field-hint" role="status"></span></div>
                         <div class="form-group"><label for="child-edit-gender">Giới tính</label><select id="child-edit-gender"><option value="other">Không tiết lộ</option><option value="male">Nam</option><option value="female">Nữ</option></select></div>
                         <p class="field-hint" style="grid-column:1/-1">Tuổi tự tính từ ngày sinh. Đổi thông tin không tạo tài khoản mới hoặc xóa dữ liệu chơi. Chỉ sửa ngày sinh khi thông tin cũ chưa đúng.</p>
                         </div></details>
-                        <section id="child-independent-offer" class="family-notice" hidden aria-labelledby="child-independent-title"><strong id="child-independent-title">Tài khoản đã đủ tuổi chuyển sang tài khoản độc lập</strong><p>Chủ tài khoản cần xác thực số điện thoại riêng trước khi chuyển. Sau chuyển đổi, cha mẹ không còn quyền quản lý.</p><button id="child-transfer-start" type="button" class="btn btn-secondary">Chuyển sang tài khoản độc lập</button><p id="child-transfer-save-hint" class="field-hint" hidden>Lưu thay đổi trước khi chuyển đổi.</p></section>
+                        <details id="child-password-settings" class="settings-disclosure" style="margin-bottom:16px"><summary><span>Đổi mật khẩu<small>Đặt mật khẩu mới cho tài khoản con</small></span><span aria-hidden="true">＋</span></summary><div class="settings-disclosure-body"><p class="field-hint">Chưa kết nối hệ thống đăng nhập. Thao tác này chỉ kiểm tra mật khẩu, chưa thay đổi mật khẩu thật.</p><div class="family-fields"><div class="form-group"><label for="child-new-password">Mật khẩu mới</label><input id="child-new-password" type="password" autocomplete="new-password" minlength="8" maxlength="64"><span class="field-hint">8–64 ký tự. Không dùng mật khẩu thật tại đây.</span></div><div class="form-group"><label for="child-confirm-password">Nhập lại mật khẩu mới</label><input id="child-confirm-password" type="password" autocomplete="new-password" maxlength="64"></div></div><button id="child-change-password" type="button" class="btn btn-secondary">Kiểm tra đổi mật khẩu</button><p id="child-password-status" role="status" class="field-hint"></p></div></details>
+                    <section id="child-independent-offer" class="family-notice" hidden aria-labelledby="child-independent-title"><strong id="child-independent-title">Tài khoản đã đủ tuổi chuyển sang tài khoản độc lập</strong><p>Chủ tài khoản cần xác thực số điện thoại riêng trước khi chuyển. Sau chuyển đổi, cha mẹ không còn quyền quản lý.</p><button id="child-transfer-start" type="button" class="btn btn-secondary">Chuyển sang tài khoản độc lập</button><p id="child-transfer-save-hint" class="field-hint" hidden>Lưu thay đổi trước khi chuyển đổi.</p></section>
                         <fieldset>
                             <legend>Hai thiết lập chính</legend>
                             <div class="family-fields">
@@ -1663,7 +1664,7 @@
                 <form id="family-create-form" novalidate autocomplete="off">
                     <div class="family-fields">
                         <div class="form-group"><label for="family-new-name">Tên hiển thị của con</label><input id="family-new-name" type="text" maxlength="30" required placeholder="Ví dụ: Gấu Nhỏ" aria-describedby="family-name-hint family-create-error"><span id="family-name-hint" class="field-hint">2–30 ký tự, nên dùng biệt danh.</span></div>
-                        <div class="form-group"><label for="family-new-username">Tên đăng nhập</label><input id="family-new-username" type="text" maxlength="24" required spellcheck="false" autocapitalize="none" aria-describedby="family-username-hint family-create-error"><span id="family-username-hint" class="field-hint">4–24 ký tự: chữ không dấu, số hoặc dấu gạch dưới.</span></div>
+                        <div class="form-group"><label for="family-new-username">Tên đăng nhập</label><input id="family-new-username" type="text" maxlength="24" required spellcheck="false" autocapitalize="none" aria-describedby="family-username-hint family-create-error"><span id="family-username-hint" class="field-hint">4–24 ký tự: chữ không dấu, số hoặc dấu gạch dưới. <strong>Tên đăng nhập không thể thay đổi sau khi tạo.</strong></span></div>
                         <div class="form-group"><label for="family-new-password">Mật khẩu</label><div class="family-password-field"><input id="family-new-password" type="password" minlength="8" maxlength="64" autocomplete="new-password" required aria-describedby="family-password-hint family-create-error"><button type="button" id="family-password-toggle" class="family-password-toggle" aria-label="Hiện mật khẩu" aria-pressed="false" aria-controls="family-new-password family-confirm-password">Hiện</button></div><span id="family-password-hint" class="field-hint">8–64 ký tự. Không dùng mật khẩu đang sử dụng ở dịch vụ khác.</span></div>
                         <div class="form-group"><label for="family-confirm-password">Nhập lại mật khẩu</label><input id="family-confirm-password" type="password" minlength="8" maxlength="64" autocomplete="new-password" required aria-describedby="family-create-error"></div>
                         <div class="form-group"><span class="field-label">Ngày sinh</span><input id="family-new-dob" type="hidden"><div class="dob-grid" role="group" aria-label="Ngày sinh của con"><select id="family-birth-day" aria-label="Ngày sinh của con" required></select><select id="family-birth-month" aria-label="Tháng sinh của con" required></select><select id="family-birth-year" aria-label="Năm sinh của con" required></select></div><span id="family-child-age" class="field-hint" aria-live="polite">Nhập ngày sinh để tính tuổi.</span></div>
@@ -2097,8 +2098,30 @@
                 limit.value = button.dataset.limitMinutes; limit.dispatchEvent(new Event('input',{bubbles:true}));
             }));
             const editName=dialog.querySelector('#child-edit-name'), editUsername=dialog.querySelector('#child-edit-username'), editDob=dialog.querySelector('#child-edit-dob'), editGender=dialog.querySelector('#child-edit-gender');
+            const editDay=dialog.querySelector('#edit-birth-day'), editMonth=dialog.querySelector('#edit-birth-month'), editYear=dialog.querySelector('#edit-birth-year');
+            function syncEditBirth() {
+                const now=new Date(), y=Number(editYear.value);
+                fillBirth(editMonth,'Tháng',Array.from({length:y===now.getFullYear()?now.getMonth()+1:12},(_,i)=>i+1));
+                const m=Number(editMonth.value), n=y&&m?(y===now.getFullYear()&&m===now.getMonth()+1?now.getDate():new Date(y,m,0).getDate()):31;
+                fillBirth(editDay,'Ngày',Array.from({length:n},(_,i)=>i+1));
+                editDob.value=editYear.value&&editMonth.value&&editDay.value?editYear.value+'-'+editMonth.value.padStart(2,'0')+'-'+editDay.value.padStart(2,'0'):'';
+            }
+            function setEditBirth(value) {
+                fillBirth(editYear,'Năm',Array.from({length:121},(_,i)=>new Date().getFullYear()-i));
+                fillBirth(editMonth,'Tháng',Array.from({length:12},(_,i)=>i+1)); fillBirth(editDay,'Ngày',Array.from({length:31},(_,i)=>i+1));
+                const [y,m,d]=value.split('-');editYear.value=y||'';editMonth.value=String(Number(m)||'');editDay.value=String(Number(d)||'');syncEditBirth();
+            }
+            [editDay,editMonth,editYear].forEach(el=>el.addEventListener('change',()=>{syncEditBirth();updateButtons();}));
+            function clearChildPassword(){['child-new-password','child-confirm-password'].forEach(id=>dialog.querySelector('#'+id).value='');dialog.querySelector('#child-password-status').textContent='';}
+            dialog.addEventListener('close',clearChildPassword);
+            dialog.querySelector('#child-change-password').addEventListener('click',()=>{
+                const first=dialog.querySelector('#child-new-password'), second=dialog.querySelector('#child-confirm-password'), status=dialog.querySelector('#child-password-status');
+                if(first.value.length<8 || first.value.length>64){status.textContent='Mật khẩu cần 8–64 ký tự.';first.focus();return;}
+                if(first.value!==second.value){status.textContent='Hai mật khẩu chưa khớp.';second.focus();return;}
+                clearChildPassword();status.textContent='Mật khẩu hợp lệ. Chưa thay đổi mật khẩu thật vì chưa kết nối hệ thống đăng nhập.';
+            });
             const independentAccounts=[];
-            function profileDirty(child) { return !!child && (editName.value.trim()!==child.name || editUsername.value.trim()!==(child.username||'') || editDob.value!==(child.dob||'') || editGender.value!==(child.gender||'other')); }
+            function profileDirty(child) { return !!child && (editName.value.trim()!==child.name || editDob.value!==(child.dob||'') || editGender.value!==(child.gender||'other')); }
             function updateIdentityState() {
                 const years=ageFromDate(editDob.value,120);
                 dialog.querySelector('#child-edit-age').textContent=years===null?'Nhập ngày sinh hợp lệ, không ở tương lai.':'Tuổi hiện tại: '+years+' tuổi.';
@@ -2153,7 +2176,7 @@
                 });
                 dialog.querySelector('#family-child-name').textContent = child.name;
                 editName.value=child.name; editUsername.value=child.username||('sample_'+selected); editDob.value=child.dob||''; editGender.value=child.gender||'other';
-                const today=new Date();editDob.max=[today.getFullYear(),String(today.getMonth()+1).padStart(2,'0'),String(today.getDate()).padStart(2,'0')].join('-');
+                setEditBirth(child.dob||''); clearChildPassword();
                 dialog.querySelector('#family-current-policy').textContent = ageLabels[child.age];
                 Array.from(age.options).forEach(option=>option.disabled=false);
                 age.value = child.age;
@@ -2316,12 +2339,10 @@
             form.addEventListener('submit', event => {
                 event.preventDefault();
                 if (!children[selected]) return;
-                const profileName=editName.value.trim(), profileUsername=editUsername.value.trim();
+                const profileName=editName.value.trim();
                 const rejectProfile=(input,message)=>{dialog.querySelector('#child-profile-settings').open=true;error.textContent=message;input.setAttribute('aria-invalid','true');input.focus();};
                 if(profileName.length<2 || profileName.length>30)return rejectProfile(editName,'Tên hiển thị cần 2–30 ký tự.');
-                if(!/^[a-zA-Z0-9_]{4,24}$/.test(profileUsername))return rejectProfile(editUsername,'Tên đăng nhập cần 4–24 ký tự không dấu, số hoặc gạch dưới.');
-                if([...children,...independentAccounts].some(child=>child!==children[selected] && child.username.toLowerCase()===profileUsername.toLowerCase()))return rejectProfile(editUsername,'Tên đăng nhập đã được sử dụng.');
-                if(ageFromDate(editDob.value,120)===null)return rejectProfile(editDob,'Ngày sinh không hợp lệ hoặc ở tương lai.');
+                if(ageFromDate(editDob.value,120)===null)return rejectProfile(editDay,'Ngày sinh không hợp lệ hoặc ở tương lai.');
                 if(!['male','female','other'].includes(editGender.value))return rejectProfile(editGender,'Chọn giới tính hợp lệ.');
                 const minutes = Number(limit.value);
                 if (limit.value.trim() === '' || !Number.isInteger(minutes) || minutes < 0 || minutes > 180 || !limit.validity.valid) {
@@ -2342,7 +2363,7 @@
                     children[selected].restStart=start.value; children[selected].restEnd=end.value;
                 }
                 if(!['0','12','16','18'].includes(age.value)) { error.textContent='Chọn một mức tuổi game hợp lệ.'; age.focus(); return; }
-                Object.assign(children[selected],{name:profileName,username:profileUsername,dob:editDob.value,gender:editGender.value});
+                Object.assign(children[selected],{name:profileName,dob:editDob.value,gender:editGender.value});
                 children[selected].age = age.value;
                 children[selected].limit = minutes;
                 if(activeTier!=='free') children[selected].categories = readCategories();
