@@ -1340,12 +1340,30 @@
         #child-transfer-dialog input[type=tel],#child-transfer-dialog input[type=text] { min-height:44px; width:100%; }
         #child-transfer-dialog .transfer-note { padding:12px; margin:16px 0; background:var(--bg-muted); border-radius:12px; font-size:var(--text-label); }
 /* Contextual input guidance: keep errors and permanent notices visible. */
-        .form-group .input-guidance { display:none; }
-        .form-group:focus-within .input-guidance { display:block; }
-        .guidance-pointer .input-guidance { display:none !important; }
-        .guidance-pointer .input-guidance.guidance-visible { display:block !important; }
         .confirmation-error { display:block; color:#b42318; font-size:14px; line-height:1.5; margin-top:8px; }
         .confirmation-error:empty { display:none; }
+    
+        /* Shared outlined fields across child creation and account settings. */
+        #family-create-form .family-fields,
+        #child-profile-settings .family-fields,
+        #child-password-settings .family-fields { gap:24px 20px; padding-top:8px; }
+        #family-create-form .form-group,
+        #child-profile-settings .form-group,
+        #child-password-settings .form-group { position:relative; margin:0; min-width:0; }
+        #family-create-form .form-group > label,
+        #child-profile-settings .form-group > label,
+        #child-password-settings .form-group > label { position:absolute; z-index:1; top:-10px; left:12px; padding:0 6px; margin:0; background:#fff; font-size:14px; line-height:20px; font-weight:500; }
+        #family-create-form .form-group > input,
+        #family-create-form .family-password-field input,
+        #family-create-form .form-group > select,
+        #child-profile-settings .form-group > input,
+        #child-profile-settings .form-group > select,
+        #child-password-settings input { min-height:56px; border-radius:8px; padding:16px 14px 12px; }
+        #family-create-form .family-password-field input { padding-right:64px; }
+        #family-create-form .field-label,
+        #child-profile-settings .field-label { font-size:14px; font-weight:500; margin-bottom:8px; }
+        .confirmation-error:not(:empty)::before { content:'!'; display:inline-grid; place-items:center; width:16px; height:16px; margin-right:7px; border-radius:50%; background:#b42318; color:white; font-size:12px; font-weight:700; }
+        .field-hint:empty { display:none; }
     </style>
 </head>
 <body>
@@ -1591,7 +1609,7 @@
                         <div class="form-group"><label for="child-edit-gender">Giới tính</label><select id="child-edit-gender"><option value="other">Không tiết lộ</option><option value="male">Nam</option><option value="female">Nữ</option></select></div>
                         <p class="field-hint" style="grid-column:1/-1">Tuổi tự tính từ ngày sinh. Đổi thông tin không tạo tài khoản mới hoặc xóa dữ liệu chơi. Chỉ sửa ngày sinh khi thông tin cũ chưa đúng.</p>
                         </div></details>
-                        <details id="child-password-settings" class="settings-disclosure" style="margin-bottom:16px"><summary><span>Đổi mật khẩu<small>Đặt mật khẩu mới cho tài khoản con</small></span><span aria-hidden="true">＋</span></summary><div class="settings-disclosure-body"><p class="field-hint">Chưa kết nối hệ thống đăng nhập. Thao tác này chỉ kiểm tra mật khẩu, chưa thay đổi mật khẩu thật.</p><div class="family-fields"><div class="form-group"><label for="child-new-password">Mật khẩu mới</label><input id="child-new-password" type="password" autocomplete="new-password" minlength="8" maxlength="64"><span class="field-hint input-guidance">8–64 ký tự; nên dùng cụm từ dài, khó đoán. Không dùng mật khẩu thật tại đây.</span></div><div class="form-group"><label for="child-confirm-password">Nhập lại mật khẩu mới</label><input id="child-confirm-password" type="password" autocomplete="new-password" maxlength="64"></div></div><button id="child-change-password" type="button" class="btn btn-secondary">Kiểm tra đổi mật khẩu</button><p id="child-password-status" role="status" class="field-hint"></p></div></details>
+                        <details id="child-password-settings" class="settings-disclosure" style="margin-bottom:16px"><summary><span>Đổi mật khẩu<small>Đặt mật khẩu mới cho tài khoản con</small></span><span aria-hidden="true">＋</span></summary><div class="settings-disclosure-body"><p class="field-hint">Chưa kết nối hệ thống đăng nhập. Thao tác này chỉ kiểm tra mật khẩu, chưa thay đổi mật khẩu thật.</p><div class="family-fields"><div class="form-group"><label for="child-new-password">Mật khẩu mới</label><input id="child-new-password" type="password" autocomplete="new-password" minlength="8" maxlength="64"></div><div class="form-group"><label for="child-confirm-password">Nhập lại mật khẩu mới</label><input id="child-confirm-password" type="password" autocomplete="new-password" maxlength="64"></div></div><button id="child-change-password" type="button" class="btn btn-secondary">Kiểm tra đổi mật khẩu</button><p id="child-password-status" role="status" class="field-hint"></p></div></details>
                     <section id="child-independent-offer" class="family-notice" hidden aria-labelledby="child-independent-title"><strong id="child-independent-title">Tài khoản đã đủ tuổi chuyển sang tài khoản độc lập</strong><p>Chủ tài khoản cần xác thực số điện thoại riêng trước khi chuyển. Sau chuyển đổi, cha mẹ không còn quyền quản lý.</p><button id="child-transfer-start" type="button" class="btn btn-secondary">Chuyển sang tài khoản độc lập</button><p id="child-transfer-save-hint" class="field-hint" hidden>Lưu thay đổi trước khi chuyển đổi.</p></section>
                         <fieldset>
                             <legend>Hai thiết lập chính</legend>
@@ -1670,11 +1688,11 @@
                 <p id="family-create-intro" class="family-notice">Nhập thông tin tài khoản. Sau khi tạo, chọn thiết lập phù hợp với con.</p>
                 <form id="family-create-form" novalidate autocomplete="off">
                     <div class="family-fields">
-                        <div class="form-group"><label for="family-new-name">Tên hiển thị của con</label><input id="family-new-name" type="text" maxlength="30" required placeholder="Ví dụ: Gấu Nhỏ" aria-describedby="family-name-hint family-create-error"><span id="family-name-hint" class="field-hint input-guidance">Tên hoặc biệt danh dài 2–30 ký tự; có thể dùng tiếng Việt có dấu. Không nhập thông tin liên hệ.</span></div>
-                        <div class="form-group"><label for="family-new-username">Tên đăng nhập</label><input id="family-new-username" type="text" maxlength="24" required spellcheck="false" autocapitalize="none" aria-describedby="family-username-hint family-create-error"><span id="family-username-hint" class="field-hint input-guidance">4–24 ký tự: chữ a–z, số 0–9 hoặc dấu gạch dưới (_), không có khoảng trắng. Không phân biệt chữ hoa, chữ thường.</span><span class="field-hint"><strong>Tên đăng nhập không thể thay đổi sau khi tạo.</strong></span></div>
-                        <div class="form-group"><label for="family-new-password">Mật khẩu</label><div class="family-password-field"><input id="family-new-password" type="password" minlength="8" maxlength="64" autocomplete="new-password" required aria-describedby="family-password-hint family-create-error"><button type="button" id="family-password-toggle" class="family-password-toggle" aria-label="Hiện mật khẩu" aria-pressed="false" aria-controls="family-new-password family-confirm-password">Hiện</button></div><span id="family-password-hint" class="field-hint input-guidance">8–64 ký tự; nên dùng cụm từ dài, khó đoán và riêng cho tài khoản này.</span></div>
+                        <div class="form-group"><label for="family-new-name">Tên hiển thị của con</label><input id="family-new-name" type="text" maxlength="30" required placeholder="Ví dụ: Gấu Nhỏ" aria-describedby="family-create-error"></div>
+                        <div class="form-group"><label for="family-new-username">Tên đăng nhập</label><input id="family-new-username" type="text" maxlength="24" required spellcheck="false" autocapitalize="none" aria-describedby="family-create-error"><span class="field-hint"><strong>Tên đăng nhập không thể thay đổi sau khi tạo.</strong></span></div>
+                        <div class="form-group"><label for="family-new-password">Mật khẩu</label><div class="family-password-field"><input id="family-new-password" type="password" minlength="8" maxlength="64" autocomplete="new-password" required aria-describedby="family-create-error"><button type="button" id="family-password-toggle" class="family-password-toggle" aria-label="Hiện mật khẩu" aria-pressed="false" aria-controls="family-new-password family-confirm-password">Hiện</button></div></div>
                         <div class="form-group"><label for="family-confirm-password">Nhập lại mật khẩu</label><input id="family-confirm-password" type="password" minlength="8" maxlength="64" autocomplete="new-password" required aria-describedby="family-create-error"></div>
-                        <div class="form-group"><span class="field-label">Ngày sinh</span><input id="family-new-dob" type="hidden"><div class="dob-grid" role="group" aria-label="Ngày sinh của con"><select id="family-birth-day" aria-label="Ngày sinh của con" required></select><select id="family-birth-month" aria-label="Tháng sinh của con" required></select><select id="family-birth-year" aria-label="Năm sinh của con" required></select></div><span id="family-child-age" class="field-hint" aria-live="polite">Nhập ngày sinh để tính tuổi.</span></div>
+                        <div class="form-group"><span class="field-label">Ngày sinh</span><input id="family-new-dob" type="hidden"><div class="dob-grid" role="group" aria-label="Ngày sinh của con"><select id="family-birth-day" aria-label="Ngày sinh của con" required></select><select id="family-birth-month" aria-label="Tháng sinh của con" required></select><select id="family-birth-year" aria-label="Năm sinh của con" required></select></div><span id="family-child-age" class="field-hint" aria-live="polite"></span></div>
                         <div class="form-group"><label for="family-new-gender">Giới tính</label><select id="family-new-gender" required><option value="">Chọn giới tính</option><option value="male">Nam</option><option value="female">Nữ</option><option value="other">Không tiết lộ</option></select></div>
                     </div>
                     
@@ -2132,7 +2150,7 @@
             document.addEventListener('pointerdown',event=>{
                 if(!event.target.closest('#family-create-form, #family-settings-form'))return;
                 guidancePointer=true;
-                document.querySelectorAll('.input-guidance').forEach(el=>el.classList.toggle('guidance-visible',getComputedStyle(el).display!=='none'));
+                
                 document.body.classList.add('guidance-pointer');
             });
             const releaseGuidance=()=>setTimeout(()=>{
@@ -2592,7 +2610,7 @@
                 syncBirth();
                 onboarding.querySelector('#family-recommendations').hidden = true;
                 onboarding.querySelector('#family-preset-warning').hidden = true;
-                onboarding.querySelector('#family-child-age').textContent = 'Nhập ngày sinh để tính tuổi.';
+                onboarding.querySelector('#family-child-age').textContent = '';
                 resetPasswordVisibility();
                 clearCreateError();
                 let sequence = createdChildren.length + 1;
@@ -2734,7 +2752,7 @@
             dob.addEventListener('input', () => {
                 const years = childAge();
 
-                onboarding.querySelector('#family-child-age').textContent = years === null ? 'Nhập ngày sinh hợp lệ của trẻ dưới 18 tuổi.' : 'Tuổi hiện tại: ' + years + ' tuổi.';
+                onboarding.querySelector('#family-child-age').textContent = years === null ? '' : 'Tuổi hiện tại: ' + years + ' tuổi.';
                 onboarding.querySelectorAll('[data-preset]').forEach(button=>button.disabled=years===null);
                 if (years !== null) previewPreset(years < 12 ? 'preschool' : years < 16 ? 'young' : 'teen');
                 else { chosenPreset = null; onboarding.querySelector('#family-apply-preset').disabled = true; onboarding.querySelector('#family-preset-content').textContent = '17 tuổi: cha mẹ tự chọn quy tắc hoặc xem một nhóm tham khảo.'; onboarding.querySelectorAll('[data-preset]').forEach(button => button.setAttribute('aria-pressed','false')); }
@@ -2801,7 +2819,7 @@
                 createForm.reset();
                 onboarding.querySelector('#family-recommendations').hidden = true;
                 onboarding.querySelector('#family-preset-warning').hidden = true;
-                onboarding.querySelector('#family-child-age').textContent = 'Nhập ngày sinh để tính tuổi.';
+                onboarding.querySelector('#family-child-age').textContent = '';
                 resetPasswordVisibility();
                 clearCreateError();
                 document.body.style.overflow = onboardingOverflow;
