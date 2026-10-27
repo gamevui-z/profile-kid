@@ -36,10 +36,17 @@ test('edit child identity and explicitly confirm independent conversion', async 
     await page.locator('#edit-birth-year').selectOption('2000'); await page.locator('#edit-birth-month').selectOption('1'); await page.locator('#edit-birth-day').selectOption('1');
     assert.equal(await page.locator('#child-edit-username').getAttribute('readonly'),'');
     await page.locator('#child-password-settings summary').click();
+    await page.locator('#child-change-password').click();
+    assert.match(await page.locator('#child-password-status').textContent(),/hiện tại/);
+    await page.locator('#child-forgot-password').click();
+    assert.equal(await page.locator('#child-recovery').isVisible(),true);
+    await page.locator('#child-forgot-password').click();
+    await page.locator('#child-current-password').fill('OldPassword123');
     await page.locator('#child-new-password').fill('Example1234'); await page.locator('#child-confirm-password').fill('different');
     await page.locator('#child-change-password').click(); assert.match(await page.locator('#child-password-status').textContent(),/chưa khớp/);
     await page.locator('#child-confirm-password').fill('Example1234'); await page.locator('#child-change-password').click();
     assert.equal(await page.locator('#child-new-password').inputValue(),'');
+    await page.screenshot({path:path.join(output,'account-security-mobile.png')});
     await page.locator('#family-settings-save').click();
     assert.equal(await page.locator('#family-child-name').textContent(),'Minh Anh mới');
     assert.equal(await page.locator('#child-independent-offer').isVisible(),true);

@@ -1364,7 +1364,32 @@
         #child-profile-settings .field-label { font-size:14px; font-weight:500; margin-bottom:8px; }
         .confirmation-error:not(:empty)::before { content:'!'; display:inline-grid; place-items:center; width:16px; height:16px; margin-right:7px; border-radius:50%; background:#b42318; color:white; font-size:12px; font-weight:700; }
         .field-hint:empty { display:none; }
-    </style>
+    
+        #family-preview #child-profile-settings .settings-disclosure-body,
+        #family-preview #child-password-settings .settings-disclosure-body { padding:24px 20px 20px; }
+        #family-preview #child-profile-settings .family-fields,
+        #family-preview #child-profile-settings .settings-disclosure-body.family-fields,
+        #family-preview #child-password-settings .family-fields { gap:24px 20px; align-items:start; }
+        #family-preview #child-profile-settings input,
+        #family-preview #child-password-settings input { width:100%; border:1px solid var(--border); background:white; color:var(--text-main); font:inherit; }
+        #family-preview #child-profile-settings input[readonly] { background:#faf7f6; color:#706863; }
+        #family-preview #child-profile-settings .dob-grid { grid-template-columns:minmax(64px,1fr) minmax(76px,1fr) minmax(100px,1.3fr); gap:10px; }
+        #family-preview #child-profile-settings .dob-grid select { padding-left:12px; padding-right:28px; }
+        .child-security-actions { display:flex; align-items:center; flex-wrap:wrap; gap:12px; margin-top:24px; }
+        #child-password-status:not(:empty), #child-recovery { margin-top:16px; }
+        #child-recovery[hidden] { display:none!important; }
+        #child-recovery p { margin-top:8px; }
+        @media(max-width:1000px) {
+            #family-preview #child-profile-settings .settings-disclosure-body.family-fields,
+            #family-preview #child-password-settings .family-fields { grid-template-columns:1fr; }
+        }
+        @media(max-width:480px) {
+            #family-preview #child-profile-settings .settings-disclosure-body,
+            #family-preview #child-password-settings .settings-disclosure-body { padding:24px 14px 16px; }
+            .child-security-actions { align-items:stretch; }
+            .child-security-actions button { flex:1 1 140px; }
+        }
+</style>
 </head>
 <body>
 
@@ -1609,7 +1634,7 @@
                         <div class="form-group"><label for="child-edit-gender">Giới tính</label><select id="child-edit-gender"><option value="other">Không tiết lộ</option><option value="male">Nam</option><option value="female">Nữ</option></select></div>
                         <p class="field-hint" style="grid-column:1/-1">Tuổi tự tính từ ngày sinh. Đổi thông tin không tạo tài khoản mới hoặc xóa dữ liệu chơi. Chỉ sửa ngày sinh khi thông tin cũ chưa đúng.</p>
                         </div></details>
-                        <details id="child-password-settings" class="settings-disclosure" style="margin-bottom:16px"><summary><span>Đổi mật khẩu<small>Đặt mật khẩu mới cho tài khoản con</small></span><span aria-hidden="true">＋</span></summary><div class="settings-disclosure-body"><p class="field-hint">Chưa kết nối hệ thống đăng nhập. Thao tác này chỉ kiểm tra mật khẩu, chưa thay đổi mật khẩu thật.</p><div class="family-fields"><div class="form-group"><label for="child-new-password">Mật khẩu mới</label><input id="child-new-password" type="password" autocomplete="new-password" minlength="8" maxlength="64"></div><div class="form-group"><label for="child-confirm-password">Nhập lại mật khẩu mới</label><input id="child-confirm-password" type="password" autocomplete="new-password" maxlength="64"></div></div><button id="child-change-password" type="button" class="btn btn-secondary">Kiểm tra đổi mật khẩu</button><p id="child-password-status" role="status" class="field-hint"></p></div></details>
+                        <details id="child-password-settings" class="settings-disclosure" style="margin-bottom:16px"><summary><span>Đổi mật khẩu<small>Đặt mật khẩu mới cho tài khoản con</small></span><span aria-hidden="true">＋</span></summary><div class="settings-disclosure-body"><div class="family-fields"><div class="form-group" style="grid-column:1/-1"><label for="child-current-password">Mật khẩu hiện tại</label><input id="child-current-password" type="password" autocomplete="current-password" maxlength="64"></div><div class="form-group"><label for="child-new-password">Mật khẩu mới</label><input id="child-new-password" type="password" autocomplete="new-password" minlength="8" maxlength="64"></div><div class="form-group"><label for="child-confirm-password">Nhập lại mật khẩu mới</label><input id="child-confirm-password" type="password" autocomplete="new-password" maxlength="64"></div></div><div class="child-security-actions"><button id="child-change-password" type="button" class="btn btn-primary">Đổi mật khẩu</button><button id="child-forgot-password" type="button" class="btn btn-secondary" aria-expanded="false" aria-controls="child-recovery">Quên mật khẩu?</button></div><section id="child-recovery" hidden class="family-notice" aria-label="Khôi phục mật khẩu"><strong>Khôi phục qua tài khoản cha mẹ</strong><p>Cha mẹ cần xác thực lại số điện thoại đã liên kết để đặt mật khẩu mới cho con. Không cần mật khẩu cũ trong luồng khôi phục.</p><p>Chưa kết nối dịch vụ xác thực nên hiện chưa thể gửi mã hoặc đặt lại mật khẩu.</p></section><p id="child-password-status" role="status" class="field-hint"></p></div></details>
                     <section id="child-independent-offer" class="family-notice" hidden aria-labelledby="child-independent-title"><strong id="child-independent-title">Tài khoản đã đủ tuổi chuyển sang tài khoản độc lập</strong><p>Chủ tài khoản cần xác thực số điện thoại riêng trước khi chuyển. Sau chuyển đổi, cha mẹ không còn quyền quản lý.</p><button id="child-transfer-start" type="button" class="btn btn-secondary">Chuyển sang tài khoản độc lập</button><p id="child-transfer-save-hint" class="field-hint" hidden>Lưu thay đổi trước khi chuyển đổi.</p></section>
                         <fieldset>
                             <legend>Hai thiết lập chính</legend>
@@ -2137,13 +2162,17 @@
                 const [y,m,d]=value.split('-');editYear.value=y||'';editMonth.value=String(Number(m)||'');editDay.value=String(Number(d)||'');syncEditBirth();
             }
             [editDay,editMonth,editYear].forEach(el=>el.addEventListener('change',()=>{syncEditBirth();updateButtons();}));
-            function clearChildPassword(){['child-new-password','child-confirm-password'].forEach(id=>dialog.querySelector('#'+id).value='');dialog.querySelector('#child-password-status').textContent='';if(typeof clearEditMismatch==='function')clearEditMismatch();}
+            function clearChildPassword(){['child-current-password','child-new-password','child-confirm-password'].forEach(id=>dialog.querySelector('#'+id).value='');dialog.querySelector('#child-password-status').textContent='';if(typeof clearEditMismatch==='function')clearEditMismatch();}
             dialog.addEventListener('close',clearChildPassword);
+            dialog.querySelector('#child-forgot-password').addEventListener('click',event=>{const panel=dialog.querySelector('#child-recovery');panel.hidden=!panel.hidden;event.currentTarget.setAttribute('aria-expanded',String(!panel.hidden));clearChildPassword();});
             dialog.querySelector('#child-change-password').addEventListener('click',()=>{
                 const first=dialog.querySelector('#child-new-password'), second=dialog.querySelector('#child-confirm-password'), status=dialog.querySelector('#child-password-status');
+                const current=dialog.querySelector('#child-current-password');
+                if(!current.value){status.textContent='Nhập mật khẩu hiện tại.';current.focus();return;}
+                if(first.value===current.value){status.textContent='Mật khẩu mới phải khác mật khẩu hiện tại.';first.focus();return;}
                 if(first.value.length<8 || first.value.length>64 || !first.value.trim()){status.textContent='Mật khẩu cần 8–64 ký tự.';first.focus();return;}
                 if(first.value!==second.value){status.textContent='Hai mật khẩu chưa khớp.';second.focus();return;}
-                clearChildPassword();status.textContent='Mật khẩu hợp lệ. Chưa thay đổi mật khẩu thật vì chưa kết nối hệ thống đăng nhập.';
+                clearChildPassword();status.textContent='Chưa thể đổi mật khẩu: hệ thống đăng nhập chưa được kết nối để xác minh mật khẩu hiện tại. Mật khẩu chưa thay đổi.';
             });
             // Freeze only during a pointer gesture so blur reflow cannot move its click target.
             let guidancePointer=false, pendingBlurChecks=[];
