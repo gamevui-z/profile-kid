@@ -15,11 +15,9 @@ test('edit child identity and explicitly confirm independent conversion', async 
     await page.locator('#family-settings-consent').check();
     await page.locator('#family-activate-submit').click();
     await fillBirth(page,'2018-06-15');
-    assert.equal(await page.locator('#family-name-hint').isVisible(),false);
-    assert.equal(await page.locator('#family-name-hint').evaluate(el=>el.getBoundingClientRect().height),0);
     await page.screenshot({path:path.join(output,'compact-create-mobile.png')});
+    assert.equal(await page.locator('.input-guidance').count(),0);
     await page.locator('#family-new-name').focus();
-    assert.equal(await page.locator('#family-name-hint').isVisible(),true);
     await page.locator('#family-new-name').fill('Minh Anh');
     await page.locator('#family-new-password').fill('Example1234');
     await page.locator('#family-confirm-password').fill('Mismatch123');
