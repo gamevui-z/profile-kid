@@ -1,3 +1,5 @@
+> Đặc tả hiện hành: [Free và Standard sắp ra mắt](docs/current-release.md). Các mô tả Pro, dùng thử và nhóm danh mục trong tài liệu cũ đã được thay thế.
+
 # GameVui Profile · Family UI
 
 > Bản hiện hành: **docs/service-revision.md** bổ sung Free, giá trực tiếp, nhiều danh mục, ngày sinh có giới hạn và nhãn 00+/12+/16+/18+. Các mô tả gói/tuổi cũ bên dưới chỉ là lịch sử.
@@ -48,4 +50,3 @@ Thay phần preview bằng controller tích hợp riêng khi API đã có contra
 ## Kiểm tra trước phát hành
 
 Xem `docs/family-ui-validation.md`. Backend, kiểm soát game và đồng bộ thiết bị chưa thuộc thay đổi này.
-
