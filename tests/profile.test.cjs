@@ -14,6 +14,10 @@ test('edit child identity and explicitly confirm independent conversion', async 
     await page.locator('[data-tier="free"]').click();
     await page.locator('#family-settings-consent').check();
     await page.locator('#family-activate-submit').click();
+    await page.setViewportSize({width:1440,height:1000});
+    const birthBox=await page.locator('#family-birth-day').boundingBox(), genderBox=await page.locator('#family-new-gender').boundingBox();
+    assert.ok(Math.abs(birthBox.y-genderBox.y)<=2);
+    assert.ok(Math.abs(birthBox.height-genderBox.height)<=2);
     await fillBirth(page,'2018-06-15');
     await page.screenshot({path:path.join(output,'compact-create-mobile.png')});
     assert.equal(await page.locator('.input-guidance').count(),0);
@@ -29,6 +33,11 @@ test('edit child identity and explicitly confirm independent conversion', async 
     await page.locator('#family-create-form button[type="submit"]').click();
     await page.locator('#family-apply-preset').click();
     await page.locator('#child-profile-settings summary').click();
+    const editBirthBox=await page.locator('#edit-birth-day').boundingBox(), editGenderBox=await page.locator('#child-edit-gender').boundingBox();
+    assert.ok(Math.abs(editBirthBox.y-editGenderBox.y)<=2);
+    await page.screenshot({path:path.join(output,'aligned-identity-desktop.png')});
+    await page.setViewportSize({width:390,height:844});
+
     await page.locator('#child-edit-name').fill('Minh Anh mới');
     await page.locator('#edit-birth-year').selectOption('');
     await page.locator('#family-settings-save').click();
