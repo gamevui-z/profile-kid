@@ -1325,6 +1325,20 @@
         .family-trial-offer h4 { font-size:1rem; line-height:1.5; margin:0 0 4px; }
         .family-trial-offer p { margin:0; font-size:var(--text-label); line-height:1.6; color:var(--text-muted); }
         @media(max-width:540px) { .family-trial-offer { grid-template-columns:1fr; gap:12px; } .family-trial-offer .btn { width:100%; } }
+        #child-profile-settings { margin-bottom:16px !important; }
+        #child-edit-dob { width:100%; min-height:44px; padding:10px 12px; border:1px solid var(--border-strong); border-radius:12px; background:white; color:var(--text-main); }
+        #child-independent-offer { display:grid; gap:12px; }
+        #child-independent-offer .btn { justify-self:start; }
+        #child-transfer-dialog { width:min(540px,calc(100% - 24px)); max-height:calc(100dvh - 24px); overflow:auto; margin:auto; padding:24px; border:1px solid var(--border); border-radius:20px; color:var(--text-main); }
+        #child-transfer-dialog::backdrop { background:#20182088; }
+        #child-transfer-dialog [hidden] { display:none!important; }
+        #child-transfer-dialog h2 { font-size:1.25rem; margin-bottom:12px; }
+        #child-transfer-dialog input[type="tel"] { width:100%; min-height:48px; padding:12px 14px; border:1px solid var(--border); border-radius:12px; font:inherit; background:#fff; }
+        #child-transfer-dialog p { line-height:1.6; }
+        #child-transfer-dialog .form-group { margin-top:16px; }
+        #child-transfer-dialog .family-actions { margin-top:20px; }
+        #child-transfer-dialog input[type=tel],#child-transfer-dialog input[type=text] { min-height:44px; width:100%; }
+        #child-transfer-dialog .transfer-note { padding:12px; margin:16px 0; background:var(--bg-muted); border-radius:12px; font-size:var(--text-label); }
 </style>
 </head>
 <body>
@@ -1563,6 +1577,14 @@
                     <h3 id="family-child-name">Mây Nhỏ</h3>
                     <p class="family-note" style="margin-top: 0"><span id="family-current-policy">Chỉ game 0+</span></p>
                     <form id="family-settings-form" novalidate>
+                        <details id="child-profile-settings" class="settings-disclosure"><summary><span>Thông tin tài khoản<small>Tên, ngày sinh và giới tính</small></span><span aria-hidden="true">＋</span></summary><div class="settings-disclosure-body family-fields">
+                        <div class="form-group"><label for="child-edit-name">Tên hiển thị</label><input id="child-edit-name" type="text" maxlength="30" required></div>
+                        <div class="form-group"><label for="child-edit-username">Tên đăng nhập</label><input id="child-edit-username" type="text" maxlength="24" required spellcheck="false" autocapitalize="none"><span class="field-hint">4–24 ký tự: chữ không dấu, số, dấu gạch dưới.</span></div>
+                        <div class="form-group"><label for="child-edit-dob">Ngày sinh</label><input id="child-edit-dob" type="date" required><span id="child-edit-age" class="field-hint" role="status"></span></div>
+                        <div class="form-group"><label for="child-edit-gender">Giới tính</label><select id="child-edit-gender"><option value="other">Không tiết lộ</option><option value="male">Nam</option><option value="female">Nữ</option></select></div>
+                        <p class="field-hint" style="grid-column:1/-1">Tuổi tự tính từ ngày sinh. Đổi thông tin không tạo tài khoản mới hoặc xóa dữ liệu chơi. Chỉ sửa ngày sinh khi thông tin cũ chưa đúng.</p>
+                        </div></details>
+                        <section id="child-independent-offer" class="family-notice" hidden aria-labelledby="child-independent-title"><strong id="child-independent-title">Tài khoản đã đủ tuổi chuyển sang tài khoản độc lập</strong><p>Chủ tài khoản cần xác thực số điện thoại riêng trước khi chuyển. Sau chuyển đổi, cha mẹ không còn quyền quản lý.</p><button id="child-transfer-start" type="button" class="btn btn-secondary">Chuyển sang tài khoản độc lập</button><p id="child-transfer-save-hint" class="field-hint" hidden>Lưu thay đổi trước khi chuyển đổi.</p></section>
                         <fieldset>
                             <legend>Hai thiết lập chính</legend>
                             <div class="family-fields">
@@ -1681,6 +1703,22 @@
         <span id="toast-message">Cập nhật thông tin thành công!</span>
     </div>
 
+
+    <dialog id="child-transfer-dialog" aria-labelledby="transfer-title">
+      <h2 id="transfer-title" tabindex="-1">Chuyển sang tài khoản độc lập</h2>
+      <div id="transfer-flow">
+      <p id="transfer-account"></p>
+      <p class="transfer-note">Luồng xem thử trong phiên: không gửi SMS, không xác thực số điện thoại thật. Khi tích hợp hệ thống, phải xác minh tuổi và quyền sở hữu số điện thoại riêng, không trùng tài khoản khác.</p>
+      <p>Giữ nguyên tài khoản, tiến trình và dữ liệu chơi. Sau khi xác nhận, tài khoản sẽ rời danh sách con và cha mẹ không còn quản lý.</p>
+      <div class="form-group"><label for="transfer-phone">Số điện thoại riêng của chủ tài khoản</label><input id="transfer-phone" type="tel" inputmode="tel" autocomplete="off" maxlength="12" placeholder="Số điện thoại để xem thử"><span class="field-hint">Dùng số giả định, không cần nhập thông tin cá nhân thật.</span></div>
+      <button id="transfer-send-code" type="button" class="btn btn-secondary" style="margin-top:12px">Tiếp tục xác thực</button>
+      <div id="transfer-code-step" hidden><div class="form-group"><label for="transfer-code">Mã xác nhận</label><input id="transfer-code" type="text" inputmode="numeric" maxlength="6" autocomplete="off"><span class="field-hint">Mã xem thử: 123456. Không có SMS được gửi.</span></div><button id="transfer-verify" type="button" class="btn btn-secondary" style="margin-top:12px">Kiểm tra mã</button></div>
+      <div id="transfer-confirm-step" hidden><p class="transfer-note">Đã hoàn tất bước xác thực xem thử. Tài khoản độc lập có thể chủ động bật Chế độ cha mẹ khi đáp ứng điều kiện xác thực thật.</p><label class="family-consent"><input id="transfer-consent" type="checkbox"><span>Chủ tài khoản đồng ý chuyển sang tài khoản độc lập và kết thúc quyền quản lý của cha mẹ.</span></label><button id="transfer-confirm" type="button" class="btn btn-primary" disabled>Xác nhận chuyển đổi</button></div>
+      <p id="transfer-error" class="family-error" role="alert"></p>
+      </div>
+      <p id="transfer-complete" hidden role="status"></p>
+      <div class="family-actions"><button id="transfer-cancel" class="btn btn-secondary" type="button">Hủy, quay lại quản lý</button></div>
+    </dialog>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const btnSave = document.getElementById('btn-save');
@@ -1946,8 +1984,8 @@
             const feedback = dialog.querySelector('#family-feedback');
             const error = dialog.querySelector('#family-limit-error');
             const sampleChildren = [
-                { name: 'Mây Nhỏ', dob: (new Date().getFullYear()-6)+'-01-01', age: '0', limit: 60, used: 25, week: [15, 35, 10, 45, 30, 20, 25] },
-                { name: 'Nắng Vàng', dob: (new Date().getFullYear()-16)+'-01-01', age: '12', limit: 45, used: 40, week: [20, 30, 25, 40, 15, 35, 40] }
+                { name: 'Mây Nhỏ', username:'may_nho', dob: (new Date().getFullYear()-6)+'-01-01', age: '0', limit: 60, used: 25, week: [15, 35, 10, 45, 30, 20, 25] },
+                { name: 'Nắng Vàng', username:'nang_vang', dob: (new Date().getFullYear()-16)+'-01-01', age: '12', limit: 45, used: 40, week: [20, 30, 25, 40, 15, 35, 40] }
             ];
             const ageLabels = { '0':'0+ · Mọi lứa tuổi', '12':'0+ và 12+', '16':'0+, 12+ và 16+', '18':'Tất cả game (0+, 12+, 16+, 18+)' };
             const gameRatings = [0, 12, 16, 18];
@@ -2058,15 +2096,27 @@
             dialog.querySelectorAll('[data-limit-minutes]').forEach(button => button.addEventListener('click', () => {
                 limit.value = button.dataset.limitMinutes; limit.dispatchEvent(new Event('input',{bubbles:true}));
             }));
+            const editName=dialog.querySelector('#child-edit-name'), editUsername=dialog.querySelector('#child-edit-username'), editDob=dialog.querySelector('#child-edit-dob'), editGender=dialog.querySelector('#child-edit-gender');
+            const independentAccounts=[];
+            function profileDirty(child) { return !!child && (editName.value.trim()!==child.name || editUsername.value.trim()!==(child.username||'') || editDob.value!==(child.dob||'') || editGender.value!==(child.gender||'other')); }
+            function updateIdentityState() {
+                const years=ageFromDate(editDob.value,120);
+                dialog.querySelector('#child-edit-age').textContent=years===null?'Nhập ngày sinh hợp lệ, không ở tương lai.':'Tuổi hiện tại: '+years+' tuổi.';
+                const eligible=parentActivated && ageFromDate(children[selected]?.dob||'',120)>=18;
+                dialog.querySelector('#child-independent-offer').hidden=!eligible;
+                dialog.querySelector('#child-transfer-start').disabled=hasChanges();
+                dialog.querySelector('#child-transfer-save-hint').hidden=!hasChanges();
+            }
             function advancedDirty(child) { return activeTier !== 'free' && (JSON.stringify(scheduleValue()) !== JSON.stringify(child.schedule || Array(7).fill(child.limit)) || dialog.querySelector('#family-rest-start').value !== (child.restStart || '') || dialog.querySelector('#family-rest-end').value !== (child.restEnd || '')); }
             function hasChanges() {
                 const child = children[selected];
                 const incompleteRest = ['start','end'].some(side => !!dialog.querySelector('#rest-'+side+'-hour').value !== !!dialog.querySelector('#rest-'+side+'-minute').value);
-                return incompleteRest || !!child && (age.value !== child.age || limit.value !== String(child.limit) || JSON.stringify(readCategories()) !== JSON.stringify(normalizeCategories(child.categories)) || keywords.value !== (child.keywords || '') || advancedDirty(child));
+                return incompleteRest || profileDirty(child) || !!child && (age.value !== child.age || limit.value !== String(child.limit) || JSON.stringify(readCategories()) !== JSON.stringify(normalizeCategories(child.categories)) || keywords.value !== (child.keywords || '') || advancedDirty(child));
             }
 
             function updateButtons() {
-                if(children[selected]) showRatingWarning(dialog.querySelector('#family-rating-warning'), ageFromDate(children[selected].dob || ''), age.value);
+                updateIdentityState();
+                if(children[selected]) showRatingWarning(dialog.querySelector('#family-rating-warning'), ageFromDate(children[selected].dob || '',120), age.value);
                 save.disabled = !children[selected];
                 reset.disabled = !hasChanges();
                 dialog.querySelectorAll('[data-limit-minutes]').forEach(button => button.setAttribute('aria-pressed',String(button.dataset.limitMinutes === limit.value)));
@@ -2102,6 +2152,8 @@
                     childList.append(button);
                 });
                 dialog.querySelector('#family-child-name').textContent = child.name;
+                editName.value=child.name; editUsername.value=child.username||('sample_'+selected); editDob.value=child.dob||''; editGender.value=child.gender||'other';
+                const today=new Date();editDob.max=[today.getFullYear(),String(today.getMonth()+1).padStart(2,'0'),String(today.getDate()).padStart(2,'0')].join('-');
                 dialog.querySelector('#family-current-policy').textContent = ageLabels[child.age];
                 Array.from(age.options).forEach(option=>option.disabled=false);
                 age.value = child.age;
@@ -2264,6 +2316,13 @@
             form.addEventListener('submit', event => {
                 event.preventDefault();
                 if (!children[selected]) return;
+                const profileName=editName.value.trim(), profileUsername=editUsername.value.trim();
+                const rejectProfile=(input,message)=>{dialog.querySelector('#child-profile-settings').open=true;error.textContent=message;input.setAttribute('aria-invalid','true');input.focus();};
+                if(profileName.length<2 || profileName.length>30)return rejectProfile(editName,'Tên hiển thị cần 2–30 ký tự.');
+                if(!/^[a-zA-Z0-9_]{4,24}$/.test(profileUsername))return rejectProfile(editUsername,'Tên đăng nhập cần 4–24 ký tự không dấu, số hoặc gạch dưới.');
+                if([...children,...independentAccounts].some(child=>child!==children[selected] && child.username.toLowerCase()===profileUsername.toLowerCase()))return rejectProfile(editUsername,'Tên đăng nhập đã được sử dụng.');
+                if(ageFromDate(editDob.value,120)===null)return rejectProfile(editDob,'Ngày sinh không hợp lệ hoặc ở tương lai.');
+                if(!['male','female','other'].includes(editGender.value))return rejectProfile(editGender,'Chọn giới tính hợp lệ.');
                 const minutes = Number(limit.value);
                 if (limit.value.trim() === '' || !Number.isInteger(minutes) || minutes < 0 || minutes > 180 || !limit.validity.valid) {
                     error.textContent = 'Nhập số phút nguyên từ 0 đến 180 để xem thử.';
@@ -2283,6 +2342,7 @@
                     children[selected].restStart=start.value; children[selected].restEnd=end.value;
                 }
                 if(!['0','12','16','18'].includes(age.value)) { error.textContent='Chọn một mức tuổi game hợp lệ.'; age.focus(); return; }
+                Object.assign(children[selected],{name:profileName,username:profileUsername,dob:editDob.value,gender:editGender.value});
                 children[selected].age = age.value;
                 children[selected].limit = minutes;
                 if(activeTier!=='free') children[selected].categories = readCategories();
@@ -2294,6 +2354,46 @@
             reset.addEventListener('click', () => {
                 renderChild();
                 feedback.textContent = 'Đã hủy thay đổi.';
+            });
+
+            const transferDialog=document.getElementById('child-transfer-dialog');
+            const transfer=id=>document.getElementById(id);
+            let transferTarget=null, verifiedPhone='', completedTransfer=false;
+            function resetVerification(){verifiedPhone='';transfer('transfer-code').value='';transfer('transfer-code-step').hidden=true;transfer('transfer-confirm-step').hidden=true;transfer('transfer-consent').checked=false;transfer('transfer-confirm').disabled=true;transfer('transfer-error').textContent='';}
+            dialog.querySelector('#child-transfer-start').addEventListener('click',()=>{
+                if(!parentActivated || hasChanges() || ageFromDate(children[selected]?.dob||'',120)<18)return;
+                transferTarget=children[selected]; completedTransfer=false; resetVerification();transfer('transfer-phone').value='';
+                transfer('transfer-account').textContent=transferTarget.name+' · '+transferTarget.username;
+                transfer('transfer-flow').hidden=false;transfer('transfer-complete').hidden=true;transfer('transfer-cancel').textContent='Hủy, quay lại quản lý';
+                dialog.close();transferDialog.showModal();transfer('transfer-title').focus();
+            });
+            transfer('transfer-phone').addEventListener('input',resetVerification);
+            transfer('transfer-send-code').addEventListener('click',()=>{
+                resetVerification();
+                if(!/^0[35789]\d{8}$/.test(transfer('transfer-phone').value.trim())){transfer('transfer-error').textContent='Nhập số điện thoại Việt Nam gồm 10 chữ số để xem thử.';transfer('transfer-phone').focus();return;}
+                transfer('transfer-code-step').hidden=false;transfer('transfer-code').focus();
+            });
+            transfer('transfer-verify').addEventListener('click',()=>{
+                if(transfer('transfer-code-step').hidden)return;
+                if(transfer('transfer-code').value!=='123456'){transfer('transfer-error').textContent='Mã xem thử chưa đúng. Nhập 123456.';return;}
+                verifiedPhone=transfer('transfer-phone').value.trim();transfer('transfer-error').textContent='';transfer('transfer-confirm-step').hidden=false;transfer('transfer-consent').focus();
+            });
+            transfer('transfer-consent').addEventListener('change',()=>{transfer('transfer-confirm').disabled=!transfer('transfer-consent').checked;});
+            transfer('transfer-confirm').addEventListener('click',()=>{
+                if(completedTransfer || !transferTarget || !createdChildren.includes(transferTarget) || ageFromDate(transferTarget.dob,120)<18 || !verifiedPhone || verifiedPhone!==transfer('transfer-phone').value.trim() || !transfer('transfer-consent').checked)return;
+                // Keep the same account object and play fields; detach only its family relationship.
+                Object.assign(transferTarget,{role:'independent',phoneVerification:'preview-only',parentManagement:false});
+                independentAccounts.push(transferTarget);
+                createdChildren.splice(createdChildren.indexOf(transferTarget),1);
+                completedTransfer=true;updateParentSummary();
+                transfer('transfer-flow').hidden=true;transfer('transfer-complete').hidden=false;
+                transfer('transfer-complete').textContent='Đã chuyển '+transferTarget.username+' sang tài khoản độc lập trong phiên này. Giữ nguyên hồ sơ và dữ liệu chơi; cha mẹ không còn quản lý. Chưa chuyển tài khoản hoặc xác thực điện thoại trên hệ thống thật.';
+                transfer('transfer-cancel').textContent='Về quản lý gia đình';transfer('transfer-cancel').focus();verifiedPhone='';transfer('transfer-phone').value='';transfer('transfer-code').value='';
+            });
+            transfer('transfer-cancel').addEventListener('click',()=>transferDialog.close());
+            transferDialog.addEventListener('close',()=>{
+                const index=createdChildren.indexOf(transferTarget);resetVerification();transfer('transfer-phone').value='';transferTarget=null;
+                if(!completedTransfer && index>=0)openManager(index);else openButton.focus();
             });
 
             // preview onboarding stays in memory. It never verifies identity or charges money.
@@ -2439,7 +2539,7 @@
                 resetPasswordVisibility();
                 clearCreateError();
                 let sequence = createdChildren.length + 1;
-                while (createdChildren.some(child => child.username === 'con_' + sequence)) sequence++;
+                while ([...createdChildren,...independentAccounts].some(child => child.username === 'con_' + sequence)) sequence++;
                 usernameInput.value = 'con_' + sequence;
                 onboarding.querySelector('#family-create-title').textContent = createdChildren.length ? 'Tạo thêm tài khoản con' : 'Tạo tài khoản con đầu tiên';
             }
@@ -2544,12 +2644,12 @@
                 element.textContent = exceeds ? 'Lưu ý: con ' + years + ' tuổi, mức ' + rating + '+ dành cho người chơi từ ' + rating + ' tuổi. Nội dung có thể chưa phù hợp. Cha mẹ hãy cân nhắc trước khi áp dụng.' : '';
             }
             let chosenPreset = null;
-            function ageFromDate(value) {
+            function ageFromDate(value, maximumAge = 17) {
                 if (!/^\d{4}-\d{2}-\d{2}$/.test(value)) return null;
                 const [y,m,d]=value.split('-').map(Number), birth=new Date(y,m-1,d), today=new Date();
                 if(birth.getFullYear()!==y || birth.getMonth()!==m-1 || birth.getDate()!==d || birth>today)return null;
                 const years=today.getFullYear()-y-((today.getMonth()<m-1 || (today.getMonth()===m-1 && today.getDate()<d))?1:0);
-                return years>=0 && years<18 ? years : null;
+                return years>=0 && years<=maximumAge ? years : null;
             }
             function childAge(){return ageFromDate(dob.value);}
             const birthDay=onboarding.querySelector('#family-birth-day'), birthMonth=onboarding.querySelector('#family-birth-month'), birthYear=onboarding.querySelector('#family-birth-year');
@@ -2622,7 +2722,7 @@
                 }
                 if (Array.from(name).length < 2 || Array.from(name).length > 30) return reject(nameInput, 'Bí danh cần có từ 2 đến 30 ký tự.');
                 if (!/^[a-z0-9_]{4,24}$/.test(username)) return reject(usernameInput, 'Tên đăng nhập cần 4–24 ký tự gồm chữ không dấu, số hoặc dấu gạch dưới.');
-                if (createdChildren.some(child => child.username === username)) return reject(usernameInput, 'Tên đăng nhập này đã có. Hãy chọn tên khác.');
+                if ([...createdChildren,...independentAccounts].some(child => child.username === username)) return reject(usernameInput, 'Tên đăng nhập này đã có. Hãy chọn tên khác.');
                 if (password.value.length < 8 || password.value.length > 64 || !password.value.trim()) return reject(password, 'Mật khẩu cần từ 8 đến 64 ký tự.');
                 if (password.value !== confirmPassword.value) return reject(confirmPassword, 'Mật khẩu nhập lại chưa khớp.');
                 if (childAge() === null) return reject(birthYear, 'Nhập đủ ngày sinh hợp lệ của trẻ dưới 18 tuổi.');
@@ -2663,5 +2763,3 @@
     </script>
 </body>
 </html>
-
-
