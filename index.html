@@ -1389,6 +1389,15 @@
             .child-security-actions { align-items:stretch; }
             .child-security-actions button { flex:1 1 140px; }
         }
+
+        #family-create-form .form-group > .field-label,
+        #child-profile-settings .form-group > .field-label { position:absolute; z-index:1; top:-10px; left:12px; margin:0; padding:0 6px; background:#fff; line-height:20px; }
+        #family-create-form .dob-grid,
+        #family-preview #child-profile-settings .dob-grid { min-height:56px; height:56px; border:1px solid var(--border); border-radius:8px; gap:0; grid-template-columns:minmax(0,1fr) minmax(0,1fr) minmax(0,1.3fr); align-items:stretch; }
+        #family-create-form .dob-grid select,
+        #family-preview #child-profile-settings .dob-grid select { width:100%; min-width:0; min-height:54px; height:54px; border:0; border-radius:7px; padding:12px 26px 10px 10px; background-color:transparent; background-position:right 7px center; }
+        #family-create-form .dob-grid select + select,
+        #family-preview #child-profile-settings .dob-grid select + select { border-left:1px solid var(--border); border-top-left-radius:0; border-bottom-left-radius:0; }
 </style>
 </head>
 <body>
