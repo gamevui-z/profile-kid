@@ -7,6 +7,56 @@ const { chromium } = require('playwright');
 const html = fs.readFileSync(path.join(__dirname, '..', 'index.html'), 'utf8');
 const output = path.join(__dirname, '..', 'test-results');
 
+test('edit child identity and explicitly confirm independent conversion', async () => {
+    const page=await browser.newPage({viewport:{width:390,height:844}});
+    await page.goto(url);
+    await page.locator('#family-plans-open').click();
+    await page.locator('[data-tier="free"]').click();
+    await page.locator('#family-settings-consent').check();
+    await page.locator('#family-activate-submit').click();
+    await fillBirth(page,'2018-06-15');
+    await page.locator('#family-new-name').fill('Minh Anh');
+    await page.locator('#family-new-password').fill('Example1234');
+    await page.locator('#family-confirm-password').fill('Example1234');
+    await page.locator('#family-new-gender').selectOption('other');
+    await page.locator('#family-create-form button[type="submit"]').click();
+    await page.locator('#family-apply-preset').click();
+    await page.locator('#child-profile-settings summary').click();
+    await page.locator('#child-edit-name').fill('Minh Anh mới');
+    await page.locator('#child-edit-dob').fill('2099-01-01');
+    await page.locator('#family-settings-save').click();
+    assert.match(await page.locator('#family-limit-error').textContent(),/tương lai/);
+    await page.locator('#child-edit-dob').fill('2000-01-01');
+    await page.locator('#family-settings-save').click();
+    assert.equal(await page.locator('#family-child-name').textContent(),'Minh Anh mới');
+    assert.equal(await page.locator('#child-independent-offer').isVisible(),true);
+    await page.locator('#child-transfer-start').click();
+    await page.locator('#transfer-cancel').click();
+    await page.waitForFunction(()=>document.getElementById('family-preview').open);
+    assert.equal(await page.locator('#child-edit-dob').inputValue(),'2000-01-01');
+    await page.locator('#child-transfer-start').click();
+    await page.locator('#transfer-phone').fill('123');
+    await page.locator('#transfer-send-code').click();
+    assert.equal(await page.locator('#transfer-code-step').isVisible(),false);
+    await page.locator('#transfer-phone').fill('0901234567');
+    await page.locator('#transfer-send-code').click();
+    await page.locator('#transfer-code').fill('000000');
+    await page.locator('#transfer-verify').click();
+    assert.equal(await page.locator('#transfer-confirm-step').isVisible(),false);
+    await page.locator('#transfer-code').fill('123456');
+    await page.locator('#transfer-verify').click();
+    assert.equal(await page.locator('#transfer-confirm').isDisabled(),true);
+    await page.locator('#transfer-consent').check();
+    await page.screenshot({path:path.join(output,'transfer-mobile.png')});
+    assert.equal(await page.locator('#child-transfer-dialog').evaluate(e=>e.scrollWidth<=e.clientWidth),true);
+    await page.locator('#transfer-confirm').click();
+    assert.equal(await page.locator('#transfer-complete').isVisible(),true);
+    assert.equal(await page.locator('#transfer-phone').inputValue(),'');
+    await page.locator('#transfer-cancel').click();
+    assert.equal(await page.locator('#family-preview').evaluate(e=>e.open),false);
+    await page.close();
+});
+
 let browser, server, url;
 async function expandManagement(page) {
     for (const id of ['family-content-controls','family-advanced','family-reports']) {
@@ -861,4 +911,3 @@ test('public pages use single-zero rating and no legacy presentation marker',()=
   assert.equal(new RegExp('de'+'mo','i').test(source),false);
  }
 });
-
