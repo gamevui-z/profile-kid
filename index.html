@@ -1321,6 +1321,10 @@
         .category-chip-grid { grid-template-columns:repeat(2,minmax(0,1fr)); }
         .child-rating-options span { white-space:normal; }
         @media(max-width:360px) { .category-chip-grid { grid-template-columns:1fr; } }
+        .family-trial-offer { display:grid; grid-template-columns:minmax(0,1fr) auto; align-items:center; gap:16px; padding:16px; margin:16px 0 24px; border:1px solid var(--primary-border); border-radius:12px; background:var(--primary-light); }
+        .family-trial-offer h4 { font-size:1rem; line-height:1.5; margin:0 0 4px; }
+        .family-trial-offer p { margin:0; font-size:var(--text-label); line-height:1.6; color:var(--text-muted); }
+        @media(max-width:540px) { .family-trial-offer { grid-template-columns:1fr; gap:12px; } .family-trial-offer .btn { width:100%; } }
 </style>
 </head>
 <body>
@@ -1604,6 +1608,7 @@
             <section data-flow-panel="plans" aria-labelledby="family-plans-title">
                 <h3 id="family-plans-title" class="family-flow-title" tabindex="-1">Chọn gói cho gia đình</h3>
                 <p class="family-intro">Chọn cấp tính năng, rồi chọn thời hạn. Mua lâu hơn chỉ giảm giá.</p>
+                <aside class="family-trial-offer" aria-labelledby="trial-offer-title"><div><h4 id="trial-offer-title">Thử Standard 1 tháng miễn phí</h4><p id="trial-offer-terms">Sau đó tự gia hạn 49.000đ/tháng. Hủy trước kỳ gia hạn để không bị tính phí.</p></div><button type="button" class="btn btn-primary" data-family-plan="trial" aria-describedby="trial-offer-terms">Dùng thử 0đ</button></aside>
                 <div class="form-group"><span class="field-label">1. Cấp gói</span><select id="family-tier" hidden><option value="free">Free · 0đ</option><option value="standard" selected>Standard · 49.000đ/tháng</option><option value="pro">Pro · 79.000đ/tháng</option></select></div>
                 <div class="family-tier-grid" aria-label="Các cấp gói">
                     <article><h4>Free</h4><strong class="family-plan-price">0đ</strong><p>Không giới hạn thời hạn</p><ul><li>1 tài khoản con</li><li>Giới hạn tuổi game</li><li>Giới hạn thời gian mỗi ngày</li></ul><button type="button" class="btn btn-secondary" data-tier="free" aria-pressed="false">Dùng Free</button></article>
@@ -1618,7 +1623,6 @@
                     <article class="family-plan"><h4>6 tháng</h4><div class="family-plan-price" data-price="halfyear"></div><p>Tiết kiệm 15%</p><button type="button" class="btn btn-secondary" data-family-plan="halfyear">Chọn 6 tháng</button></article>
                     <article class="family-plan"><h4>12 tháng</h4><div class="family-plan-price" data-price="year"></div><p>Tiết kiệm 25%</p><button type="button" class="btn btn-secondary" data-family-plan="year">Chọn 12 tháng</button></article>
                 </div>
-                <div class="family-notice"><strong>Dùng thử Standard 1 tháng · 0đ</strong><p>Sau đó tự gia hạn Standard 49.000đ/tháng. Hủy trước kỳ gia hạn để không bị tính phí.</p><button type="button" class="btn btn-primary" data-family-plan="trial">Dùng thử Standard 0đ</button></div>
                 <p class="family-note">Giá Pro và chiết khấu là đề xuất; so với giá tháng của cùng cấp gói. Gói trả trước không tự gia hạn. Chưa kết nối thanh toán. Lịch chơi và bộ lọc chưa áp dụng vào trò chơi.</p>
             </section>
             <section data-flow-panel="activate" aria-labelledby="family-activate-title" hidden>
